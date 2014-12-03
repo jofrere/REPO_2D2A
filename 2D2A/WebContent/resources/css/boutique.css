@@ -1,0 +1,84 @@
+.boutique {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.boutique #boutique_left {
+	font-weight: bold;
+	float:left;
+	height:30px;
+	padding-top: 10px;
+	padding-bottom: 0px;
+}
+
+.boutique #boutique_right {
+	float:right;
+	height:30px;
+	padding-top: 10px;
+	padding-bottom: 0px;
+}
+
+.boutique #boutique_center {
+	text-align: center;
+	font-size: 10px;
+	font-weight: bold;
+	color: #800000;
+	height:30px;
+	bottom: 0px;
+	padding-top: 15px;
+	padding-bottom: 0px;
+}
+
+.boutique #boutique_texte_haut {
+	width: 49%;
+	float:left;
+	height:30px;
+	border: 1px black solid;
+}
+
+.boutique #boutique_lexique {
+	width: 50%;
+	float:right;
+	height: 32px;
+	/*border: 1px black solid;*/
+}
+
+.boutique #spacer {
+	height: 30px;
+	width: 100%;
+}
+
+.boutique #ligne_produit {
+	width: 100%;	
+}
+
+.boutique #produit {
+	width: 20%;
+	float: left;
+	border: 1px black solid;
+	margin-right: 30px;
+	margin-bottom: 30px;
+}
+
+/*Propriétés de la page du détail du produit*/
+.boutique #produit_left {
+	float:left;
+	width:50%;
+	padding-top: 10px;
+	padding-bottom: 0px;
+}
+
+.boutique #produit_right {
+	float:right;
+	width:50%;
+	padding-top: 10px;
+	padding-bottom: 0px;
+}
+
+.boutique #produit_bas {
+	float:left;
+	width:100%;
+	padding-top: 10px;
+	padding-bottom: 0px;
+}

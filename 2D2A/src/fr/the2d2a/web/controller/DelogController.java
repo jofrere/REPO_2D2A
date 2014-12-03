@@ -1,0 +1,25 @@
+package fr.the2d2a.web.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.web.servlet.view.RedirectView;
+
+import fr.the2d2a.web.constants.WebConstants;
+
+public class DelogController implements Controller {
+
+	private static Logger logger = Logger.getLogger(DelogController.class);
+
+	public ModelAndView handleRequest(HttpServletRequest request,
+			HttpServletResponse arg1) throws Exception {
+		
+		logger.debug("Déconnexion");
+		request.getSession().removeAttribute(WebConstants.AUTHENTICATED_MEMBER);
+		return new ModelAndView(new RedirectView("accueil.htm"));				
+	
+	}
+}
