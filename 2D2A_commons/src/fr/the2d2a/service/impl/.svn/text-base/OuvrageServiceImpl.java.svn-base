@@ -1,0 +1,38 @@
+package fr.the2d2a.service.impl;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import fr.the2d2a.bean.Commande;
+import fr.the2d2a.bean.Ouvrage;
+import fr.the2d2a.dao.PresseDao;
+import fr.the2d2a.exception.TechnicalException;
+import fr.the2d2a.service.PresseService;
+
+public class PresseServiceImpl implements PresseService {
+
+	private static Logger logger = Logger.getLogger(PresseServiceImpl.class);
+	
+	private PresseDao dao;
+	
+	public List<Ouvrage> getAllOuvrage(String lang) throws TechnicalException {
+		logger.debug("Getting all ouvrages");
+		return dao.getAllOuvrage(lang);
+	}
+	
+	public Ouvrage getOuvrageById(String ouvId, String lang) throws TechnicalException {
+		logger.debug("Getting 1 ouvrage");
+		return dao.getOuvrageById(ouvId, lang);
+	}
+
+	public void setDao(PresseDao dao) {
+		this.dao = dao;
+	}
+
+	public void destockOuvrage(Commande maCommande) throws TechnicalException {
+		for (Ouvrage ouvrage : maCommande.getMonPanier().getMesOuvrages()) {
+			dao.destockOuvrage(ouvrage);
+		}
+	}
+}

@@ -1,0 +1,15 @@
+<%@ include file="../../head/include.jsp" %>
+ 
+<a class="link_left_down_menu" href="/${ROOT}/gestionGenerale/modifAccueil.htm">
+	<div class="button_left_down_menu"> 		
+	 	<div align="center">Gestion de l'accueil</div>
+	</div>
+</a>
+
+<div class="spacer_left_menu">&nbsp;</div>
+
+<a class="link_left_down_menu" href="/${ROOT}/gestionGenerale/pays.htm">
+	<div class="button_left_down_menu"> 		
+	 	<div align="center">Gestion des pays</div>
+	</div>
+</a>

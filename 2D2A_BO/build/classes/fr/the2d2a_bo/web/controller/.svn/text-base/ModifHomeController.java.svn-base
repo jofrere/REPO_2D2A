@@ -1,0 +1,113 @@
+package fr.the2d2a_bo.web.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.log4j.Logger;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.validation.BindException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import fr.the2d2a.bean.Accueil;
+import fr.the2d2a.bean.AccueilElement;
+import fr.the2d2a.exception.FonctionalException;
+import fr.the2d2a.exception.TechnicalException;
+import fr.the2d2a.service.AccueilService;
+import fr.the2d2a.utils.FileHelper;
+
+public class ModifHomeController extends SimpleFormController {
+
+	protected static Logger logger = Logger.getLogger(ModifHomeController.class);
+	
+	private AccueilService accueilService;
+	
+	private ResourceBundleMessageSource messageSource;
+			
+	@Override
+	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
+		
+		logger.info("In onSubmit ModifHomeController...");
+		
+		Accueil accueil = (Accueil) command;
+		
+		logger.debug(ToStringBuilder.reflectionToString(accueil));
+		
+		//Gestion du path des images sur le disque
+		String path = messageSource.getMessage("global.path.contribution.image", null, null);
+		logger.debug("Visu du path : " + path);
+		
+		String pathServer = messageSource.getMessage("home.path.image", null, null);
+		
+		//Gestion du logo
+		MultipartFile logoFile = accueil.getLogoFile();
+		String newLogoFileName = FileHelper.manageUploadedFile(logoFile, accueil.getLogo(), path, pathServer);
+		accueil.setLogo(newLogoFileName);
+		
+		//Gestion de l'imageTitre
+		MultipartFile imageTitreFile = accueil.getImageTitreFile();
+		String newImageTitreFileName = FileHelper.manageUploadedFile(imageTitreFile, accueil.getImageTitre(), path, pathServer);
+		accueil.setImageTitre(newImageTitreFileName);
+		
+		//Gestion des images des éléments
+		List<AccueilElement> elements = accueil.getAccueilElements();
+		for (AccueilElement element : elements) {
+			MultipartFile imageElementFile = element.getImageElementFile();
+			String newImageElementFileName = FileHelper.manageUploadedFile(imageElementFile, element.getImageElement(), path, pathServer);
+			element.setImageElement(newImageElementFileName);			
+			element.setLang(accueil.getLang());
+			logger.debug("Visu de l'element : " + ToStringBuilder.reflectionToString(element));
+		}
+		
+		accueilService.updateAccueil(accueil);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("accueil", accueil);
+		model.put("lang", accueil.getLang());
+		
+		return new ModelAndView(this.getSuccessView(), model);
+	}
+	
+	@Override
+	protected ModelAndView showForm(HttpServletRequest request, HttpServletResponse response, BindException errors) throws Exception {
+		logger.info("In showForm ModifHomeController...");
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		//Récupération de la langue
+		String lang = request.getParameter("lang");
+		if (lang == null || lang.equals(""))
+			lang = "FR";
+		model.put("lang", lang);
+		
+		Accueil accueil = null;
+		try {
+			accueil = accueilService.getAccueil(lang);
+			logger.debug("Accueil : " + ToStringBuilder.reflectionToString(accueil));
+		} catch (TechnicalException e) {
+			// TODO 
+			e.printStackTrace();
+		} catch (FonctionalException e) {
+			// TODO 
+			e.printStackTrace();
+		}
+		accueil.setLang(lang);
+		model.put("accueil", accueil);
+		
+		return new ModelAndView(this.getFormView(), model);
+		//return super.showForm(request, response, errors);
+	}
+	
+	public void setAccueilService(AccueilService accueilService) {
+		this.accueilService = accueilService;
+	}
+
+	public void setMessageSource(ResourceBundleMessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+}

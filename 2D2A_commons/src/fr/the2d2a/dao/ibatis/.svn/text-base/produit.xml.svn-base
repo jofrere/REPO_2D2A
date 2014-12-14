@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Coloris" alias="coloris"/>
+	<typeAlias type="fr.the2d2a.bean.Designer" alias="designer"/>
+	<typeAlias type="fr.the2d2a.bean.Editeur" alias="editeur"/>
+	<typeAlias type="fr.the2d2a.bean.ImageProduit" alias="imageProduit"/>
+	<typeAlias type="fr.the2d2a.bean.Pays" alias="pays"/>
+	<typeAlias type="fr.the2d2a.bean.Produit" alias="produit"/>
+	<typeAlias type="fr.the2d2a.bean.SpecificiteProduit" alias="specificite"/>
+	
+	<resultMap class="coloris" id="coloris">
+		<result property="colId" column="COLID"/>
+		<result property="picto" column="Picto"/>
+		<result property="nom" column="Nom"/>
+	</resultMap>
+	
+    <resultMap class="designer" id="designer">
+    	<result property="id" column="ID"/>
+    	<result property="nom" column="Nom" />
+		<result property="prenom" column="Prenom" />
+    </resultMap>
+    
+    <resultMap class="editeur" id="editeur">
+    	<result property="id" column="EDIID"/>
+    	<result property="nom" column="Nom" />
+		<result property="prenom" column="Prenom" />
+    </resultMap>
+    
+    <resultMap class="imageProduit" id="imageProduit">
+    	<result property="imgId" column="IMGID"/>
+    	<result property="proId" column="PROID" />
+		<result property="photo" column="PathPhoto" />
+		<result property="vignette" column="PathVignette" />
+    </resultMap>
+    
+    <resultMap class="pays" id="pays">
+    	<result property="payId" column="PAYID"/>
+    	<result property="nom" column="Nom" />
+    </resultMap>
+    
+    <resultMap class="specificite" id="specificite">
+    	<result property="speId" column="SPEID"/>
+    	<result property="nom" column="Nom" />
+    	<result property="abbr" column="Abbr" />			
+    </resultMap>
+    
+    <resultMap class="produit" id="produit">
+    	<result property="proId" column="PROID"/>
+    	<result property="paysId" column="PAYID" nullValue="-1"/>
+    	<!-- <result property="ediId" column="EDIID"/>-->
+    	<result property="reference" column="Reference"/>
+		<result property="visuLang" column="Visu_Lang"/>
+    	<result property="quantite" column="Quantite"/>
+    	<result property="achatDepot" column="AchatDepot" nullValue="0"/>
+    	<result property="dateEntree" column="dateEntree"/>
+    	<result property="nom" column="Nom"/>
+    	<result property="information" column="Information"/>
+    	<result property="description" column="Description"/>
+    	<result property="materiaux" column="Materiaux"/>
+    	<result property="poids" column="Poids"/>
+    	<result property="hauteur" column="Hauteur"/>
+    	<result property="largeur" column="Largeur"/>
+    	<result property="profondeur" column="Profondeur"/>
+    	<result property="diametre" column="Diametre"/>
+    	<result property="descAnnee" column="Desc_Annee"/>
+    	<result property="signeApp" column="Signe_Apparent"/>
+    	<result property="prix" column="Prix"/>
+    	<result property="dispoLoc" column="Dispo_Loc"/>
+    	<result property="keyword" column="Keyword"/>
+    	<result property="friendlyName" column="FRIENDLY_NAME"/>
+    	<result property="prixAchat" column="PrixAchat" nullValue="0"/>
+    	<result property="designer" column="DESID" select="getDesignerByProductId"/>
+    	<result property="images" column="PROID" select="getImageProduitByProductId"/>
+    	<result property="editeur" column="EDIID" select="getEditeurByProductId"/>
+    </resultMap>
+	
+	<select id="getColorisByProductId" resultMap="coloris" >
+        select CL.colId, CL.nom, C.picto
+        from COLORIS_$lang$ CL, COLORIS C, PRODUIT_COLORIS PC
+        where CL.COLID = C.colId
+        and C.colId = PC.colId
+        and PC.pro_id = #id#
+    </select>
+    
+    <select id="getDesignerByProductId" resultMap="designer" >
+        select D.id, D.nom, D.prenom
+        from DESIGNER D
+        where D.ID = #DESID#
+    </select>
+	
+    <select id="getEditeurByProductId" resultMap="editeur" >
+        select E.ediId, E.nom, E.prenom
+        from EDITEUR E
+        where E.EDIID = #EDIID#
+    </select>
+	
+	<select id="getImageProduitByProductId" resultMap="imageProduit" >
+        select *
+        from IMAGE_PRODUIT I
+        where I.PROID = #id#
+    </select>
+	
+	<select id="getPaysByProductId" resultMap="pays" >
+        select PL.payId, PL.nom
+        from PAYS_$lang$ PL, PRODUIT PO
+        where PL.PAYID = PO.payId
+        and PO.proId = #id#
+    </select>
+    
+    <select id="getSpecificiteByProductId" resultMap="specificite" >
+        select SL.speId, SL.nom, SL.abbr
+        from SPECIFICITE_PRODUIT_$lang$ SL, PRODUIT_SPECIFICITE PS
+        where SL.SPEID = PS.speId
+        and PS.proId = #id#
+    </select>
+	
+	<select id="getProduitByRubriqueId" resultMap="produit">
+		select P.proId, P.payid, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.dateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P, RUBRIQUE_PRODUIT R
+		where PL.PROID = P.PROID
+		and P.PROID = R.PROID
+		and R.RUBID = #rubId#
+		and P.Quantite > 0
+		and (P.Visu_Lang = #visuLang# or P.Visu_Lang = 3)
+	</select>
+	
+	<select id="getProduitById" resultMap="produit">
+		select P.proId, P.payId, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.dateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P
+		where PL.PROID = P.PROID
+		and P.PROID = #id#
+	</select>
+	
+	<select id="getProduitByFriendlyName" resultMap="produit">
+		select P.proId, P.payId, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.dateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P
+		where PL.PROID = P.PROID
+		and PL.FRIENDLY_NAME = #friendlyName#
+	</select>
+	
+	<select id="getProduitByProduitId" resultMap="produit">
+		select P.proId, P.payId, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.dateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P
+		where PL.PROID = P.PROID
+		and P.PROID = #proId#
+	</select>
+	
+	<select id="getAllProduit" resultMap="produit">
+		select P.proId, P.payId, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.DateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P
+		where PL.PROID = P.PROID
+	</select>
+	
+	<select id="getAllProduitWithFilter" resultMap="produit">
+		select P.proId, P.payId, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.dateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P
+		<isGreaterThan property="rubrique" compareValue="-1">
+			, RUBRIQUE_PRODUIT R
+		</isGreaterThan> 
+		where PL.PROID = P.PROID
+		<isGreaterThan property="achatDepot" compareValue="-1">
+			and P.AchatDepot = $achatDepot$
+		</isGreaterThan> 
+		<isGreaterThan property="visuLang" compareValue="-1">
+			and P.Visu_Lang = $visuLang$
+		</isGreaterThan> 
+		<isGreaterThan property="rubrique" compareValue="-1">
+			and P.PROID = R.PROID and R.RUBID = $rubrique$
+		</isGreaterThan> 
+	</select>
+	
+	<select id="getAllProduitByReference" resultMap="produit">
+		select P.proId, P.payId, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.dateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P		
+		where PL.PROID = P.PROID
+		and P.REFERENCE = #reference#		
+	</select>
+	
+	<select id="getProduitAssociatedByProduitId" resultMap="produit">
+		select P.proId, P.payId, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.dateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P
+		where PL.PROID = P.PROID
+		and P.PROID IN (
+			select distinct(PRO_PROID) as PROID 
+			from produit_produit 
+			where PROID = #proId# 
+			UNION 
+			select distinct(PROID) 
+			from produit_produit 
+			where PRO_PROID = #proId# 
+		)
+	</select>
+	
+	<insert id="insertProduit" parameterClass="fr.the2d2a.bean.Produit">
+		insert into PRODUIT(payId, DESID, EDIID, REFERENCE, VISU_LANG, QUANTITE, ACHATDEPOT, DATEENTREE, PRIX)
+        values (#paysId#, #desId#, #ediId#, #reference#, #visuLang#, #quantite#, #achatDepot#, #dateEntree#, #prix#)
+        <selectKey keyProperty="proId">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+	</insert>
+	
+	<insert id="insertProduitLangue" parameterClass="fr.the2d2a.bean.Produit">
+        insert into PRODUIT_$lang$(proId, Nom, Information, Description, Materiaux, Poids, Hauteur, Largeur, Profondeur, Diametre, Desc_Annee, Signe_Apparent, Dispo_Loc, Keyword, PrixAchat)
+        values (#proId#, #nom#, #information#, #description#, #materiaux#, #poids#, #hauteur#, #largeur#, #profondeur#, #diametre#, #descAnnee#, #signeApp#, #dispoLoc#, #keyword#, #prixAchat#)
+    </insert>
+    
+    <insert id="insertImageProduit" parameterClass="fr.the2d2a.bean.ImageProduit">
+		insert into IMAGE_PRODUIT(PROID, PATHVIGNETTE, PATHPHOTO)
+        values (#prodId#, #vignette#, #photo#)
+        <selectKey keyProperty="proId">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+	</insert>
+	
+	<delete id="deleteImageProduit" parameterClass="Produit">
+    	delete from IMAGE_PRODUIT
+    	where PROID = #proId#
+    </delete>
+    
+    <update id="updateProduit" parameterClass="fr.the2d2a.bean.Produit">
+        update PRODUIT_$lang$ PL, PRODUIT P
+        set P.payId = #paysId#, 
+        	P.desId = #desId#, 
+        	P.ediId = #ediId#, 
+        	P.reference = #reference#, 
+        	P.Visu_Lang = #visuLang#, 
+        	P.Quantite = #quantite#, 
+        	P.AchatDepot = #achatDepot#, 
+        	P.dateEntree = #dateEntree#,
+        	P.Prix = #prix#, 
+        	PL.Nom = #nom#, 
+        	PL.Information = #information#, 
+        	PL.Description = #description#, 
+        	PL.Materiaux = #materiaux#, 
+        	PL.Poids = #poids#, 
+        	PL.Hauteur = #hauteur#, 
+        	PL.Largeur = #largeur#, 
+        	PL.Profondeur = #profondeur#, 
+        	PL.Diametre = #diametre#, 
+        	PL.Desc_Annee = #descAnnee#, 
+        	PL.Signe_Apparent = #signeApp#, 
+        	PL.Dispo_Loc = #dispoLoc#, 
+        	PL.Keyword = #keyword#,
+        	PL.PrixAchat = #prixAchat#
+        where PL.PROID = #proId#
+        	and P.PROID = #proId#
+    </update>
+    
+    <delete id="deleteProduitColoris" parameterClass="Produit">
+    	delete from PRODUIT_COLORIS
+    	where PRO_ID = #proId#
+    </delete>
+    
+    <insert id="insertProduitColoris" parameterClass="Produit">
+    	insert into PRODUIT_COLORIS(PRO_ID, COLID)
+    	values (#proId#, #colId#)
+    </insert>
+    
+    <delete id="deleteProduitSpecificite" parameterClass="Produit">
+    	delete from PRODUIT_SPECIFICITE
+    	where PROID = #proId#
+    </delete>
+    
+    <insert id="insertProduitSpecificite" parameterClass="Produit">
+    	insert into PRODUIT_SPECIFICITE(PROID, SPEID)
+    	values (#proId#, #speId#)
+    </insert>
+    
+    <delete id="deleteProduitRubrique" parameterClass="Produit">
+    	delete from RUBRIQUE_PRODUIT
+    	where PROID = #proId#
+    </delete>
+    
+    <insert id="insertProduitRubrique" parameterClass="Produit">
+    	insert into RUBRIQUE_PRODUIT(RUBID, PROID)
+    	values (#rubId#,#proId#)
+    </insert>
+    
+    <delete id="deleteProduitProduit" parameterClass="Produit">
+    	delete from PRODUIT_PRODUIT
+    	where PROID = #proId#
+    		or PRO_PROID = #proId#
+    </delete>
+    
+    <insert id="insertProduitProduit" parameterClass="Produit">
+    	insert into PRODUIT_PRODUIT(PROID, PRO_PROID)
+    	values (#proId#, #prodAssocId#)
+    </insert>
+	
+	<update id="destockProduit">
+		update PRODUIT
+		set QUANTITE = #newQuantite#
+		where PROID = #id#
+	</update>
+	
+	<select id="getProduitByRubriqueIdAndNouveaute" resultMap="produit">
+		select P.proId, P.payid, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.dateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P, RUBRIQUE_PRODUIT R, PRODUIT_SPECIFICITE PS
+		where PL.PROID = P.PROID
+		and P.PROID = R.PROID
+		and R.RUBID = #rubId#
+		and P.Quantite > 0
+		and (P.Visu_Lang = #visuLang# or P.Visu_Lang = 3)
+		and P.PROID = PS.PROID
+		and PS.SPEID = 1
+		order by P.dateEntree desc
+	</select>
+	
+	<select id="getProduitByRubriqueIdAndCoupDeCoeur" resultMap="produit">
+		select P.proId, P.payid, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.dateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P, RUBRIQUE_PRODUIT R, PRODUIT_SPECIFICITE PS
+		where PL.PROID = P.PROID
+		and P.PROID = R.PROID
+		and R.RUBID = #rubId#
+		and P.Quantite > 0
+		and (P.Visu_Lang = #visuLang# or P.Visu_Lang = 3)
+		and P.PROID = PS.PROID
+		and PS.SPEID = 2
+		order by P.dateEntree desc
+	</select>
+	
+	<select id="getProduitsByDesigner" resultMap="produit">
+		select P.proId, P.payId, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.dateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P
+		where PL.PROID = P.PROID
+		and P.DESID = #id#
+	</select>
+	
+	<select id="getProduitsByEditeur" resultMap="produit">
+		select P.proId, P.payId, P.Prix, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.dateEntree, PL.nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P
+		where PL.PROID = P.PROID
+		and P.EDIID = #id#
+	</select>
+	
+</sqlMap>

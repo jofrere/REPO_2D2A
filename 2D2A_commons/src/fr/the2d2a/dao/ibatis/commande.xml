@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Commande" alias="commande"/>
+	<typeAlias type="fr.the2d2a.bean.CommandeProduit" alias="commandeProduit"/>
+	<typeAlias type="fr.the2d2a.bean.CommandeOuvrage" alias="commandeOuvrage"/>
+	
+	<resultMap class="commande" id="commande">
+		<result property="id" column="COMID"/>
+		<result property="membreId" column="MEMID"/>
+		<result property="date" column="DATE"/>
+		<result property="etat" column="ETAT"/>
+		<result property="livraisonWeek" column="LIVRAISON_WEEK"/>
+		<result property="livraisonHeure" column="LIVRAISON_HEURE"/>
+		<result property="prix" column="PRIX"/>
+		<result property="adrLivId" column="ADRCOMID"/>	
+		<result property="adrFacId" column="ADR_ADRCOMID"/>
+		<result property="membre" column="MEMID" select="getMembreById"/>
+		<result property="adresseLivraison" column="ADRCOMID" select="getAdresseById"/>
+		<result property="adresseFactu" column="ADR_ADRCOMID" select="getAdresseById"/>
+		<result property="produits" column="COMID" select="getCommandeProduitByCmdId"/>
+		<result property="ouvrages" column="COMID" select="getCommandeOuvrageByCmdId"/>
+	</resultMap>
+	
+	<resultMap class="commandeProduit" id="commandeProduit">
+		<result property="id" column="COMPROID"/>
+		<result property="quantite" column="QUANTITE"/>
+		<result property="prixUnitaire" column="PRIX_UNITAIRE"/>
+		<result property="produit" column="PROID" select="getProduitWithoutLangById" />
+		<result property="proId" column="PROID"/>
+		<result property="colId" column="COLID"/>
+		<result property="coloris" column="COLID" select="getColorisWithoutLangById" />
+	</resultMap>
+	
+	<resultMap class="commandeOuvrage" id="commandeOuvrage">
+		<result property="id" column="COMOUVID"/>
+		<result property="quantite" column="QUANTITE"/>
+		<result property="prixUnitaire" column="PRIX_UNITAIRE"/>
+		<!-- <result property="ouvrage" column="OUVID" select="getOuvrageById"/> -->
+		<result property="ouvId" column="OUVID"/>
+	</resultMap>
+	
+	<insert id="insertCommande" parameterClass="fr.the2d2a.bean.Commande">
+        insert into COMMANDE(Memid, date, etat, LIVRAISON_WEEK, LIVRAISON_HEURE, PRIX, ADRCOMID, ADR_ADRCOMID)
+        values (#membreId#, #date#, #etat#, #livraisonWeek#, #livraisonHeure#, #prix#, #adrLivId#, #adrFacId#)
+        <selectKey keyProperty="id">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <insert id="insertCommandeProduit">
+        insert into COMMANDE_PRODUIT(Proid, Comid, quantite, prix_unitaire, colId)
+        values (#PRO_ID#, #COM_ID#, #Quantite#, #Prix#, #COL_ID#)
+        <selectKey keyProperty="id">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <insert id="insertCommandeOuvrage">
+        insert into COMMANDE_OUVRAGE(Ouvid, Comid, quantite, prix_unitaire)
+        values (#OUV_ID#, #COM_ID#, #Quantite#, #Prix#)
+        <selectKey keyProperty="id">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <select id="getAllCommande" resultMap="commande">
+		select *
+		from COMMANDE
+	</select>
+	
+	<select id="getCommandesByMemberAndState" resultMap="commande">
+		select *
+		from COMMANDE C
+		where C.MEMID = #memberId#
+		and C.ETAT != 4
+		order by date desc, comid desc
+	</select>
+	
+	<select id="getCommandesByMemberAndHisto" resultMap="commande">
+		select *
+		from COMMANDE C
+		where C.MEMID = #memberId#
+		and C.ETAT = 4
+		order by date desc, comid desc
+	</select>
+		
+	<select id="getAllCommandeWithFilter" resultMap="commande">
+		select *
+		from COMMANDE C		
+		<isNotEmpty property="membre">
+			, MEMBRE M
+		</isNotEmpty> 
+		where C.COMID > -1
+		<isGreaterThan property="etat" compareValue="-1">
+			and C.ETAT = $etat$
+		</isGreaterThan> 
+		<isNotEmpty property="reference">
+			and C.COMID = $reference$
+		</isNotEmpty> 
+		<isNotEmpty property="membre">
+			and C.MEMID = M.MEMID and M.NOM like '%$membre$%'
+		</isNotEmpty>
+		<isEqual property="sort" compareValue="0">
+			order by COMID ASC
+		</isEqual>
+		<isEqual property="sort" compareValue="1">
+			order by DATE ASC
+		</isEqual>
+		<isEqual property="sort" compareValue="2">
+			order by DATE DESC
+		</isEqual>
+		<isEqual property="sort" compareValue="3">
+			order by PRIX ASC
+		</isEqual>
+		<isEqual property="sort" compareValue="4">
+			order by PRIX DESC
+		</isEqual>
+	</select>
+	
+	<select id="getCommandeById" resultMap="commande">
+		select *
+		from COMMANDE
+		where COMID = #id#
+	</select>
+	
+	<select id="getCommandeProduitByCmdId" resultMap="commandeProduit">
+		select *
+		from COMMANDE_PRODUIT
+		where COMID = #id#
+	</select>
+	
+	<select id="getCommandeOuvrageByCmdId" resultMap="commandeOuvrage" parameterClass="int">
+		select *
+		from COMMANDE_OUVRAGE
+		where COMID = #value#
+	</select>
+		
+	<update id="updateCommande" parameterClass="fr.the2d2a.bean.Commande">
+		update COMMANDE
+		set ETAT = #etat#,
+		LIVRAISON_WEEK = #livraisonWeek#, 
+		LIVRAISON_HEURE = #livraisonHeure#
+		where COMID = #id#
+	</update>
+</sqlMap>

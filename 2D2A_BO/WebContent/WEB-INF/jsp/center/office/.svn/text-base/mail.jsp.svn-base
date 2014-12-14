@@ -1,0 +1,47 @@
+<%@ include file="../../head/include.jsp" %>
+
+<c:choose>
+	<c:when test="${lang == 'EN'}">
+		<center><a href="./mail.htm" title="Passer en Français"><img src="/${ROOT}/resources/img/global/FR.gif" border="0" width="40" height="20" alt="Passer en Français"/></a></center>
+	</c:when>
+	<c:otherwise>
+		<center><a href="./mail.htm?lang=EN" title="Passer en Anglais"><img src="/${ROOT}/resources/img/global/EN.gif" border="0" width="40" height="20" alt="Passer en Anglais"/></a></center>
+	</c:otherwise>
+</c:choose>
+
+<table border="1" width="100%" style="border:1px solid #666666;" id="mail">
+	
+	<tr>
+		<th>Identifiant</th>
+		<th>Nom</th>
+		<th>Activer</th>
+		<th>Actions</th>		
+	</tr>
+	
+	<c:forEach var="mail" items="${listeMails}">
+		<tr>
+			<td width="16%">
+				<c:out value="${mail.maiId}"/>
+			</td>
+			
+			<td width="75%">
+				<c:out value="${mail.nom}"/>
+			</td>
+			
+			<td width="5%">
+				<c:if test="${mail.activation == false}">NON</c:if>
+				<c:if test="${mail.activation == true}">OUI</c:if>
+			</td>
+				
+			<td width="4%">
+				<form name="modifMail_<c:out value="${mail.maiId}"/>" action="./modifMail.htm" method="POST">
+					<input type="hidden" name="maiId" value="<c:out value="${mail.maiId}"/>"/>
+					<input type="hidden" name="action" value="0"/>
+					<input type="hidden" name="lang" value="<c:out value="${lang}"/>"/>
+					<a href="#" onclick="document.modifMail_<c:out value="${mail.maiId}"/>.submit();"><img src="/${ROOT}/resources/img/picto_site/edit.gif" border="0"/></a>
+				</form>
+			</td>			
+		</tr>
+	</c:forEach>
+</table>
+

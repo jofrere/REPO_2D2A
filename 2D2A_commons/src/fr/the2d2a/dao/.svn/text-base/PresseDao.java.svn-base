@@ -1,0 +1,16 @@
+package fr.the2d2a.dao;
+
+import java.util.List;
+
+import org.springframework.dao.DataAccessException;
+
+import fr.the2d2a.bean.Ouvrage;
+
+public interface PresseDao {
+	
+	public List<Ouvrage> getAllOuvrage(String lang) throws DataAccessException;
+
+	public Ouvrage getOuvrageById(String ouvId, String lang) throws DataAccessException;
+	
+	public void destockOuvrage(Ouvrage ouvrage) throws DataAccessException;
+}

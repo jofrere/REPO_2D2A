@@ -1,0 +1,8 @@
+<%@ include file="../head/include.jsp" %>
+
+
+<img src="/${ROOT}/resources/img/header/logo_banniere.gif" />	
+
+
+<div id="bulle" style="left:0; top:-100000px; visibility:hidden;"></div>
+

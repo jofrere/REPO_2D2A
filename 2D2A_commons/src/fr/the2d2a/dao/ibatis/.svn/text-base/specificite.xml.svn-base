@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.SpecificiteProduit" alias="specificite"/>
+	
+	<resultMap class="specificite" id="specificite">
+    	<result property="speId" column="SPEID"/>
+    	<result property="nom" column="Nom" />
+    	<result property="abbr" column="Abbr" />			
+    </resultMap> 
+    
+    <select id="getAllSpec" resultMap="specificite">
+        select SL.speId, SL.nom, SL.abbr
+        from SPECIFICITE_PRODUIT_$lang$ SL
+    </select>
+    
+    <select id="getSpecById" resultMap="specificite">
+        select SL.speId, SL.nom, SL.abbr
+        from SPECIFICITE_PRODUIT_$lang$ SL
+        where SL.SPEID = #id#
+    </select>
+    
+    <update id="updateSpec" parameterClass="fr.the2d2a.bean.SpecificiteProduit">
+        update SPECIFICITE_PRODUIT_$lang$ SL
+        set SL.nom = #nom#,
+        	SL.abbr = #abbr#
+        where SL.SPEID = #speId#
+    </update>
+    
+    <insert id="insertSpec" parameterClass="fr.the2d2a.bean.SpecificiteProduit">
+        insert into SPECIFICITE_PRODUIT()
+        values()
+        <selectKey keyProperty="speId">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <insert id="insertSpecLangue" parameterClass="fr.the2d2a.bean.SpecificiteProduit">
+        insert into SPECIFICITE_PRODUIT_$lang$(speId, nom, abbr)
+        values (#speId#, #nom#, #abbr#)
+    </insert>
+    
+    <delete id="deleteSpecLangueById">
+        delete 
+        from SPECIFICITE_PRODUIT_FR, SPECIFICITE_PRODUIT_EN
+        using SPECIFICITE_PRODUIT_FR, SPECIFICITE_PRODUIT_EN
+        where SPECIFICITE_PRODUIT_FR.SPEID = #id# 
+        and SPECIFICITE_PRODUIT_EN.SPEID = #id#
+    </delete>
+    
+    <delete id="deleteSpecProduitById">
+        delete 
+        from PRODUIT_SPECIFICITE
+        using PRODUIT_SPECIFICITE
+        where PRODUIT_SPECIFICITE.SPEID = #id#
+    </delete>
+    
+    <delete id="deleteSpecById">
+        delete 
+        from SPECIFICITE_PRODUIT
+        using SPECIFICITE_PRODUIT
+        where SPECIFICITE_PRODUIT.SPEID = #id#
+    </delete>
+    
+</sqlMap>

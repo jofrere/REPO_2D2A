@@ -1,0 +1,201 @@
+package fr.the2d2a.bean;
+
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.collections.FactoryUtils;
+import org.apache.commons.collections.list.LazyList;
+
+import fr.the2d2a.web.constants.ParamConstants;
+
+public class Commande implements Serializable {
+
+	private static final long serialVersionUID = 8036719741372088914L;
+
+	private static SimpleDateFormat sdf = new SimpleDateFormat(ParamConstants.PATTERN_DATE_BO);
+	
+	private int id;
+	private Panier monPanier;
+	private int livraisonWeek;
+	private int livraisonHeure = 0;
+	
+	private int acceptation;
+	
+	private int membreId;
+	private int etat = 0;
+	private Date date;
+	private float prix;
+	
+	private int adrLivId;
+	private int adrFacId;
+	
+	private int action;
+	
+	//pour le BO
+	private Membre membre;
+	private Adresse adresseLivraison;
+	private Adresse adresseFactu;
+	private List<CommandeProduit> produits;
+	private List<CommandeOuvrage> ouvrages;
+	
+	@SuppressWarnings("unchecked")
+	public Commande() {
+		produits = LazyList.decorate(new ArrayList<CommandeProduit>(), FactoryUtils.instantiateFactory(CommandeProduit.class));
+		ouvrages = LazyList.decorate(new ArrayList<CommandeOuvrage>(), FactoryUtils.instantiateFactory(CommandeOuvrage.class));
+	}
+
+	public Panier getMonPanier() {
+		return monPanier;
+	}
+
+	public void setMonPanier(Panier monPanier) {
+		this.monPanier = monPanier;
+	}
+	
+	public int getLivraisonWeek() {
+		return livraisonWeek;
+	}
+
+	public void setLivraisonWeek(int livraisonWeek) {
+		this.livraisonWeek = livraisonWeek;
+	}
+
+	public int getLivraisonHeure() {
+		return livraisonHeure;
+	}
+
+	public void setLivraisonHeure(int livraisonHeure) {
+		this.livraisonHeure = livraisonHeure;
+	}
+
+	public int getAcceptation() {
+		return acceptation;
+	}
+
+	public void setAcceptation(int acceptation) {
+		this.acceptation = acceptation;
+	}
+
+	public int getAction() {
+		return action;
+	}
+
+	public void setAction(int action) {
+		this.action = action;
+	}
+
+	public int getMembreId() {
+		return membreId;
+	}
+
+	public void setMembreId(int membreId) {
+		this.membreId = membreId;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+	
+	public String getDateNormale() {
+		String dateStr = sdf.format(this.getDate());
+		return dateStr;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public float getPrix() {
+		return prix;
+	}
+
+	public void setPrix(float prix) {
+		this.prix = prix;
+	}
+
+	public int getEtat() {
+		return etat;
+	}
+
+	public void setEtat(int etat) {
+		this.etat = etat;
+	}
+
+	public int getAdrLivId() {
+		return adrLivId;
+	}
+
+	public void setAdrLivId(int adrLivId) {
+		this.adrLivId = adrLivId;
+	}
+
+	public int getAdrFacId() {
+		return adrFacId;
+	}
+
+	public void setAdrFacId(int adrFacId) {
+		this.adrFacId = adrFacId;
+	}
+
+	public Membre getMembre() {
+		return membre;
+	}
+
+	public void setMembre(Membre membre) {
+		this.membre = membre;
+	}
+
+	public Adresse getAdresseLivraison() {
+		return adresseLivraison;
+	}
+
+	public void setAdresseLivraison(Adresse adresseLivraison) {
+		this.adresseLivraison = adresseLivraison;
+	}
+
+	public Adresse getAdresseFactu() {
+		return adresseFactu;
+	}
+
+	public void setAdresseFactu(Adresse adresseFactu) {
+		this.adresseFactu = adresseFactu;
+	}
+
+	public List<CommandeProduit> getProduits() {
+		return produits;
+	}
+
+	public void setProduits(List<CommandeProduit> produits) {
+		this.produits = produits;
+	}
+
+	public List<CommandeOuvrage> getOuvrages() {
+		return ouvrages;
+	}
+
+	public void setOuvrages(List<CommandeOuvrage> ouvrages) {
+		this.ouvrages = ouvrages;
+	}
+	
+	public int getQuantiteTotaleArticles() {
+		int qtte = 0;
+		for (CommandeProduit prod : produits) {
+			qtte += prod.getQuantite();
+		}
+		for (CommandeOuvrage ouv : ouvrages) {
+			qtte += ouv.getQuantite();
+		}
+		return qtte;
+	}
+}

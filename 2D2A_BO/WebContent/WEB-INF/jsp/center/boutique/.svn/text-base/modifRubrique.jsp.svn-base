@@ -1,0 +1,106 @@
+<%@ include file="../../head/include.jsp" %>
+
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+
+<form name="modifrubrique" method="post" action="" enctype="multipart/form-data">
+	<fieldset>
+		<c:choose>
+			<c:when test="${rubrique.action == 5}">
+				<legend>Modification d'une rubrique</legend>
+			</c:when>
+			<c:when test="${rubrique.action == 4}">
+				<legend>Création d'une rubrique</legend>
+			</c:when>
+		</c:choose>
+				
+		<spring:bind path="rubrique.rubId">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="rubrique.rub_rubId">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="rubrique.action">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="rubrique.lang">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="rubrique.nom">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Nom de la rubrique</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="rubrique.friendlyName">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Nom Friendly de la rubrique</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="rubrique.description">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Description</label>
+				<textarea rows="2" cols="70" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>"><c:out value="${status.value}"/></textarea>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="rubrique.keyword">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Keyword</label>
+				<textarea rows="2" cols="70" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>"><c:out value="${status.value}"/></textarea>
+			</p>
+		</spring:bind>
+		
+		<p>
+			<spring:bind path="rubrique.picto">
+				<label class="label" for="<c:out value="${status.expression}"/>">Picto actuel</label>
+				<img style="float: left;" id="<c:out value="${status.expression}"/>" src="/${ROOT}/<c:out value="${status.value}"/>"/>
+				<input style="float: left;" type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>"/>
+			</spring:bind>
+			<spring:bind path="rubrique.pictoFile">
+				<label class="label" for="<c:out value="${status.expression}"/>">Modifier : </label>
+				<input style="float: left;" type="file" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" size="30" maxlength="100"/>
+			</spring:bind>
+		</p>
+		
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		
+		<p>
+			<spring:bind path="rubrique.css">
+				<label class="label" for="<c:out value="${status.expression}"/>">Css actuelle</label>
+				<input style="float: left;" type="text" value="<c:out value="${status.value}"/>" readonly="readonly" size="30"/>
+				<input style="float: left;" type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>"/>
+			</spring:bind>
+			<spring:bind path="rubrique.cssFile">
+				<label class="label" for="<c:out value="${status.expression}"/>">Modifier : </label>
+				<input style="float: left;" type="file" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" size="30" maxlength="100"/>
+			</spring:bind>
+		</p>
+		
+		<br />
+	
+		<spring:bind path="rubrique.visible">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Visible sur le site</label>
+				<input style="float: left;" type="checkbox" <c:if test="${status.value == 1}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="1"/>
+			</p>
+		</spring:bind>
+		
+		<div align="center">
+			<input type="submit" name="Valider" value="Valider"/>
+		</div>
+		
+		
+	</fieldset>
+</form>

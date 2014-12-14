@@ -1,0 +1,79 @@
+package fr.the2d2a_bo.web.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.springframework.validation.BindException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.springframework.web.servlet.view.InternalResourceView;
+
+import fr.the2d2a.bean.Pays;
+import fr.the2d2a.service.PaysService;
+
+public class ModifPaysController extends SimpleFormController {
+
+	protected static Logger logger = Logger.getLogger(ModifPaysController.class);
+	
+	private PaysService paysService;
+	
+	@Override
+	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
+		
+		logger.info("In onSubmit ModifPaysController...");
+		
+		Pays pays = (Pays)command;
+		logger.debug("Visu de la current action : " + pays.getAction());
+		switch (pays.getAction()) {
+			case 1:
+			case 2:
+				request.setAttribute("command", command);
+				return this.showForm(request, response, errors);				
+			case 3:
+				paysService.deletePays(pays.getId());
+				break;
+			case 4:				
+			case 5:	
+				if (pays.getAction() == 5) {
+					paysService.updatePays(pays);
+				}
+				else {
+					logger.debug("Creation du pays dans les 2 langues.");
+					paysService.insertPays(pays);
+				}
+				
+				break;
+			default:
+				break;
+		}
+		
+
+		return new ModelAndView(new InternalResourceView(this.getSuccessView()));
+	}
+
+	@Override
+	protected ModelAndView showForm(HttpServletRequest request, HttpServletResponse response, BindException errors) throws Exception {
+		logger.info("In showForm ModifPaysController...");
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		//cas update
+		Pays pays = (Pays)request.getAttribute("command");
+		model.put("pays", pays);
+		
+		if (pays.getAction() == 2)
+			pays.setAction(5);
+		if (pays.getAction() == 1)
+			pays.setAction(4);
+		
+		return new ModelAndView(this.getFormView(), model);
+	}
+
+	public void setPaysService(PaysService paysService) {
+		this.paysService = paysService;
+	}
+}

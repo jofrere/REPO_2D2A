@@ -1,0 +1,30 @@
+package fr.the2d2a_bo.web.filter;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+
+import fr.the2d2a.web.constants.WebConstants;
+
+public class InitFilter implements Filter {
+
+	private Logger logger = Logger.getLogger(InitFilter.class);
+    
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain fc) throws java.io.IOException, javax.servlet.ServletException {
+    	
+    	logger.debug("In Filter ");
+    	((HttpServletRequest)req).getSession().setAttribute(WebConstants.LANGUE, "FR");    	  	
+    	    	
+	    fc.doFilter(req,res);
+    }
+
+	public void destroy() {}
+
+	public void init(FilterConfig arg0) throws ServletException {}
+}

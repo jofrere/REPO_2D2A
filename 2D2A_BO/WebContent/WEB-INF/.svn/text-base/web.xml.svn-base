@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>2D2A_BO</display-name>
+	
+	<!-- Listeners -->
+	<listener>
+	    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<listener> 
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	
+	<!-- Servlets et parametres -->
+	<servlet>
+    	<servlet-name>2D2A_BO</servlet-name>
+    	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    	<load-on-startup>1</load-on-startup>
+  	</servlet>
+  	
+  	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/log4j.properties</param-value>
+	</context-param>
+	<context-param>
+		<param-name>log4jRefreshInterval</param-name>
+		<param-value>10000</param-value>
+	</context-param>
+		
+	<servlet>
+		<servlet-name>log4j</servlet-name>
+		<servlet-class>org.springframework.web.util.Log4jConfigServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>PDFServlet</servlet-name>
+		<servlet-class>fr.the2d2a_bo.web.PDFServlet</servlet-class>
+	</servlet>
+			
+	<!-- Mappings -->
+
+  	<servlet-mapping>
+    	<servlet-name>2D2A_BO</servlet-name>
+    	<url-pattern>*.htm</url-pattern>
+  	</servlet-mapping>
+  	
+  	<servlet-mapping>
+	  	<servlet-name>PDFServlet</servlet-name>
+	  	<url-pattern>*.pdf</url-pattern>
+	</servlet-mapping>
+  	
+  	<!-- Filter -->
+  	
+  	<filter>
+	    <filter-name>charsetFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	    <init-param>
+	        <param-name>encoding</param-name>
+	        <param-value>UTF-8</param-value>
+	    </init-param>
+	</filter>
+	
+	<filter-mapping>
+	    <filter-name>charsetFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+  	
+  	<!--   	
+  	<filter>	  
+	  <filter-name>filter</filter-name>
+	  <filter-class>fr.the2d2a_bo.web.filter.InitFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+	  <filter-name>filter</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	 -->
+	
+	<!-- Redirection pour / -->
+	<welcome-file-list>
+	    <welcome-file>./WEB-INF/jsp/template/index.jsp</welcome-file>
+  	</welcome-file-list>
+	
+</web-app>

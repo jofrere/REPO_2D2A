@@ -1,0 +1,80 @@
+package fr.the2d2a.dao.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.springframework.dao.DataAccessException;
+import org.springframework.orm.ibatis.SqlMapClientTemplate;
+import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+
+import fr.the2d2a.bean.Evenement;
+import fr.the2d2a.bean.TypeEvenement;
+import fr.the2d2a.beanform.EvenementForm;
+import fr.the2d2a.dao.EvenementDao;
+
+public class EvenementDaoImpl extends SqlMapClientDaoSupport implements EvenementDao {
+
+		protected final Logger logger = Logger.getLogger(EvenementDaoImpl.class);
+		
+		@SuppressWarnings("unchecked")
+		public List<Evenement> getEvenementByRubriqueId(String lang, String rubId) throws DataAccessException {
+			logger.debug("Recup Evenement en " + lang + " pour la rubid : " + rubId);
+	        SqlMapClientTemplate template = getSqlMapClientTemplate();
+	        Map<String, Object> map = new HashMap<String, Object>();
+	        map.put("lang", lang);
+	        map.put("rubId", rubId);
+	        
+	        List<Evenement> evenements = (List<Evenement>)template.queryForList("getEvenementByRubriqueId", map);
+	        logger.debug("Visu evenements : " + evenements.toString());
+	        
+	        return evenements;
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<String> getAllDepartement(String lang, String rubId) throws DataAccessException {
+			logger.debug("Recup all Departements en " + lang + " pour la rubid : " + rubId);
+	        SqlMapClientTemplate template = getSqlMapClientTemplate();
+	        Map<String, Object> map = new HashMap<String, Object>();
+	        map.put("lang", lang);
+	        map.put("rubId", rubId);
+	        
+	        List<String> deps = (List<String>)template.queryForList("getDepartementByRubriqueId", map);
+	        logger.debug("Visu dep : " + deps.toString());
+	        
+	        return deps;
+		}
+
+		@SuppressWarnings("unchecked")
+		public List<TypeEvenement> getAllType(String lang) throws DataAccessException {
+			logger.debug("Recup all Type Evenement en " + lang);
+	        SqlMapClientTemplate template = getSqlMapClientTemplate();
+	        Map<String, Object> map = new HashMap<String, Object>();
+	        map.put("lang", lang);
+	        
+	        List<TypeEvenement> types = (List<TypeEvenement>)template.queryForList("getAllTypeEvenement", map);
+	        logger.debug("Visu type : " + types.toString());
+	        
+	        return types;
+		}
+
+		@SuppressWarnings("unchecked")
+		public List<Evenement> getEvenementByRubriqueIdWithFilter(String lang,
+				String rubId, EvenementForm evtForm) throws DataAccessException {
+			logger.debug("Recup Evenement en " + lang + " pour la rubid : " + rubId);
+	        SqlMapClientTemplate template = getSqlMapClientTemplate();
+	        Map<String, Object> map = new HashMap<String, Object>();
+	        map.put("lang", lang);
+	        map.put("rubId", rubId);
+	        map.put("selectedDate", evtForm.getSelectedDate());
+//	        map.put("type", evtForm.getTypeEvt());
+//	        map.put("departement", evtForm.getDepartement());
+	        
+	        List<Evenement> evenements = (List<Evenement>)template.queryForList("getEvenementByRubriqueIdWithFilter", map);
+	        logger.debug("Visu evenements : " + evenements.toString());
+	        
+	        return evenements;
+		}
+
+}

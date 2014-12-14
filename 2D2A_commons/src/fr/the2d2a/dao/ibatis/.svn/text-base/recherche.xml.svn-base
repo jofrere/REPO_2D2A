@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+
+	<select id="getAllProduitsByContent" resultMap="produit">
+		select P.proId, P.payId, P.desId, P.ediId, P.reference, P.Visu_Lang, P.Quantite, P.AchatDepot, P.DateEntree, P.Prix, PL.Nom, PL.Information, PL.Description, PL.Materiaux, PL.Poids, PL.Hauteur, PL.Largeur, PL.Profondeur, PL.Diametre, PL.Desc_Annee, PL.Signe_Apparent, PL.Dispo_Loc, PL.Keyword, PL.PrixAchat, PL.friendly_name
+		from PRODUIT_$lang$ PL, PRODUIT P
+			<isGreaterThan property="rubId" compareValue="-1">
+				, RUBRIQUE_PRODUIT RP
+			</isGreaterThan> 
+		where PL.PROID = P.PROID
+		and (P.Visu_Lang = #visuLang# or P.Visu_Lang = 3)
+		and (PL.Nom like '%$content$%' 
+			or PL.Information like '%$content$%' 
+			or PL.Description like '%$content$%')
+		<isGreaterThan property="edi_id" compareValue="-1">
+			and P.EDIID = $edi_id$
+		</isGreaterThan> 
+		<isGreaterThan property="des_id" compareValue="-1">
+			and P.DESID = $des_id$
+		</isGreaterThan> 
+		<isGreaterThan property="prixMin" compareValue="0">
+			and P.Prix &gt;= $prixMin$
+		</isGreaterThan> 
+		<isGreaterThan property="prixMax" compareValue="0">
+			and P.Prix &lt;= $prixMax$
+		</isGreaterThan> 
+		<isGreaterThan property="rubId" compareValue="-1">
+			and RP.PROID = P.PROID
+			and RP.RUBID = $rubId$
+		</isGreaterThan> 
+	</select>
+
+</sqlMap>

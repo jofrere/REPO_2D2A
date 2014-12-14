@@ -1,0 +1,107 @@
+<%@ include file="../../head/include.jsp" %>
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+
+<fieldset>
+	<legend>Filtre sur les commandes</legend>
+	
+	<form name="filtreCommandeForm" action="" method="POST">
+		<p>
+			<spring:bind path="filter.etat">
+				<label class="label" for="<c:out value="${status.expression}"/>">Etat</label>
+				<select style="float: left;" name="<c:out value="${status.expression}"/>" id="<c:out value="${status.expression}"/>">
+					<option value="-1" <c:if test="${status.value == -1}">selected="selected"</c:if>>Tous</option>
+					<option value="0" <c:if test="${status.value == 0}">selected="selected"</c:if>>Commandé</option>
+					<option value="1" <c:if test="${status.value == 1}">selected="selected"</c:if>>Livré</option>		
+				</select>
+			</spring:bind>
+		
+			<spring:bind path="filter.reference">
+				<label class="label" for="<c:out value="${status.expression}"/>">Référence</label>
+				<input style="float: left;" type="text" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" />
+			</spring:bind>			
+		
+			<spring:bind path="filter.membre">
+				<label class="label" for="<c:out value="${status.expression}"/>">Membre</label>
+				<input style="float: left;" type="text" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" />
+			</spring:bind>		
+			
+			&nbsp;&nbsp;<input type="submit" value="Filtrer" align="right"/>	
+		</p>
+		
+			<spring:bind path="filter.sort">
+				<input type="hidden" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" />
+			</spring:bind>
+		
+	</form>
+</fieldset>
+<br />
+<fieldset>
+	<legend>Liste des commandes</legend>
+
+	<table>
+		<tr>
+			<th>Référence</th>
+			<th>Membre</th>
+			<th><a href="#" onclick="document.getElementById('sort').value=1;document.filtreCommandeForm.submit();">Date</a></th>
+			<th>Etat</th>
+			<th><a href="#" onclick="document.getElementById('sort').value=3;document.filtreCommandeForm.submit();">Prix</a></th>
+			<th colspan="2">Actions</th>
+		</tr>
+		<c:forEach var="commande" items="${listeCommande}" varStatus="i">
+			
+			<tr>
+				<td width="7%">
+					<span class="label"><c:out value="${commande.id}"/></span>
+				</td>
+				<td width="25%" align="center">
+					<c:out value="${commande.membre.nom}"/>&nbsp;<c:out value="${commande.membre.prenom}"/>
+				</td>
+				<td width="20%" align="center">
+					<c:out value="${commande.dateNormale}"/>
+				</td>
+				<td width="20%" align="center">
+					<c:choose>
+						<c:when test="${commande.etat == 0}">
+							Commandé
+						</c:when>
+						<c:otherwise>
+							Livré
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td width="20%" align="center">
+					<c:out value="${commande.prix}"/>
+				</td>
+				<td width="4%">
+					<form style="display:inline;" name="commande_modif_<c:out value="${i.index}"/>" method="post" action="./modifCommande.htm">
+						<input type="hidden" name="id" value="<c:out value="${commande.id}"/>">
+						<input type="hidden" name="action" value="2"/>
+						<a href="#" onclick="document.commande_modif_<c:out value="${i.index}"/>.submit();"><img src="/${ROOT}/resources/img/picto_site/edit.gif" border="0"/></a>
+					</form>
+				</td>
+				<td width="4%">
+					<form style="display:inline;" name="commande_del_<c:out value="${i.index}"/>" method="post" action="./modifCommande.htm">
+						<input type="hidden" name="id" value="<c:out value="${commande.id}"/>">
+						<input type="hidden" name="action" value="3"/>
+						<a href="#" onclick="if (confirm('Etes-vous certain de vouloir supprimer cette commande ?')) eval('document.commande_del_<c:out value="${i.index}"/>.submit();')"><img src="/${ROOT}/resources/img/picto_site/delete.gif" border="0"/></a>
+					</form>
+				</td>
+			</tr>
+			
+		</c:forEach>
+	
+	</table>
+</fieldset>
+<%-- 
+<br />
+<hr />
+<br />
+
+<div align="center">
+	<form style="display:inline;" name="commande_add" method="post" action="./modifCommande.htm">
+		<input type="hidden" name="action" value="1"/>
+		<input type="submit" value="Créer une nouvelle commande"/>
+	</form>
+</div>
+--%>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Rubrique" alias="rubrique"/>
+
+    <resultMap class="rubrique" id="rubrique">
+        <result property="rubId" column="RUBID"/>
+        <result property="picto" column="picto" />
+		<result property="css" column="css" />
+		<result property="nom" column="nom"/>
+		<result property="description" column="description"/>
+		<result property="keyword" column="keyword"/>
+		<result property="rub_rubId" column="rub_rubid"/>		
+		<result property="friendlyName" column="friendly_name"/>
+		<result property="ordre" column="ordre" nullValue="-1"/>
+		<result property="visible" column="visible"/>
+    </resultMap>  
+
+    <select id = "selectAllRubriquesFromParent" parameterClass="java.util.Map" resultMap="rubrique" >
+        select RL.rubid, RL.picto, RL.css, RL.nom, RL.description, RL.keyword, RL.friendly_name, R.rub_rubid, R.ordre, R.visible
+        from RUBRIQUE R, RUBRIQUE_$lang$ RL 
+        where R.rubid = RL.rubid 
+        and R.rub_rubid = #rub_rubId#
+        and R.visible = 1
+        order by R.ordre ASC
+    </select>
+    
+    <select id = "selectAllRubriquesFromParentWithInvisible" parameterClass="java.util.Map" resultMap="rubrique" >
+        select RL.rubid, RL.picto, RL.css, RL.nom, RL.description, RL.keyword, RL.friendly_name, R.rub_rubid, R.ordre, R.visible
+        from RUBRIQUE R, RUBRIQUE_$lang$ RL 
+        where R.rubid = RL.rubid 
+        and R.rub_rubid = #rub_rubId#
+        order by R.ordre ASC
+    </select>
+    
+    <select id = "selectAllRubriques" parameterClass="java.util.Map" resultMap="rubrique" >
+        select RL.rubid, RL.picto, RL.css, RL.nom, RL.description, RL.keyword, RL.friendly_name, R.rub_rubid, R.ordre, R.visible
+        from RUBRIQUE R, RUBRIQUE_$lang$ RL 
+        where R.rubid = RL.rubid
+        and R.visible = 1
+    </select>
+    
+    <select id = "getRubriqueById" parameterClass="java.util.Map" resultMap="rubrique" >
+        select RL.rubid, RL.picto, RL.css, RL.nom, RL.description, RL.keyword, RL.friendly_name, R.rub_rubid, R.ordre, R.visible
+        from RUBRIQUE R, RUBRIQUE_$lang$ RL
+        where R.rubid = RL.rubid
+        and R.rubid = #rubId#        
+    </select>
+    
+    <select id = "getRubriqueIdByFriendlyNameForAccueil" parameterClass="java.util.Map" resultClass="java.lang.Integer" >
+        select RL.rubid
+        from RUBRIQUE_$lang$ RL
+        where RL.friendly_name = #friendlyName#
+        and RL.rubid &lt; 5
+    </select>
+    
+    <select id = "selectAllRubriquesByProductId" parameterClass="java.util.Map" resultMap="rubrique" >
+        select RL.rubid, RL.picto, RL.css, RL.nom, RL.description, RL.keyword, RL.friendly_name, R.rub_rubid, R.ordre, R.visible
+        from RUBRIQUE R, RUBRIQUE_$lang$ RL, RUBRIQUE_PRODUIT RP
+        where R.rubid = RL.rubid
+        and R.rubid = RP.rubid
+        and R.visible = 1
+        and RP.proId = #proId#
+    </select>
+    
+    <update id="updateRubrique" parameterClass="fr.the2d2a.bean.Rubrique">
+        update RUBRIQUE_$lang$ RL, RUBRIQUE R
+        set RL.picto = #picto#, 
+        	RL.css = #css#, 
+        	RL.nom = #nom#, 
+        	RL.description = #description#, 
+        	RL.keyword = #keyword#, 
+        	RL.friendly_name = #friendlyName#, 
+        	R.visible = #visible#
+        where RL.rubid = #rubId#
+        	and R.rubid = #rubId#
+    </update>
+    
+    <insert id="insertRubrique" parameterClass="fr.the2d2a.bean.Rubrique">
+		insert into RUBRIQUE(rub_rubid, visible)
+        values (#rub_rubId#, #visible#)
+        <selectKey keyProperty="rubId">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+	</insert>
+	
+	<insert id="insertRubriqueLangue" parameterClass="fr.the2d2a.bean.Rubrique">
+        insert into RUBRIQUE_$lang$(rubid, picto, css, nom, description, keyword, friendly_name)
+        values (#rubId#, #picto#, #css#, #nom#, #description#, #keyword#, #friendlyName#)
+    </insert>
+    
+    <delete id="deleteRubrique">
+        delete from RUBRIQUE
+        where rubid = #rubId#
+    </delete>
+    
+</sqlMap>

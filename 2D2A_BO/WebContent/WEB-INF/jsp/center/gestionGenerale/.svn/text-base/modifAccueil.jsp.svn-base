@@ -1,0 +1,147 @@
+<%@ include file="../../head/include.jsp" %>
+
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/home.css" media="all" />
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+
+<c:choose>
+	<c:when test="${lang == 'EN'}">
+		<center><a href="./modifAccueil.htm" title="Passer en Français"><img src="/${ROOT}/resources/img/global/FR.gif" border="0" width="40" height="20" alt="Passer en Français"/></a></center>
+	</c:when>
+	<c:otherwise>
+		<center><a href="./modifAccueil.htm?lang=EN" title="Passer en Anglais"><img src="/${ROOT}/resources/img/global/EN.gif" border="0" width="40" height="20" alt="Passer en Anglais"/></a></center>
+	</c:otherwise>
+</c:choose>
+
+
+<div class="home">
+	<form name="accueilGestion" method="post" action="" enctype="multipart/form-data">
+		<fieldset>
+			<legend>Accueil Global</legend>
+			<spring:bind path="accueil.accId">
+				<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+			</spring:bind>
+			
+			<spring:bind path="accueil.lang">
+				<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+			</spring:bind>
+			<!-- Texte Haut -->
+		
+			<spring:bind path="accueil.texteHaut">
+				<p>
+					<label for="<c:out value="${status.expression}"/>">Texte du haut</label>
+	
+					<textarea rows="2" id="<c:out value="${status.expression}"/>" cols="70" name="<c:out value="${status.expression}"/>"><c:out value="${status.value}"/></textarea>
+				</p>
+			</spring:bind>
+	
+			<spring:bind path="accueil.partenaires">
+				<p>
+					<label for="<c:out value="${status.expression}"/>">Partenaires</label>
+					<textarea rows="2" id="<c:out value="${status.expression}"/>" cols="70" name="<c:out value="${status.expression}"/>"><c:out value="${status.value}"/></textarea>
+				</p>
+			</spring:bind>
+	
+			<!-- Logo + Titre -->
+				
+			<spring:bind path="accueil.logoFile">
+				<p>
+					<label for="<c:out value="${status.expression}"/>">Logo</label>
+					<input type="file" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="100"/>
+				</p>
+			</spring:bind>
+	
+			<spring:bind path="accueil.logo">
+				<p>
+					<label for="<c:out value="${status.expression}"/>">Logo actuel</label>
+					<img id="<c:out value="${status.expression}"/>" src="<c:out value="${status.value}"/>"/>
+					<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>"/>
+				</p>
+			</spring:bind>
+	
+			<spring:bind path="accueil.revuePresse">
+				<p>
+					<label for="<c:out value="${status.expression}"/>">Revue de presse</label>
+					<textarea rows="2" id="<c:out value="${status.expression}"/>" cols="70" name="<c:out value="${status.expression}"/>"><c:out value="${status.value}"/></textarea>
+				</p>
+			</spring:bind>
+	
+			<spring:bind path="accueil.texteTitre">
+				<p>
+					<label for="<c:out value="${status.expression}"/>">Titre</label>
+					<textarea rows="2" id="<c:out value="${status.expression}"/>" cols="70" name="<c:out value="${status.expression}"/>"><c:out value="${status.value}"/></textarea>
+				</p>
+			</spring:bind>
+			
+			<spring:bind path="accueil.imageTitreFile">
+				<p>
+					<label for="<c:out value="${status.expression}"/>">Image Titre</label>
+					<input type="file" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="100"/>
+				</p>
+			</spring:bind>
+		
+			<spring:bind path="accueil.imageTitre">
+				<p>
+					<label for="<c:out value="${status.expression}"/>">Image actuelle</label>
+					<img id="<c:out value="${status.expression}"/>" src="<c:out value="${status.value}"/>"/>
+					<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>"/>
+				</p>
+			</spring:bind>
+	
+		</fieldset>	
+		
+		<hr/>
+		
+		<c:forEach var="element" items="${accueil.accueilElements}" varStatus="i">
+			<fieldset>
+			<legend>Zone <c:out value="${element.titreElement}"/></legend>
+				<spring:bind path="accueil.accueilElements[${i.index}].accId">
+					<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+				</spring:bind>
+				
+				<spring:bind path="accueil.accueilElements[${i.index}].accId">
+					<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+				</spring:bind>
+				
+				<spring:bind path="accueil.accueilElements[${i.index}].titreElement">
+					<p>
+						<label for="<c:out value="${status.expression}"/>">Titre Element</label>
+						<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="100"/>
+					</p>
+				</spring:bind>
+				
+				<spring:bind path="accueil.accueilElements[${i.index}].imageElementFile">
+					<p>
+						<label for="<c:out value="${status.expression}"/>">Image Element</label>
+						<input type="file" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" size="30" maxlength="100"/>
+					</p>
+				</spring:bind>
+				
+				<spring:bind path="accueil.accueilElements[${i.index}].imageElement">
+					<p>
+						<label for="<c:out value="${status.expression}"/>">Image actuelle</label>
+						<img id="<c:out value="${status.expression}"/>" src="<c:out value="${status.value}"/>"/>
+						<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>"/>
+					</p>
+				</spring:bind>
+				
+				<spring:bind path="accueil.accueilElements[${i.index}].texteElement">
+					<p>
+						<label for="<c:out value="${status.expression}"/>">Texte Element</label>
+						<textarea rows="2" id="<c:out value="${status.expression}"/>" cols="70" name="<c:out value="${status.expression}"/>"><c:out value="${status.value}"/></textarea>
+					</p>
+				</spring:bind>
+				
+				<spring:bind path="accueil.accueilElements[${i.index}].position">
+					<p>
+						<label for="<c:out value="${status.expression}"/>">Position</label>
+						<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="2" maxlength="5"/>
+					</p>
+				</spring:bind>
+			</fieldset>
+			<hr/>				
+		</c:forEach>
+					
+		<input type="submit" value="Valider" />
+	</form>
+</div>

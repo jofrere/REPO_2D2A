@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Evenement" alias="evenement"/>
+	<typeAlias type="fr.the2d2a.bean.ImageEvenement" alias="imageEvenement"/>
+	<!-- <typeAlias type="fr.the2d2a.bean.TypeEvenement" alias="typeEvenement"/> -->
+	
+	<resultMap class="imageEvenement" id="imageEvenement">
+    	<result property="id" column="IMGID"/>
+    	<result property="eveId" column="EVEID" />
+		<result property="pathPhoto" column="PathPhoto" />
+		<!-- <result property="position" column="position" /> -->
+		
+    </resultMap>
+	 
+	<resultMap class="evenement" id="evenement">
+    	<result property="eveId" column="EVEID"/>
+    	<result property="rubId" column="RUBID"/>
+		<result property="dateDebut" column="DATEDEBUT"/>
+		<result property="dateFin" column="DATEFIN"/>
+		<result property="horaire" column="HORAIRE"/>
+		<result property="departement" column="DEPARTEMENT"/>
+		<result property="ville" column="VILLE"/>
+		<result property="lieu" column="LIEU"/>
+		<result property="adresse" column="ADRESSE"/>
+		<result property="designationInfo" column="DESIGNATIONINFO"/>
+		<result property="theme" column="THEME"/>
+		<result property="nbExposant" column="NBEXPOSANT"/>
+		<result property="nbVisiteur" column="NBVISITEUR"/>
+		<result property="tel" column="TEL"/>
+		<result property="fax" column="FAX"/>
+		<result property="webSite" column="SITEINTERNET"/>
+		<result property="email" column="EMAIL"/>
+		<result property="prix" column="PRIX"/>
+		<result property="titre" column="TITRE"/>
+		<result property="type" column="TYPE"/>
+		<result property="visible" column="VISIBLE"/>
+		<result property="images" column="EVEID" select="getImageEvenementByEvenementId"/>
+    </resultMap>
+    
+    <select id="getEvenementByRubriqueId" resultMap="evenement">
+		select *
+		from EVENEMENT_$lang$ EL, EVENEMENT E
+		where E.EVEID = EL.EVEID 
+			and (E.RUBID = #rubId# OR
+				E.RUBID IN (
+					select distinct(R.RUBID)
+					from rubrique R 
+					where R.RUB_RUBID = #rubId#			
+				))
+			and EL.DATEFIN >= #curdate#
+			order by EL.DATEDEBUT asc
+	</select>
+	
+	<select id="getEvenementById" resultMap="evenement">
+		select *
+		from EVENEMENT_$lang$ EL, EVENEMENT E
+		where E.EVEID = EL.EVEID 
+		and E.EVEID = #eveId#
+		order by EL.DATEDEBUT asc
+	</select>
+	
+	<select id="getAllEvenements" resultMap="evenement">
+		select *
+		from EVENEMENT_$lang$ EL, EVENEMENT E
+		where E.EVEID = EL.EVEID 
+		and EL.DATEFIN >= #curdate#
+		order by EL.DATEDEBUT asc
+	</select>
+	
+	<select id="getImageEvenementByEvenementId" resultMap="imageEvenement">
+		select *
+		from IMAGE_EVENEMENT IE
+		where IE.EVEID = #eveId#
+		order by IE.POSITION ASC
+	</select>
+	
+	<select id="getDepartementByRubriqueId" resultClass="java.lang.String">
+		select distinct(DEPARTEMENT)
+		from EVENEMENT_$lang$ EL, EVENEMENT E
+		where E.RUBID = #rubId#
+		and E.EVEID = EL.EVEID
+		order by EL.DEPARTEMENT ASC
+	</select>
+	
+	<!-- 
+	<select id="getAllTypeEvenement" resultClass="typeEvenement">
+		select *
+		from TYPE_EVENEMENT_$lang$
+	</select> -->
+	
+	<select id="getEvenementByRubriqueIdWithFilter" resultMap="evenement">
+		select *
+		from EVENEMENT_$lang$ EL, EVENEMENT E
+		where E.EVEID = EL.EVEID 
+			and (E.RUBID = #rubId# OR
+			E.RUBID IN (
+			select distinct(R.RUBID)
+			from rubrique R 
+			where R.RUB_RUBID = #rubId#
+		))
+		<!-- <isGreaterThan property="type" compareValue="0">
+			and EL.TYP_ID = #type#
+		</isGreaterThan> -->
+		<isNotEmpty property="selectedDate">
+			and DATEDIFF(#selectedDate#, EL.DATEDEBUT) >= 0
+			and DATEDIFF(EL.DATEFIN, #selectedDate#) >= 0
+		</isNotEmpty>
+	</select>
+	
+	
+	<select id="getAllEvenementWithFilter" resultMap="evenement">
+		select *
+		from EVENEMENT_$lang$ EL, EVENEMENT E
+		where E.EVEID = EL.EVEID 
+		<isGreaterThan property="rubrique" compareValue="-1">
+			and E.RUBID = #rubrique#
+		</isGreaterThan>
+		<isNotEmpty property="dateDebut">
+			and DATEDIFF(EL.DATEDEBUT, #dateDebut#) >= 0
+		</isNotEmpty>
+		<isNotEmpty property="dateFin">
+			and DATEDIFF(#dateFin#, EL.DATEFIN) >= 0
+		</isNotEmpty>
+		<isGreaterThan property="visibilite" compareValue="-1">
+			and EL.visible = #visibilite#
+		</isGreaterThan>
+		order by EL.DATEDEBUT asc
+	</select>
+	
+	<insert id="insertEvenement" parameterClass="fr.the2d2a.bean.Evenement">
+		insert into EVENEMENT(eveId, rubId)
+        values (#eveId#, #rubId#)
+        <selectKey keyProperty="eveId">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+	</insert>
+	
+	<insert id="insertEvenementLangue" parameterClass="fr.the2d2a.bean.Evenement">
+        insert into EVENEMENT_$lang$(eveId, dateDebut, dateFin,	horaire, departement, ville, lieu, adresse,	designationInfo, theme,	nbExposant,	nbVisiteur,	tel, fax, SITEINTERNET, email, prix, titre, type, visible)
+        values (#eveId#, #dateDebut#, #dateFin#, #horaire#, #departement#, #ville#, #lieu#, #adresse#, #designationInfo#, #theme#, #nbExposant#, #nbVisiteur#, #tel#, #fax#, #webSite#, #email#, #prix#, #titre#, #type#, #visible#)
+    </insert>
+    
+    <update id="updateEvenement" parameterClass="fr.the2d2a.bean.Evenement">
+    	update EVENEMENT
+    	set rubId = #rubId#
+    	where eveId = #eveId#
+    </update>
+    
+    <update id="updateEvenementLang" parameterClass="fr.the2d2a.bean.Evenement">
+    	update EVENEMENT_$lang$
+    	set dateDebut = #dateDebut#, 
+    		dateFin = #dateFin#,	
+    		horaire = #horaire#, 
+    		departement = #departement#, 
+    		ville = #ville#, 
+    		lieu = #lieu#, 
+    		adresse = #adresse#,	
+    		designationInfo = #designationInfo#, 
+    		theme = #theme#,	
+    		nbExposant = #nbExposant#,	
+    		nbVisiteur = #nbVisiteur#,	
+    		tel = #tel#, 
+    		fax = #fax#, 
+    		SITEINTERNET = #webSite#, 
+    		email = #email#, 
+    		prix = #prix#, 
+    		titre = #titre#, 
+    		type = #type#, 
+    		visible = #visible#
+    	where eveId = #eveId#
+    </update>
+	
+	<insert id="insertImageEvenement" parameterClass="fr.the2d2a.bean.ImageEvenement">
+		insert into IMAGE_EVENEMENT(EVEID, PATHPHOTO)
+        values (#eveId#, #pathPhoto#)
+        <selectKey keyProperty="id">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+	</insert>
+	
+	<delete id="deleteImageEvenementLang">
+    	delete from IMAGE_EVENEMENT_$lang$
+    	where IMGID = #imgId#
+    </delete>
+	
+	<delete id="deleteImageEvenement" parameterClass="fr.the2d2a.bean.Evenement">
+    	delete from IMAGE_EVENEMENT
+    	where EVEID = #eveId#
+    </delete>
+	
+	<delete id="deleteEvenement" parameterClass="fr.the2d2a.bean.Evenement">
+    	delete from EVENEMENT
+    	where EVEID = #eveId#
+    </delete>
+	
+	<delete id="deleteEvenementLang" parameterClass="fr.the2d2a.bean.Evenement">
+    	delete from EVENEMENT_$lang$
+    	where EVEID = #eveId#
+    </delete>
+	
+</sqlMap>

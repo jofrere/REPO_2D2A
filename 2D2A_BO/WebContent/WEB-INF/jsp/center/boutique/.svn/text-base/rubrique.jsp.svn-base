@@ -1,0 +1,119 @@
+<%@ include file="../../head/include.jsp" %>
+
+<c:choose>
+	<c:when test="${lang == 'EN'}">
+		<center><a href="./rubrique.htm" title="Passer en Français"><img src="/${ROOT}/resources/img/global/FR.gif" border="0" width="40" height="20" alt="Passer en Français"/></a></center>
+	</c:when>
+	<c:otherwise>
+		<center><a href="./rubrique.htm?lang=EN" title="Passer en Anglais"><img src="/${ROOT}/resources/img/global/EN.gif" border="0" width="40" height="20" alt="Passer en Anglais"/></a></center>
+	</c:otherwise>
+</c:choose>
+
+<table border="1" width="100%" style="border:1px solid #666666;" id="rubrique">
+	
+	<tr>
+		<th>Nom</th>
+		<th>Visible</th>
+		<th colspan="3">Actions</th>		
+	</tr>
+	
+	<c:forEach var="rubrique" items="${rubriques1}">
+		<tr>
+			
+			<td>
+				
+				<c:forEach begin="1" end="${rubrique.depth}">
+					&nbsp;&nbsp;-&nbsp;&nbsp;
+				</c:forEach>
+				<form style="display: inline;" name="selectRubrique_<c:out value="${rubrique.rubId}"/>" id="selectRubrique_<c:out value="${rubrique.rubId}"/>" action="" method="POST">
+					<input type="hidden" name="rubId" value="<c:out value="${rubrique.rubId}"/>"/>
+					<input type="hidden" name="action" value="4"/>
+					<input type="hidden" name="rootParent" value="-1"/>
+					<input type="hidden" name="lang" value="<c:out value="${lang}"/>"/>
+					<a href="#" id="rubrique" onclick="document.selectRubrique_<c:out value="${rubrique.rubId}"/>.submit();"><c:out value="${rubrique.nom}"/></a>
+				</form>
+				
+			</td>
+			
+			<td width="12%">
+				<c:if test="${rubrique.visible == 0}">NON</c:if>
+				<c:if test="${rubrique.visible == 1}">OUI</c:if>
+			</td>
+						
+			<td width="4%">
+				<form name="addRubrique_<c:out value="${rubrique.rubId}"/>" action="./modifRubrique.htm" method="POST">
+					<input type="hidden" name="rubId" value="<c:out value="${rubrique.rubId}"/>"/>
+					<input type="hidden" name="action" value="1"/>
+					<input type="hidden" name="lang" value="<c:out value="${lang}"/>"/>
+					<a href="#" onclick="document.addRubrique_<c:out value="${rubrique.rubId}"/>.submit();"><img src="/${ROOT}/resources/img/picto_site/add.gif" border="0"/></a>
+				</form>
+			</td>
+			<td width="4%">
+				<form name="modifRubrique_<c:out value="${rubrique.rubId}"/>" action="./modifRubrique.htm" method="POST">
+					<input type="hidden" name="rubId" value="<c:out value="${rubrique.rubId}"/>"/>
+					<input type="hidden" name="action" value="2"/>
+					<input type="hidden" name="lang" value="<c:out value="${lang}"/>"/>
+					<a href="#" onclick="document.modifRubrique_<c:out value="${rubrique.rubId}"/>.submit();"><img src="/${ROOT}/resources/img/picto_site/edit.gif" border="0"/></a>
+				</form>
+			</td>
+			<td width="4%">
+				<form name="delRubrique_<c:out value="${rubrique.rubId}"/>" action="./modifRubrique.htm" method="POST">
+					<input type="hidden" name="rubId" value="<c:out value="${rubrique.rubId}"/>"/>
+					<input type="hidden" name="action" value="3"/>
+					<a href="#" onclick="if (confirm('Etes-vous certain de vouloir supprimer cette rubrique ?\nAttention, ses sous-rubriques seront-elles aussi supprimées.')) eval('document.delRubrique_<c:out value="${rubrique.rubId}"/>.submit();')"><img src="/${ROOT}/resources/img/picto_site/delete.gif" border="0"/></a>
+				</form>
+			</td>
+		</tr>
+	</c:forEach>
+	<c:forEach var="rubrique" items="${rubriques2}">
+		<tr>
+			
+			<td>
+				
+				<c:forEach begin="1" end="${rubrique.depth}">
+					&nbsp;&nbsp;-&nbsp;&nbsp;
+				</c:forEach>
+				<form style="display: inline;" name="selectRubrique_<c:out value="${rubrique.rubId}"/>" id="selectRubrique_<c:out value="${rubrique.rubId}"/>" action="" method="POST">
+					<input type="hidden" name="rubId" value="<c:out value="${rubrique.rubId}"/>"/>
+					<input type="hidden" name="action" value="4"/>
+					<input type="hidden" name="rootParent" value="-2"/>
+					<input type="hidden" name="lang" value="<c:out value="${lang}"/>"/>
+					<a href="#" id="rubrique" onclick="document.selectRubrique_<c:out value="${rubrique.rubId}"/>.submit();"><c:out value="${rubrique.nom}"/></a>
+				</form>
+				
+			</td>
+			
+			<td width="12%">
+				<c:if test="${rubrique.visible == 0}">NON</c:if>
+				<c:if test="${rubrique.visible == 1}">OUI</c:if>
+			</td>
+						
+			<td width="4%">
+				<form name="addRubrique_<c:out value="${rubrique.rubId}"/>" action="./modifRubrique.htm" method="POST">
+					<input type="hidden" name="rubId" value="<c:out value="${rubrique.rubId}"/>"/>
+					<input type="hidden" name="action" value="1"/>
+					<input type="hidden" name="lang" value="<c:out value="${lang}"/>"/>
+					<a href="#" onclick="document.addRubrique_<c:out value="${rubrique.rubId}"/>.submit();"><img src="/${ROOT}/resources/img/picto_site/add.gif" border="0"/></a>
+				</form>
+			</td>
+			<td width="4%">
+				<form name="modifRubrique_<c:out value="${rubrique.rubId}"/>" action="./modifRubrique.htm" method="POST">
+					<input type="hidden" name="rubId" value="<c:out value="${rubrique.rubId}"/>"/>
+					<input type="hidden" name="action" value="2"/>
+					<input type="hidden" name="lang" value="<c:out value="${lang}"/>"/>
+					<a href="#" onclick="document.modifRubrique_<c:out value="${rubrique.rubId}"/>.submit();"><img src="/${ROOT}/resources/img/picto_site/edit.gif" border="0"/></a>
+				</form>
+			</td>
+			<td width="4%">
+				<form name="delRubrique_<c:out value="${rubrique.rubId}"/>" action="./modifRubrique.htm" method="POST">
+					<input type="hidden" name="rubId" value="<c:out value="${rubrique.rubId}"/>"/>
+					<input type="hidden" name="action" value="3"/>
+					<input type="hidden" name="lang" value="<c:out value="${lang}"/>"/>
+					<a href="#" onclick="if (confirm('Etes-vous certain de vouloir supprimer cette rubrique ?\nAttention, ses sous-rubriques seront-elles aussi supprimées.')) eval('document.delRubrique_<c:out value="${rubrique.rubId}"/>.submit();')"><img src="/${ROOT}/resources/img/picto_site/delete.gif" border="0"/></a>
+				</form>
+			</td>
+		</tr>
+	</c:forEach>
+
+</table>
+

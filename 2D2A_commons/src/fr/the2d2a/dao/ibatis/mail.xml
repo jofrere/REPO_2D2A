@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Mail" alias="mail"/>
+	
+	<resultMap class="mail" id="mail">
+		<result property="maiId" column="MAIID"/>
+		<result property="nom" column="NOM"/>
+		<result property="sujet" column="SUJET" nullValue=""/>
+		<result property="contenu" column="CONTENU" nullValue=""/>
+		<result property="expediteur" column="EXPEDITEUR" nullValue=""/>
+		<result property="reponse" column="REPONSE" nullValue=""/>
+		<result property="activation" column="ACTIVATION"/>
+	</resultMap>
+	
+	<typeAlias type="fr.the2d2a.bean.FreeTemplate" alias="free"/>
+	
+	<resultMap class="free" id="free">
+		<result property="id" column="CONID"/>
+		<result property="nom" column="NOM"/>
+		<result property="contenu" column="CONTENU" nullValue=""/>
+	</resultMap>
+
+	<select id="getMail" resultMap="mail">
+        select *
+        from MAIL_$lang$ ML
+        where ML.MAIID = #maiId#        
+    </select>
+    
+    <select id="getAllMails" resultMap="mail">
+        select *
+        from MAIL_$lang$ ML
+    </select>
+    
+    <update id="updateMailById" parameterClass="fr.the2d2a.bean.Mail">
+        update MAIL_$lang$ ML
+        set ML.nom = #nom#,
+        	ML.sujet = #sujet#,
+        	ML.contenu = #contenu#,
+        	ML.expediteur = #expediteur#,
+        	ML.reponse = #reponse#,
+        	ML.activation = #activation#
+        where ML.MAIID = #maiId#        	
+    </update>
+    
+    <select id="getConditionsGenerales" resultClass="java.lang.String">
+    	select contenu
+    	from CONDITIONS_GENERALES_$lang$
+    	where conId = #conId#
+    </select>
+    
+    <select id="getAllFreeTemplates" resultMap="free">
+    	select C.conid, C.nom, CL.contenu
+    	from CONTIDIONS_GENERALES C, CONDITIONS_GENERALES_$lang$ CL
+    	where C.conid = CL.conid
+    </select>
+
+	<update id="updateConditionsGenerales">
+        update CONDITIONS_GENERALES_$lang$
+        set contenu = #contenu#
+        where conId = #conId#
+    </update>
+</sqlMap>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:aop="http://www.springframework.org/schema/aop"
+         xmlns:tx="http://www.springframework.org/schema/tx"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+    
+    <!-- services -->
+    <bean id="adminService" class="fr.the2d2a_bo.service.impl.AdminServiceImpl">
+    	<property name="adminDao" ref="adminDao"/>
+    </bean>
+    
+    <bean id="accueilService" class="fr.the2d2a.service.impl.AccueilServiceImpl">
+    	<property name="dao" ref="accueilDao"/>
+    </bean>
+    
+    <bean id="rubriqueService" class="fr.the2d2a.service.impl.RubriqueServiceImpl">
+    	<property name="dao" ref="rubriqueDao"/>
+    </bean>
+    
+    <bean id="colorisService" class="fr.the2d2a.service.impl.ColorisServiceImpl">
+    	<property name="dao" ref="colorisDao"/>
+    </bean>
+    
+    <bean id="specificiteService" class="fr.the2d2a.service.impl.SpecificiteServiceImpl">
+    	<property name="dao" ref="specificiteDao"/>
+    </bean>
+    
+    <bean id="paysService" class="fr.the2d2a.service.impl.PaysServiceImpl">
+    	<property name="dao" ref="paysDao"/>
+    </bean>
+    
+    <bean id="produitService" class="fr.the2d2a.service.impl.ProduitServiceImpl">
+    	<property name="dao" ref="produitDao"/>
+    </bean>
+    
+    <bean id="designerService" class="fr.the2d2a.service.impl.DesignerServiceImpl">
+    	<property name="dao" ref="designerDao"/>
+    </bean>
+    
+    <bean id="editeurService" class="fr.the2d2a.service.impl.EditeurServiceImpl">
+    	<property name="dao" ref="editeurDao"/>
+    </bean>
+    
+    <bean id="membreService" class="fr.the2d2a.service.impl.MembreServiceImpl">
+    	<property name="dao" ref="membreDao"/>
+    </bean>
+    
+    <bean id="mailService" class="fr.the2d2a.service.impl.MailServiceImpl">
+    	<property name="dao" ref="mailDao"/>
+    	<property name="mailSender" ref="mailSender"/>
+    </bean>
+    
+    <bean id="commandeService" class="fr.the2d2a.service.impl.CommandeServiceImpl">
+    	<property name="dao" ref="commandeDao"/>
+    </bean>
+    
+    <!-- DAO -->
+    
+    <bean id="adminDao" class="fr.the2d2a_bo.dao.impl.AdminDaoImpl">
+    	<property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>
+    
+    <bean id="accueilDao" class="fr.the2d2a.dao.impl.AccueilDaoImpl">    	
+        <property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>
+    
+    <bean id="rubriqueDao" class="fr.the2d2a.dao.impl.RubriqueDaoImpl">
+    	<property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>   
+    
+    <bean id="colorisDao" class="fr.the2d2a.dao.impl.ColorisDaoImpl">
+    	<property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>    
+    
+    <bean id="specificiteDao" class="fr.the2d2a.dao.impl.SpecificiteDaoImpl">
+    	<property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>  
+    
+    <bean id="paysDao" class="fr.the2d2a.dao.impl.PaysDaoImpl">
+    	<property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>
+    
+    <bean id="produitDao" class="fr.the2d2a.dao.impl.ProduitDaoImpl">    	
+        <property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>
+    
+    <bean id="designerDao" class="fr.the2d2a.dao.impl.DesignerDaoImpl">    	
+        <property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>
+    
+    <bean id="editeurDao" class="fr.the2d2a.dao.impl.EditeurDaoImpl">    	
+        <property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>
+    
+    <bean id="membreDao" class="fr.the2d2a.dao.impl.MembreDaoImpl">    	
+        <property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>
+    
+    <bean id="mailDao" class="fr.the2d2a.dao.impl.MailDaoImpl">    	
+        <property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>
+    
+    <bean id="commandeDao" class="fr.the2d2a.dao.impl.CommandeDaoImpl">    	
+        <property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"/>
+    </bean>
+    
+    <!-- CONF DB & Ibatis -->
+    
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.pwd}"/>
+    </bean>
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc.properties</value>
+                <value>classpath:smtp.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+   	<bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient">
+			<bean class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+				<property name="configLocation">
+					<value>/WEB-INF/SqlMapConfig.xml</value>
+				</property>
+				<property name="dataSource">
+					<ref bean="dataSource" />
+				</property>
+			</bean>
+		</property>
+	</bean> 
+	
+	<tx:annotation-driven transaction-manager="txManager"/>
+
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<!-- Mails -->
+	
+  	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+  		<property name="host"><value>${smtp.host}</value></property>
+  		<property name="username"><value>${smtp.username}</value></property>
+  		<property name="password"><value>${smtp.password}</value></property>
+  		<property name="port"><value>${smtp.port}</value></property>
+	</bean>
+  
+</beans>

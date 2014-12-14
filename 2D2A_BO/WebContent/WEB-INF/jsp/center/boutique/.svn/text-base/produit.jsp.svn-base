@@ -1,0 +1,139 @@
+<%@ include file="../../head/include.jsp" %>
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+<fieldset>
+	<legend>Filtre sur les produits</legend>
+	
+	<form name="filtreProduit" action="" method="POST">
+		<p>
+			<spring:bind path="filter.achatDepot">
+				<label class="label" for="<c:out value="${status.expression}"/>">Achat/Dépôt</label>
+				<select style="float: left;" name="<c:out value="${status.expression}"/>" id="<c:out value="${status.expression}"/>">
+					<option value="-1" <c:if test="${status.value == -1}">selected="selected"</c:if>>Tous</option>
+					<option value="0" <c:if test="${status.value == 0}">selected="selected"</c:if>>Achat</option>
+					<option value="1" <c:if test="${status.value == 1}">selected="selected"</c:if>>Dépôt</option>		
+				</select>
+			</spring:bind>
+			
+			<spring:bind path="filter.visuLang">
+				<label class="label"  for="<c:out value="${status.expression}"/>">Visibilité</label>
+				<select style="float: left;" name="<c:out value="${status.expression}"/>" id="<c:out value="${status.expression}"/>">
+					<option value="-1" <c:if test="${status.value == -1}">selected="selected"</c:if>>Pas de filtre</option>
+					<option value="0" <c:if test="${status.value == 0}">selected="selected"</c:if>>Aucune Visibilité</option>
+					<option value="1" <c:if test="${status.value == 1}">selected="selected"</c:if>>Qu'en français</option>		
+					<option value="2" <c:if test="${status.value == 2}">selected="selected"</c:if>>Qu'en anglais</option>
+					<option value="3" <c:if test="${status.value == 3}">selected="selected"</c:if>>Visible partout</option>
+				</select>
+			</spring:bind>
+			
+			<spring:bind path="filter.rubrique">
+				<label class="label"  for="<c:out value="${status.expression}"/>">Rubrique</label>
+				<select style="float: left;" name="<c:out value="${status.expression}"/>" id="<c:out value="${status.expression}"/>">
+					<option value="-1" <c:if test="${status.value == -1}">selected="selected"</c:if>>Pas de filtre</option>
+					<c:forEach var="rubrique" items="${listeRubrique}">
+						<option value="<c:out value="${rubrique.rubId}"/>" <c:if test="${status.value == rubrique.rubId}">selected="selected"</c:if>><c:out value="${rubrique.nom}"/></option>
+					</c:forEach>
+				</select>
+			</spring:bind>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Filtrer" align="right"/>
+			
+		</p>		
+	</form>
+	<form name="filtreProduitByRef" action="" method="POST">
+		<p>
+			<spring:bind path="filter.reference">
+				<label class="label" for="<c:out value="${status.expression}"/>">Référence</label>
+				<input type="text" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" />
+			</spring:bind>
+			
+			<input type="submit" value="Filtrer par référence" align="right"/>
+		</p>
+	</form>
+</fieldset>
+<br />
+<fieldset>
+	<legend>Récapitulatif du stock affiché</legend>
+	<p>
+		<label class="label" for="">Quantité d'articles</label><c:out value="${qtte}"/><br/>
+		<label class="label" for="">Prix d'achat total</label><c:out value="${prixAchat}"/><br/>
+		<label class="label" for="">Prix de vente total</label><c:out value="${prix}"/><br/>
+		<label class="label" for="">Bénéfice</label><c:out value="${benef}"/><br/>
+	</p>
+</fieldset>
+<br />
+<fieldset>
+	<legend>Liste des produits</legend>
+
+	<table>
+		<tr>
+			<th>Id</th>
+			<th>Dénomination</th>
+			<th>Achat/Dépôt</th>
+			<th>Visibilité</th>
+			<th colspan="2">Actions</th>
+		</tr>
+		<c:forEach var="produit" items="${listeProduit}" varStatus="i">
+			
+			<tr>
+				<td width="7%">
+					<span class="label"><c:out value="${produit.proId}"/>.  : </span>
+				</td>
+				<td width="45%" align="center">
+					<c:out value="${produit.nom}"/>
+				</td>
+				<td width="20%" align="center">
+					<c:choose>
+						<c:when test="${produit.achatDepot == 0}">
+							Achat
+						</c:when>
+						<c:otherwise>
+							Dépôt
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td width="20%" align="center">
+					<c:choose>
+						<c:when test="${produit.visuLang == 0}">
+							Nulle part
+						</c:when>
+						<c:when test="${produit.visuLang == 1}">
+							Français
+						</c:when>
+						<c:when test="${produit.visuLang == 2}">
+							Anglais
+						</c:when>
+						<c:when test="${produit.visuLang == 3}">							
+							Partout
+						</c:when>
+					</c:choose>
+				</td>
+				<td width="4%">
+					<form style="display:inline;" name="produit_modif_<c:out value="${i.index}"/>" method="post" action="./modifProduit.htm">
+						<input type="hidden" name="proId" value="<c:out value="${produit.proId}"/>">
+						<input type="hidden" name="action" value="2"/>
+						<a href="#" onclick="document.produit_modif_<c:out value="${i.index}"/>.submit();"><img src="/${ROOT}/resources/img/picto_site/edit.gif" border="0"/></a>
+					</form>
+				</td>
+				<td width="4%">
+					<form style="display:inline;" name="produit_del_<c:out value="${i.index}"/>" method="post" action="./modifProduit.htm">
+						<input type="hidden" name="proId" value="<c:out value="${produit.proId}"/>">
+						<input type="hidden" name="action" value="3"/>
+						<a href="#" onclick="if (confirm('Etes-vous certain de vouloir supprimer ce produit ?')) eval('document.produit_del_<c:out value="${i.index}"/>.submit();')"><img src="/${ROOT}/resources/img/picto_site/delete.gif" border="0"/></a>
+					</form>
+				</td>
+			</tr>
+			
+		</c:forEach>
+	
+	</table>
+</fieldset>
+<br />
+<hr />
+<br />
+<div align="center">
+	<form style="display:inline;" name="produit_add" method="post" action="./modifProduit.htm">
+		<input type="hidden" name="action" value="1"/>
+		<input type="submit" value="Créer un nouveau produit"/>
+	</form>
+</div>

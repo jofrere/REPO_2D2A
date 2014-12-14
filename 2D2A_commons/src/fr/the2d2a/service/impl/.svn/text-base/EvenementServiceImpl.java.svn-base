@@ -1,0 +1,35 @@
+package fr.the2d2a.service.impl;
+
+import java.util.List;
+
+import fr.the2d2a.bean.Evenement;
+import fr.the2d2a.bean.TypeEvenement;
+import fr.the2d2a.beanform.EvenementForm;
+import fr.the2d2a.dao.EvenementDao;
+import fr.the2d2a.exception.TechnicalException;
+import fr.the2d2a.service.EvenementService;
+
+public class EvenementServiceImpl implements EvenementService {
+	
+	private EvenementDao dao;
+
+	public List<Evenement> getEvenementByRubriqueId(String lang, String rubId) throws TechnicalException {
+		return dao.getEvenementByRubriqueId(lang, rubId);
+	}
+	
+	public List<String> getAllDepartement(String lang, String rubId) throws TechnicalException {
+		return dao.getAllDepartement(lang, rubId);
+	}
+	
+	public List<TypeEvenement> getAllType(String lang) throws TechnicalException {
+		return dao.getAllType(lang);
+	}
+	
+	public List<Evenement> getEvenementByRubriqueIdWithFilter(String lang, String rubId, EvenementForm evtForm) throws TechnicalException {
+		return dao.getEvenementByRubriqueIdWithFilter(lang, rubId, evtForm);
+	}
+
+	public void setDao(EvenementDao dao) {
+		this.dao = dao;
+	}
+}

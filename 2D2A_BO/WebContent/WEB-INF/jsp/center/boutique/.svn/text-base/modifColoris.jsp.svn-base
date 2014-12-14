@@ -1,0 +1,60 @@
+<%@ include file="../../head/include.jsp" %>
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+
+<form name="modifColoris" method="post" action="" enctype="multipart/form-data">
+	<fieldset>
+		<c:choose>
+			<c:when test="${coloris.action == 5}">
+				<legend>Modification d'un coloris</legend>
+			</c:when>
+			<c:when test="${coloris.action == 4}">
+				<legend>Création d'un coloris</legend>
+			</c:when>
+		</c:choose>
+		
+		<spring:bind path="coloris.id">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="coloris.action">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		
+		<spring:bind path="coloris.nom_FR">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Nom Français</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="coloris.nom_EN">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Nom Anglais</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+			
+		<spring:bind path="coloris.pictoFile">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Picto</label>
+				<input type="file" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="100"/>
+			</p>
+		</spring:bind>
+
+		<c:if test="${coloris.action == 5}">
+			<spring:bind path="coloris.picto">
+				<p>
+					<label class="label" for="<c:out value="${status.expression}"/>">Picto actuel</label>
+					<img id="<c:out value="${status.expression}"/>" src="/${ROOT}/<c:out value="${status.value}"/>" width="50" height="15" border="0"/>
+					<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>"/>
+				</p>
+			</spring:bind>
+		</c:if>
+		
+		<div align="center">
+			<input type="submit" name="Valider" value="Valider"/>
+		</div>
+	</fieldset>
+</form>

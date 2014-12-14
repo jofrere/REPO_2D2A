@@ -1,0 +1,70 @@
+<%@ include file="../../head/include.jsp" %>
+
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+
+<form name="modifmail" method="post" action="">
+	<fieldset>
+		<legend>Modification d'un mail</legend>
+				
+		<spring:bind path="mail.maiId">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="mail.action">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="1">
+		</spring:bind>
+		
+		<spring:bind path="mail.lang">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="mail.nom">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Nom du mail</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="50" maxlength="100"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="mail.sujet">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Objet du mail</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="50" maxlength="255"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="mail.contenu">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Description</label>
+				<textarea rows="15" cols="100" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>"><c:out value="${status.value}"/></textarea>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="mail.expediteur">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Expéditeur du mail</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="50" maxlength="255"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="mail.reponse">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Adresse de réponse au mail</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="50" maxlength="255"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="mail.activation">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Activation du mail</label>
+				<input type="checkbox" <c:if test="${mail.activation == true}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>"/>
+			</p>
+		</spring:bind>
+		
+		<div align="center">
+			<input type="submit" name="Valider" value="Valider"/>
+		</div>
+		
+		
+	</fieldset>
+</form>

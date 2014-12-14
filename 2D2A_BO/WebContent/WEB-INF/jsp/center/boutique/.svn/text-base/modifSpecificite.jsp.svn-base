@@ -1,0 +1,57 @@
+<%@ include file="../../head/include.jsp" %>
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+
+<form name="modifSpecificite" method="post" action="">
+	<fieldset>
+		<c:choose>
+			<c:when test="${specificite.action == 5}">
+				<legend>Modification d'une spécificité produit</legend>
+			</c:when>
+			<c:when test="${specificite.action == 4}">
+				<legend>Création d'une spécificité produit</legend>
+			</c:when>
+		</c:choose>
+		
+		<spring:bind path="specificite.id">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="specificite.action">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		
+		<spring:bind path="specificite.nom_FR">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Nom Français</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="specificite.nom_EN">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Nom Anglais</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+			
+		<spring:bind path="specificite.abbr_FR">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Abbréviation Française</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="2" maxlength="2"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="specificite.abbr_EN">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Abbréviation Anglaise</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="2" maxlength="2"/>
+			</p>
+		</spring:bind>
+		
+		<div align="center">
+			<input type="submit" name="Valider" value="Valider"/>
+		</div>
+	</fieldset>
+</form>

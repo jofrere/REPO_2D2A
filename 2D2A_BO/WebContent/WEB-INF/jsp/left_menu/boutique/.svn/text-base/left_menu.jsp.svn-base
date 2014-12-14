@@ -1,0 +1,32 @@
+<%@ include file="../../head/include.jsp" %>
+ 
+<a class="link_left_down_menu" href="/${ROOT}/boutique/rubrique.htm">
+	<div class="button_left_down_menu"> 		
+	 	<div align="center">Gestion des rubriques</div>
+	</div>
+</a>
+
+<div class="spacer_left_menu">&nbsp;</div>
+
+<a class="link_left_down_menu" href="/${ROOT}/boutique/produit.htm">
+	<div class="button_left_down_menu"> 		
+	 	<div align="center">Gestion des produits</div>
+	</div>
+</a>
+
+<div class="spacer_left_menu">&nbsp;</div>
+
+<a class="link_left_down_menu" href="/${ROOT}/boutique/coloris.htm">
+	<div class="button_left_down_menu"> 		
+	 	<div align="center">Gestion des coloris</div>
+	</div>
+</a>
+
+<div class="spacer_left_menu">&nbsp;</div>
+
+<a class="link_left_down_menu" href="/${ROOT}/boutique/specificite.htm">
+	<div class="button_left_down_menu"> 		
+	 	<div align="center">Gestion des spécificités</div>
+	</div>
+</a>
+

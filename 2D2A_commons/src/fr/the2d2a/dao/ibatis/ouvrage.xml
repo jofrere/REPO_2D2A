@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Ouvrage" alias="ouvrage"/>
+	<typeAlias type="fr.the2d2a.bean.ImageOuvrage" alias="imageOuvrage"/>
+	
+	<resultMap class="ouvrage" id="ouvrage">
+    	<result property="id" column="OUVID"/>
+    	<result property="type" column="TYPE"/>
+    	<result property="reference" column="REFERENCE"/>
+    	<result property="titre" column="TITRE"/>
+		<result property="auteur" column="AUTEUR"/>
+		<result property="langue" column="LANGUE"/>
+		<result property="annee" column="ANNEE"/>
+		<result property="reliure" column="RELIURE"/>
+		<result property="format" column="FORMAT"/>
+		<result property="nbPages" column="NBPAGES"/>
+		<result property="nbPhotos" column="NBPHOTOS"/>
+		<result property="theme" column="THEME"/>
+		<result property="sommaire" column="SOMMAIRE"/>
+		<result property="information" column="INFORMATION"/>
+		<result property="prix" column="PRIX"/>
+		<result property="images" column="OUVID" select="getImageOuvrageByOuvrageId"/>
+		<result property="quantite" column="QUANTITE"/>
+    </resultMap>
+    
+    <resultMap class="imageOuvrage" id="imageOuvrage">
+    	<result property="id" column="IMGID"/>
+    	<result property="ouvId" column="OUVID" />
+		<result property="pathPhoto" column="PathPhoto" />
+		<!-- <result property="position" column="position" />-->
+    </resultMap>
+    
+    <select id="getAllOuvrages" resultMap="ouvrage">
+		select *
+		from OUVRAGE O, OUVRAGE_$lang$ OL
+		where O.OUVID = OL.OUVID
+		and O.type > -1
+	</select>
+	
+	<select id="getImageOuvrageByOuvrageId" resultMap="imageOuvrage">
+		select *
+		from IMAGE_OUVRAGE IO
+		where IO.OUVID = #id#
+		order by IO.POSITION ASC
+	</select>
+	
+	<select id="getOuvrageById" resultMap="ouvrage">
+		select *
+		from OUVRAGE O, OUVRAGE_$lang$ OL
+		where O.OUVID = OL.OUVID
+		and OL.OUVID = #ouvId#
+		and O.type > -1
+	</select>
+	
+	<update id="destockOuvrage">
+		update OUVRAGE
+		set QUANTITE = #newQuantite#
+		where OUVID = #id#
+	</update>
+	
+	<select id="getAllOuvrageWithFilter" resultMap="ouvrage">
+		select *
+		from ouvrage_$lang$ ol, ouvrage o
+		where ol.ouvid = o.ouvid
+		<isGreaterThan property="type" compareValue="-1">
+			and ol.type = #type#
+		</isGreaterThan> 
+		<isNotEmpty property="reference">
+			and ol.reference like '$reference$%'
+		</isNotEmpty>
+		<isNotEmpty property="titre">
+			and ol.titre like '$titre$%'
+		</isNotEmpty> 
+		<isNotEmpty property="auteur">
+			and ol.auteur like '$auteur$%'
+		</isNotEmpty> 
+			and o.type > -1
+	</select>
+
+	<insert id="insertOuvrage" parameterClass="fr.the2d2a.bean.Ouvrage">
+		insert into Ouvrage(type, quantite)
+        values (#type#, #quantite#)
+        <selectKey keyProperty="id">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+	</insert>
+	
+	<insert id="insertOuvrageLangue" parameterClass="fr.the2d2a.bean.Ouvrage">
+        insert into Ouvrage_$lang$(OUVID, TYPE, REFERENCE, TITRE, AUTEUR, LANGUE, ANNEE, RELIURE, FORMAT, NBPAGES, NBPHOTOS, THEME, SOMMAIRE, INFORMATION, PRIX)
+        values (#id#, #type#, #reference#, #titre#, #auteur#, #langue#, #annee#, #format#, #reliure#, #nbPages#, #nbPhotos#, #theme#, #sommaire#, #information#, #prix#)
+    </insert>
+
+	<update id="updateOuvrage" parameterClass="fr.the2d2a.bean.Ouvrage">
+        update Ouvrage_$lang$ OL, Ouvrage O
+        set O.ouvId = #id#, 
+        	O.TYPE = #type#, 
+        	O.QUANTITE = #quantite#, 
+        	OL.reference = #reference#, 
+        	OL.TYPE = #type#, 
+        	OL.titre = #titre#, 
+        	OL.auteur = #auteur#, 
+        	OL.langue = #langue#,
+        	OL.annee = #annee#,
+        	OL.format = #format#,
+        	OL.reliure = #reliure#,
+        	OL.nbPages = #nbPages#,
+        	OL.nbPhotos = #nbPhotos#,
+        	OL.theme = #theme#,
+        	OL.sommaire = #sommaire#,
+        	OL.information = #information#,
+        	OL.prix = #prix#
+        where OL.OUVID = #id#
+        	and O.OUVID = #id#
+    </update>
+    
+    <update id="deleteOuvrage">
+        update Ouvrage O
+        set O.TYPE = -1
+        where O.OUVID = #id#
+    </update>
+    <!-- 
+    <select id="getImageOuvrageByOuvrageId" resultMap="imageOuvrage" >
+        select *
+        from IMAGE_Ouvrage I
+        where I.OUVID = #id#
+    </select>
+    -->
+    <insert id="insertImageOuvrage" parameterClass="fr.the2d2a.bean.ImageOuvrage">
+		insert into IMAGE_OUVRAGE(OUVID, PATHPHOTO)
+        values (#ouvId#, #pathPhoto#)
+        <selectKey keyProperty="ouvId">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+	</insert>
+	
+	<delete id="deleteImageOuvrage" parameterClass="Ouvrage">
+    	delete from IMAGE_OUVRAGE
+    	where OUVID = #id#
+    </delete>
+    
+</sqlMap>
+

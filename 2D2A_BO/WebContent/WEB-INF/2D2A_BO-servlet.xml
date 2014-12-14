@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<!-- Messages -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename">
+        	<value>messages</value>
+        </property>
+    </bean>
+    
+
+	<!-- Mapping -->
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+	    	<value>
+	    		/login.htm=homeController
+	    		/accueil.htm=modifHomeController
+	    		/gestionGenerale/modifAccueil.htm=modifHomeController
+	    		/gestionGenerale/pays.htm=paysController
+	    		/gestionGenerale/modifPays.htm=modifPaysController
+	    		/boutique/rubrique.htm=rubriqueController
+	    		/boutique/modifRubrique.htm=modifRubriqueController
+	    		/boutique/produit.htm=produitController
+	    		/boutique/modifProduit.htm=modifProduitController
+	    		/boutique/coloris.htm=colorisController
+	    		/boutique/modifColoris.htm=modifColorisController
+	    		/boutique/specificite.htm=specificiteController
+	    		/boutique/modifSpecificite.htm=modifSpecificiteController
+	    		/boutique/ouvrage.htm=ouvrageController
+	    		/boutique/modifOuvrage.htm=modifOuvrageController
+	    		/boutique/evenement.htm=evenementController
+	    		/boutique/modifEvenement.htm=modifEvenementController
+	    		/membre/membre.htm=membreController
+	    		/membre/detailMembre.htm=detailMembreController
+	    		/membre/profession.htm=professionController
+	    		/membre/modifProfession.htm=modifProfessionController
+	    		/commande/commande.htm=commandeController
+	    		/commande/modifCommande.htm=modifCommandeController
+	    		/office/mail.htm=mailController
+	    		/office/modifMail.htm=modifMailController
+	    		/office/freeTemplate.htm=freeTemplateController
+	    		/office/modifFreeTemplate.htm=modifFreeTemplateController
+	    	</value>
+	    </property>
+	</bean>
+
+	<!-- Controllers -->
+    <bean id="homeController" class="fr.the2d2a_bo.web.controller.HomeController">
+    	<property name="commandName" value="adminForm"/>
+        <property name="commandClass" value="fr.the2d2a_bo.beanform.AdminForm"/>
+        <property name="successView" value="./accueil.htm" />
+        <property name="formView" value="index"/>
+        <property name="adminService" ref="adminService"/>
+    </bean>
+    
+    <bean id="modifHomeController" class="fr.the2d2a_bo.web.controller.ModifHomeController">
+    	<property name="commandName" value="accueils"/>
+        <property name="commandClass" value="fr.the2d2a.bean.AccueilMaster"/>
+        <property name="successView" value="home" />
+        <property name="formView" value="home"/>
+        <property name="accueilService" ref="accueilService"/>
+        <property name="messageSource" ref="messageSource"/>
+    </bean>
+    
+    <bean id="rubriqueController" class="fr.the2d2a_bo.web.controller.RubriqueController">
+    	<property name="commandName" value="rubrique"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Rubrique"/>
+    	<property name="successView" value="./modifRubrique.htm" />
+        <property name="formView" value="rubrique"/>
+        <property name="rubriqueService" ref="rubriqueService"/>
+    </bean>
+    
+    <bean id="modifRubriqueController" class="fr.the2d2a_bo.web.controller.ModifRubriqueController">
+    	<property name="commandName" value="rubrique"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Rubrique"/>
+        <property name="successView" value="./rubrique.htm"/>
+    	<property name="formView" value="modifRubrique"/>
+        <property name="rubriqueService" ref="rubriqueService"/>
+        <property name="messageSource" ref="messageSource"/>
+    </bean>
+     
+    <bean id="colorisController" class="fr.the2d2a_bo.web.controller.ColorisController">    	
+        <property name="colorisService" ref="colorisService"/>
+    </bean>
+    
+    <bean id="modifColorisController" class="fr.the2d2a_bo.web.controller.ModifColorisController">
+    	<property name="commandName" value="coloris"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Coloris"/>
+    	<property name="successView" value="./coloris.htm" />
+        <property name="formView" value="modifColoris"/>
+        <property name="colorisService" ref="colorisService"/>
+        <property name="messageSource" ref="messageSource"/>
+    </bean>
+    
+    <bean id="specificiteController" class="fr.the2d2a_bo.web.controller.SpecificiteController">    	
+        <property name="specificiteService" ref="specificiteService"/>
+    </bean>
+    
+    <bean id="modifSpecificiteController" class="fr.the2d2a_bo.web.controller.ModifSpecificiteController">
+    	<property name="commandName" value="specificite"/>
+        <property name="commandClass" value="fr.the2d2a.bean.SpecificiteProduit"/>
+    	<property name="successView" value="./specificite.htm" />
+        <property name="formView" value="modifSpecificite"/>
+        <property name="specificiteService" ref="specificiteService"/>
+    </bean>
+    
+    <bean id="ouvrageController" class="fr.the2d2a_bo.web.controller.OuvrageController">    	
+        <property name="ouvrageService" ref="ouvrageService"/>
+        <property name="commandName" value="filter"/>
+        <property name="commandClass" value="fr.the2d2a_bo.beanform.FilterOuvrageForm"/>
+    	<property name="successView" value="ouvrage" />
+        <property name="formView" value="ouvrage"/>
+    </bean>
+   
+   	<bean id="modifOuvrageController" class="fr.the2d2a_bo.web.controller.ModifOuvrageController">
+    	<property name="commandName" value="ouvrage"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Ouvrage"/>
+    	<property name="successView" value="./ouvrage.htm" />
+        <property name="formView" value="modifOuvrage"/>
+        <property name="ouvrageService" ref="ouvrageService"/>
+        <property name="messageSource" ref="messageSource"/>
+    </bean>
+    
+    <bean id="evenementController" class="fr.the2d2a_bo.web.controller.EvenementController">    	
+        <property name="evenementService" ref="evenementService"/>
+        <property name="rubriqueService" ref="rubriqueService"/>
+        <property name="commandName" value="filter"/>
+        <property name="commandClass" value="fr.the2d2a_bo.beanform.FilterEvenementForm"/>
+    	<property name="successView" value="evenement" />
+        <property name="formView" value="evenement"/>
+    </bean>
+    
+    <bean id="modifEvenementController" class="fr.the2d2a_bo.web.controller.ModifEvenementController">
+    	<property name="commandName" value="evenement"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Evenement"/>
+    	<property name="successView" value="./evenement.htm" />
+        <property name="formView" value="modifEvenement"/>
+        <property name="evenementService" ref="evenementService"/>
+        <property name="rubriqueService" ref="rubriqueService"/>
+        <property name="messageSource" ref="messageSource"/>
+    </bean>
+   
+    <bean id="paysController" class="fr.the2d2a_bo.web.controller.PaysController">    	
+        <property name="paysService" ref="paysService"/>
+    </bean>
+    
+    <bean id="modifPaysController" class="fr.the2d2a_bo.web.controller.ModifPaysController">
+    	<property name="commandName" value="pays"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Pays"/>
+    	<property name="successView" value="./pays.htm" />
+        <property name="formView" value="modifPays"/>
+        <property name="paysService" ref="paysService"/>
+    </bean>
+    
+    <bean id="produitController" class="fr.the2d2a_bo.web.controller.ProduitController">    	
+        <property name="produitService" ref="produitService"/>
+        <property name="rubriqueService" ref="rubriqueService"/>
+        <property name="commandName" value="filter"/>
+        <property name="commandClass" value="fr.the2d2a_bo.beanform.FilterProduitForm"/>
+    	<property name="successView" value="produit" />
+        <property name="formView" value="produit"/>
+    </bean>
+ 
+ 	<bean id="modifProduitController" class="fr.the2d2a_bo.web.controller.ModifProduitController">
+    	<property name="commandName" value="produit"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Produit"/>
+    	<property name="successView" value="./produit.htm" />
+        <property name="formView" value="modifProduit"/>
+        <property name="produitService" ref="produitService"/>
+        <property name="paysService" ref="paysService"/>
+        <property name="rubriqueService" ref="rubriqueService"/>
+        <property name="colorisService" ref="colorisService"/>
+        <property name="specificiteService" ref="specificiteService"/>
+        <property name="designerService" ref="designerService"/>
+        <property name="editeurService" ref="editeurService"/>
+        <property name="messageSource" ref="messageSource"/>
+        <property name="validator">
+            <bean class="fr.the2d2a_bo.web.validator.ProduitValidator"/>
+        </property>
+    </bean>
+
+    <bean id="membreController" class="fr.the2d2a_bo.web.controller.MembreController">   
+    	<property name="commandName" value="filter"/>
+        <property name="commandClass" value="fr.the2d2a_bo.beanform.FilterMembreForm"/>
+    	<property name="successView" value="membre" />
+        <property name="formView" value="membre"/> 	
+        <property name="membreService" ref="membreService"/>
+    </bean>
+    
+    <bean id="detailMembreController" class="fr.the2d2a_bo.web.controller.DetailMembreController">   
+        <property name="membreService" ref="membreService"/>
+    </bean>
+    
+    <bean id="professionController" class="fr.the2d2a_bo.web.controller.ProfessionController">    	
+         <property name="membreService" ref="membreService"/>
+    </bean>
+    
+    <bean id="modifProfessionController" class="fr.the2d2a_bo.web.controller.ModifProfessionController">
+    	<property name="commandName" value="profession"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Profession"/>
+    	<property name="successView" value="./profession.htm" />
+        <property name="formView" value="modifProfession"/>
+        <property name="membreService" ref="membreService"/>
+    </bean>
+    
+    <bean id="commandeController" class="fr.the2d2a_bo.web.controller.CommandeController">  
+    	<property name="commandeService" ref="commandeService"/>
+    	<property name="commandName" value="filterCommande"/>
+        <property name="commandClass" value="fr.the2d2a_bo.beanform.FilterCommandeForm"/>
+        <property name="successView" value="commande" />
+        <property name="formView" value="commande"/>
+    </bean>
+    
+    <bean id="modifCommandeController" class="fr.the2d2a_bo.web.controller.ModifCommandeController">
+    	<property name="commandName" value="commande"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Commande"/>
+    	<property name="successView" value="./commande.htm" />
+        <property name="formView" value="modifCommande"/>
+        <property name="commandeService" ref="commandeService"/>        
+    </bean>
+    
+    <bean id="mailController" class="fr.the2d2a_bo.web.controller.MailController">    	
+        <property name="mailService" ref="mailService"/>
+    </bean>
+    
+    <bean id="modifMailController" class="fr.the2d2a_bo.web.controller.ModifMailController">
+    	<property name="commandName" value="mail"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Mail"/>
+        <property name="successView" value="./mail.htm"/>
+    	<property name="formView" value="modifMail"/>
+        <property name="mailService" ref="mailService"/>
+    </bean>
+    
+    <bean id="freeTemplateController" class="fr.the2d2a_bo.web.controller.FreeTemplateController">
+        <property name="mailService" ref="mailService"/>
+    </bean>
+    
+    <bean id="modifFreeTemplateController" class="fr.the2d2a_bo.web.controller.ModifFreeTemplateController">
+    	<property name="commandName" value="free"/>
+        <property name="commandClass" value="fr.the2d2a.bean.FreeTemplate"/>
+        <property name="successView" value="./freeTemplate.htm"/>
+    	<property name="formView" value="modifFreeTemplate"/>
+        <property name="mailService" ref="mailService"/>
+    </bean>
+    
+    <!-- For Uploaded Files -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+    
+	<!-- Views -->
+  	<bean id="viewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename" value="views"/>
+	</bean>
+  
+</beans>

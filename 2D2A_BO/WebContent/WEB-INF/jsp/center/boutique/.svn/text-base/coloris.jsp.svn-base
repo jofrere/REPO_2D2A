@@ -1,0 +1,41 @@
+<%@ include file="../../head/include.jsp" %>
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+
+<fieldset>
+	<legend>Gestion des coloris</legend>
+
+	<c:forEach var="coloris" items="${listeColoris}" varStatus="i">
+						
+		<span class="label">Nom FR : </span><input type="text" value="<c:out value="${coloris.nom_FR}"/>" readonly="readonly"/>
+		
+		&nbsp;&nbsp;&nbsp;<span class="label">Nom EN : </span><input type="text" value="<c:out value="${coloris.nom_EN}"/>" readonly="readonly"/>
+		
+		&nbsp;&nbsp;&nbsp;<span class="label">Picto : </span><img id="picto" src="/${ROOT}/<c:out value="${coloris.picto}"/>" width="50" height="15" border="0"/>				
+			
+		<form style="display:inline;" name="coloris_modif_<c:out value="${i.index}"/>" method="post" action="./modifColoris.htm">
+			<input type="hidden" name="id" value="<c:out value="${coloris.id}"/>">
+			<input type="hidden" name="nom_FR" value="<c:out value="${coloris.nom_FR}"/>">
+			<input type="hidden" name="nom_EN" value="<c:out value="${coloris.nom_EN}"/>">
+			<input type="hidden" name="picto" value="<c:out value="${coloris.picto}"/>">
+			<input type="hidden" name="action" value="2"/>
+			<a href="#" onclick="document.coloris_modif_<c:out value="${i.index}"/>.submit();"><img src="/${ROOT}/resources/img/picto_site/edit.gif" border="0"/></a>
+		</form>
+			
+		<form style="display:inline;" name="coloris_del_<c:out value="${i.index}"/>" method="post" action="./modifColoris.htm">
+			<input type="hidden" name="id" value="<c:out value="${coloris.id}"/>">
+			<input type="hidden" name="action" value="3"/>
+			<a href="#" onclick="if (confirm('Etes-vous certain de vouloir supprimer ce coloris ?')) eval('document.coloris_del_<c:out value="${i.index}"/>.submit();')"><img src="/${ROOT}/resources/img/picto_site/delete.gif" border="0"/></a>
+		</form>
+		<br />
+	</c:forEach>
+</fieldset>
+<br />
+<hr />
+<br />
+<div align="center">
+	<form style="display:inline;" name="coloris_add" method="post" action="./modifColoris.htm">
+		<input type="hidden" name="action" value="1"/>
+		<input type="submit" value="Créer un nouveau coloris"/>
+	</form>
+</div>

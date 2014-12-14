@@ -1,0 +1,312 @@
+<%@ include file="../../head/include.jsp" %>
+
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+
+<script src="/${ROOT}/resources/js/addImage.js"></script>
+
+<c:choose>
+	<c:when test="${lang == 'EN'}">
+		<center><a href="./modifProduit.htm" title="Passer en Français"><img src="/${ROOT}/resources/img/global/FR.gif" border="0" width="40" height="20" alt="Passer en Français"/></a></center>
+	</c:when>
+	<c:otherwise>
+		<center><a href="./modifProduit.htm?lang=EN" title="Passer en Anglais"><img src="/${ROOT}/resources/img/global/EN.gif" border="0" width="40" height="20" alt="Passer en Anglais"/></a></center>
+	</c:otherwise>
+</c:choose>
+
+<form name="modifProduit" method="post" action="" enctype="multipart/form-data">
+	<fieldset>
+		<c:choose>
+			<c:when test="${produit.action == 5}">
+				<legend>Modification d'un produit</legend>
+			</c:when>
+			<c:when test="${produit.action == 4}">
+				<legend>Création d'un produit</legend>
+			</c:when>
+		</c:choose>
+		
+		<spring:bind path="produit.id">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="produit.action">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="produit.achatDepot">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Achat/Dépot</label>
+				<input type="radio" <c:if test="${status.value == 0}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="0"/>Achat 2D2A
+				<input type="radio" <c:if test="${status.value == 1}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="1"/>Dépôt 2D2A
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.visuLang">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Visibilité</label>
+				<input type="radio" <c:if test="${status.value == 0}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="0"/>Aucune visibilité
+				<input type="radio" <c:if test="${status.value == 1}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="1"/>Site Français
+				<input type="radio" <c:if test="${status.value == 2}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="2"/>Site Anglais
+				<input type="radio" <c:if test="${status.value == 3}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="3"/>Partout
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.dateEntreeStr">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Date d'entrée</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="6" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.rubriquesId">
+			<p>
+				<label class="label" for="">Rubriques</label>
+				<c:forEach var="rubrique" items="${listeRubrique}" varStatus="i">
+					<c:if test="${not i.first}">
+						<label class="label" for="">&nbsp;</label>
+					</c:if>
+					<c:forEach begin="1" end="${rubrique.depth}">
+					&nbsp;&nbsp;-&nbsp;&nbsp;
+					</c:forEach>
+					<input type="checkbox" <c:forEach var="rub" items="${produit.rubriques}"><c:if test="${rub.rubId == rubrique.rubId}">checked="checked"</c:if></c:forEach> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${rubrique.rubId}"/>"/><c:out value="${rubrique.nom}"/><br />
+				</c:forEach>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.specId">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Ajouter des précisions</label>
+				<c:forEach var="spec" items="${listeSpec}">
+					<input type="checkbox" <c:forEach var="spe" items="${produit.specs}"><c:if test="${spe.id == spec.id}">checked="checked"</c:if></c:forEach> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${spec.id}"/>"/><c:out value="${spec.nom}"/>
+				</c:forEach>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.quantite">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Quantité</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="6" maxlength="3"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.dispoLoc">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Location</label>
+				<input type="radio" <c:if test="${status.value == 0}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="0"/>Non
+				<input type="radio" <c:if test="${status.value == 1}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="1"/>Oui
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.reference">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Référence</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		TODO : Gestion auto des references
+		
+		<spring:bind path="produit.denomination">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Nom de l'aticle</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.prix">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Prix</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.prixAchat">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Prix d'achat</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.description">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Description</label>
+				<textarea rows="2" cols="70" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>"><c:out value="${status.value}"/></textarea>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.materiaux">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Matériaux</label>
+				<textarea rows="2" cols="70" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>"><c:out value="${status.value}"/></textarea>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.poids">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Poids</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.hauteur">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Hauteur</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.profondeur">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Prodondeur</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.largeur">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Largeur</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.diametre">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Diamètre</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.colorisId">
+			<p>
+				<c:forEach var="coloris" items="${listeColoris}">
+					<input type="checkbox" <c:forEach var="col" items="${produit.coloris}"><c:if test="${col.id == coloris.id}">checked="checked"</c:if></c:forEach> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${coloris.id}"/>"/><c:out value="${coloris.nom}"/><img src="/${ROOT}/<c:out value="${coloris.picto}"/>" width="50" height="15" border="0"/>
+				</c:forEach>
+			</p>
+		</spring:bind>
+		
+		TODO : menu coloris
+		
+		<spring:bind path="produit.descAnnee">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Année</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		TODO : menu annee
+		
+		<spring:bind path="produit.paysId">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Pays</label>
+				<select id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>">
+					<c:forEach var="pays" items="${listePays}">
+						<option value="<c:out value="${pays.id}"/>" <c:if test="${status.value == pays.id}">selected="selected"</c:if>><c:out value="${pays.nom}"/></option>
+					</c:forEach>
+				</select>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.desId">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Designer</label>
+				<select id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>">
+					<c:forEach var="designer" items="${listeDesigner}">
+						<option value="<c:out value="${designer.id}"/>" <c:if test="${status.value == designer.id}">selected="selected"</c:if>><c:out value="${designer.prenom}"/>&nbsp;<c:out value="${designer.nom}"/></option>
+					</c:forEach>
+				</select>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.ediId">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Editeur</label>
+				<select id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>">
+					<c:forEach var="editeur" items="${listeEditeur}">
+						<option value="<c:out value="${editeur.id}"/>" <c:if test="${status.value == editeur.id}">selected="selected"</c:if>><c:out value="${editeur.prenom}"/>&nbsp;<c:out value="${editeur.nom}"/></option>
+					</c:forEach>
+				</select>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.signeApp">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Signes apparents</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.information">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Informations</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="produit.keyword">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Référencement</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="200"/>
+			</p>
+		</spring:bind>
+		
+		<span id="modifProduit">
+		
+			<c:forEach var="image" items="${produit.images}" varStatus="i">
+				<p style="clear: left;">
+					<spring:bind path="produit.images[${i.index}].photo">
+						<label class="label" for="<c:out value="${status.expression}"/>">Image actuelle</label>
+						<img style="float: left;" id="<c:out value="${status.expression}"/>" src="/${ROOT}/<c:out value="${status.value}"/>"/>
+						<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>"/>
+					</spring:bind>
+					<spring:bind path="produit.images[${i.index}].photoFile">
+						<label class="label" for="<c:out value="${status.expression}"/>">Modifier : </label>
+						<input style="float: left;" type="file" id="<c:out value="${i.index}"/>" name="<c:out value="${status.expression}"/>" size="30" maxlength="100" />
+						<img src="/${ROOT}/resources/img/picto_site/delete.gif" onclick="deleteField(event);"/>
+					</spring:bind>
+				</p>
+				<br />
+				<br />
+				<c:if test="${i.last}">
+					<c:set var="last" value="${i.index}" scope="page"/>
+				</c:if>
+			</c:forEach>
+			
+			<c:choose>
+				<c:when test="${empty last}">
+					<c:set var="last" value="0" scope="page"/>
+				</c:when>
+				<c:otherwise>
+					<c:set var="last" value="${last+1}" scope="page"/>
+				</c:otherwise>
+			</c:choose>
+						
+			<p style="clear: left;">
+				<label class="label" for="images[${last}].photoFile">Ajouter : </label>
+				<input style="float: left;" type="file" id="<c:out value="${last}"/>" name="images[${last}].photoFile" size="30" maxlength="100" />
+			</p>
+		</span>
+		<br />
+		
+		<spring:bind path="produit.prodsAssocId">
+			<p>
+				<label class="label" for="">Produits associés</label>
+				<c:forEach var="prod" items="${listeProduit}">
+					<c:if test="${prod.id != produit.id}">
+						<input type="checkbox" <c:forEach var="p" items="${produit.produitsAssociated}"><c:if test="${p.id == prod.id}">checked="checked"</c:if></c:forEach> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${prod.id}"/>"/><c:out value="${prod.denomination}"/>
+					</c:if>
+				</c:forEach>
+			</p>
+		</spring:bind>
+	
+		<div align="center">
+			<input type="submit" name="Valider" value="Valider"/>
+		</div>
+		
+	</fieldset>
+</form>
+
+<script>
+	<c:forEach var="i" begin="0" end="${last}">
+		initForm(<c:out value="${i}"/>);
+	</c:forEach>
+</script>

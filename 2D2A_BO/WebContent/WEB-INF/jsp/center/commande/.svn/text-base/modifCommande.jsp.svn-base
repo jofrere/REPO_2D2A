@@ -1,0 +1,118 @@
+<%@ include file="../../head/include.jsp" %>
+
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+
+<form name="modifCommande" method="post" action="">
+	<fieldset>
+		<c:choose>
+			<c:when test="${commande.action == 5}">
+				<legend>Modification d'une commande</legend>
+			</c:when>
+			<c:when test="${commande.action == 4}">
+				<legend>Création d'une commande</legend>
+			</c:when>
+		</c:choose>
+		
+		<spring:bind path="commande.id">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="commande.action">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<p>
+			<span class="label2">Date</span>
+			<span class="input2"><c:out value="${commande.dateNormale}"/></span>
+		</p>
+		
+		<spring:bind path="commande.etat">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Etat</label>
+				<input type="radio" <c:if test="${status.value == 0}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="0"/>Commandé
+				<input type="radio" <c:if test="${status.value == 1}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="1"/>Livré
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="commande.prix">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Prix total(en euros)</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" readonly="readonly"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="commande.livraisonWeek">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Jour de livraison</label>
+				<input type="radio" <c:if test="${status.value == 1}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="1"/>Semaine
+				<input type="radio" <c:if test="${status.value == 2}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="2"/>Weekend
+				<input type="radio" <c:if test="${status.value == 3}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="3"/>Showroom
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="commande.livraisonHeure">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Heure de livraison</label>
+				<input type="radio" <c:if test="${status.value == 1}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="1"/>Journée
+				<input type="radio" <c:if test="${status.value == 2}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="2"/>Matin
+				<input type="radio" <c:if test="${status.value == 3}">checked="checked"</c:if> id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="3"/>Après-midi
+			</p>
+		</spring:bind>
+		
+		
+		<p>
+			<span class="label2">Membre</span>
+			<span class="input2"><c:out value="${commande.membre.prenom}"/> <c:out value="${commande.membre.nom}"/></span>
+		</p>
+		
+		<p>
+	    	<label class="label2">Adresse de Livraison</label>	    	
+	    	<textarea rows="8" cols="50" readonly="readonly"><c:if test="${not empty commande.adresseLivraison.societe}"><c:out value="${commande.adresseLivraison.societe}"/></c:if>
+<c:out value="${commande.adresseLivraison.prenom}"/> <c:out value="${commande.adresseLivraison.nom}"/>
+<c:out value="${commande.adresseLivraison.adresse}"/>
+<c:if test="${not empty commande.adresseLivraison.complementAdresse}"><c:out value="${commande.adresseLivraison.complementAdresse}"/></c:if>
+<c:out value="${commande.adresseLivraison.codePostal}"/>&nbsp;<c:out value="${commande.adresseLivraison.ville}"/>
+<c:if test="${not empty commande.adresseLivraison.pays.nom}"><c:out value="${commande.adresseLivraison.pays.nom}"/></c:if>
+<c:if test="${not empty commande.adresseLivraison.telPrive}"><c:out value="${commande.adresseLivraison.telPrive}"/></c:if>
+	    	</textarea>
+	    </p>
+	   
+	    <p>
+	    	<label class="label" for="adresseFactu">Adresse de facturation</label>	    	
+	    	<textarea rows="8" cols="50" readonly="readonly"><c:if test="${not empty commande.adresseFactu.societe}"><c:out value="${commande.adresseFactu.societe}"/></c:if>
+<c:out value="${commande.adresseFactu.prenom}"/> <c:out value="${commande.adresseFactu.nom}"/>
+<c:out value="${commande.adresseFactu.adresse}"/>
+<c:if test="${not empty commande.adresseFactu.complementAdresse}"><c:out value="${commande.adresseFactu.complementAdresse}"/></c:if>
+<c:out value="${commande.adresseFactu.codePostal}"/>&nbsp;<c:out value="${commande.adresseFactu.ville}"/>
+<c:if test="${not empty commande.adresseFactu.pays.nom}"><c:out value="${commande.adresseFactu.pays.nom}"/></c:if>
+<c:if test="${not empty commande.adresseFactu.telPrive}"><c:out value="${commande.adresseFactu.telPrive}"/></c:if>
+	    	</textarea>
+	    </p>
+	    	    
+	    <p>
+	    	<label class="label" for="produit">Liste des produits</label>
+	    	<table border="1" width="70%">
+				<tr>
+					<th width="10%">Quantité</th>
+					<th width="60%">Nom</th>
+					<th width="30%">Prix</th>
+				</tr>   	
+		    	<c:forEach var="produit" items="${commande.produits}">
+		    		<tr>
+		    			<td><c:out value="${produit.quantite}"/></td>
+		    			<td><c:out value="${produit.produit.nom}"/></td>
+		    			<td><c:out value="${produit.prixUnitaire}"/>&nbsp;&euro;</td>
+		    		</tr>	    		
+		    	</c:forEach>
+	    	</table>
+	    </p>
+	    
+	    <div align="center">
+			<input type="button" name="PDF" value="Générer bon de livraison" onclick="window.open('/${ROOT}/huhu.pdf');"/>&nbsp;&nbsp;&nbsp;
+			<input type="submit" name="Valider" value="Valider"/>&nbsp;&nbsp;&nbsp;
+			<input type="button" name="PDF" value="Générer facture" onclick="window.open('/${ROOT}/huhu.pdf');"/>
+		</div>
+	</fieldset>
+</form>
+

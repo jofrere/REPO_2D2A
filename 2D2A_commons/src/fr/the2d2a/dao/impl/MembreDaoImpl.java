@@ -1,0 +1,337 @@
+package fr.the2d2a.dao.impl;
+
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.log4j.Logger;
+import org.springframework.dao.DataAccessException;
+import org.springframework.orm.ibatis.SqlMapClientTemplate;
+import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
+
+import fr.the2d2a.bean.Adresse;
+import fr.the2d2a.bean.Civilite;
+import fr.the2d2a.bean.Filleul;
+import fr.the2d2a.bean.Membre;
+import fr.the2d2a.bean.Pays;
+import fr.the2d2a.bean.Profession;
+import fr.the2d2a.dao.MembreDao;
+import fr.the2d2a.web.constants.WebConstants;
+import fr.the2d2a_bo.beanform.FilterMembreForm;
+
+public class MembreDaoImpl extends SqlMapClientDaoSupport implements MembreDao {
+
+	protected final Logger logger = Logger.getLogger(MembreDaoImpl.class);
+
+	@SuppressWarnings("unchecked")
+	public List<Civilite> getAllCivilite(String lang) throws DataAccessException {
+		logger.info("Getting all civilites");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("lang", lang);
+        List<Civilite> liste = (List<Civilite>)template.queryForList("getAllCivilite", map);
+        return liste;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Profession> getAllProfession(String lang) throws DataAccessException {
+		logger.info("Getting all profession");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("lang", lang);
+        List<Profession> liste = (List<Profession>)template.queryForList("getAllProfession", map);
+        return liste;
+	}
+	
+	@Transactional
+	@SuppressWarnings("unchecked")
+	public List<Profession> getAllProfession() throws DataAccessException {
+        logger.info("Getting all profession");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("lang", "FR");
+        List<Profession> liste = (List<Profession>)template.queryForList("getAllProfession", map);
+        for (Profession prof : liste) {
+        	prof.setTitre_FR(prof.getTitre());
+        	map.put("lang", "EN");
+        	map.put("profId", prof.getProfId());
+        	prof.setTitre_EN((String)template.queryForObject("getNomProfessionById", map));
+        }
+        return liste;
+    }
+	
+	@Transactional
+	public void updateProfession(Profession profession) throws DataAccessException {
+		logger.debug("Updating Profession d'id: " + profession.getProfId());
+		SqlMapClientTemplate template = getSqlMapClientTemplate();
+		profession.setLang("FR");
+		profession.setTitre(profession.getTitre_FR());
+		int nbRows = template.update("updateProfession", profession);
+		logger.debug(nbRows + " updated en FR");
+		profession.setLang("EN");
+		profession.setTitre(profession.getTitre_EN());
+		nbRows = template.update("updateProfession", profession);
+		logger.debug(nbRows + " updated en EN");
+	}
+	
+	@Transactional
+	public void insertProfession(Profession profession) throws DataAccessException {
+		logger.debug("Insertion d'une Profession ");
+		SqlMapClientTemplate template = getSqlMapClientTemplate();
+		int id = (Integer)template.insert("insertProfession", profession);
+		logger.debug("Visu de l'id " + id);
+		profession.setProfId(id);
+		profession.setLang("FR");
+		profession.setTitre(profession.getTitre_FR());
+		template.insert("insertProfessionLangue", profession);
+		profession.setLang("EN");
+		profession.setTitre(profession.getTitre_EN());
+		template.insert("insertProfessionLangue", profession);
+	}
+	
+	@Transactional
+	public void deleteProfession(int id) throws DataAccessException {
+		logger.debug("Suppression d'une Profession " + id);
+		SqlMapClientTemplate template = getSqlMapClientTemplate();
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("profId", id);		
+		int nbRows = template.delete("deleteProfessionById", map);
+		logger.debug(nbRows + " deleted pour la profession");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Pays> getAllPays(String lang) throws DataAccessException {
+		logger.info("Getting all pays");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("lang", lang);
+        List<Pays> liste = (List<Pays>)template.queryForList("getAllPays", map);
+        return liste;
+	}
+
+	@Transactional
+	public int insertMembre(Membre membre) throws DataAccessException {
+		logger.info("insert member");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        logger.debug(ToStringBuilder.reflectionToString(membre));
+        int membreId = (Integer)template.insert("insertMembre", membre);		
+		membre.setMemId(membreId);
+        
+        Adresse adresse = membre.getAdresses().get(0);
+        adresse.setMemId(membreId);
+    	adresse.setCivId(membre.getCivId());
+    	adresse.setNom(membre.getNom());
+    	adresse.setPrenom(membre.getPrenom());
+    	adresse.setNomAdresse(WebConstants.MAIN_ADRESSE);
+    	int adresseId = (Integer)template.insert("insertAdresse", adresse);
+    	adresse.setAdrId(adresseId);
+        
+//        this.insertFilleuls(membre);
+        
+		return membreId;
+	}
+	
+	public void insertAdresse(Adresse adresse) throws DataAccessException {
+		logger.info("insert adresse : " + ToStringBuilder.reflectionToString(adresse, ToStringStyle.MULTI_LINE_STYLE));
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        template.insert("insertAdresse", adresse);
+	}
+
+	public int activateMember(String id, BigInteger dateInscription) throws DataAccessException {
+		logger.info("activate member");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memId", id);
+		map.put("dateInscription", dateInscription);
+		int nbUpdate = template.update("activateMember", map);
+		logger.debug("Nombre de membre activé : " + nbUpdate);
+		return nbUpdate;
+	}
+
+	public Membre authenticateMember(String login, String password, String lang) throws DataAccessException {
+		logger.info("authenticatemember");
+		SqlMapClientTemplate template = getSqlMapClientTemplate();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("login", login);
+		map.put("password", password);
+		Membre membre = (Membre)template.queryForObject("authenticateMember", map);
+		if (membre == null)
+			return null;
+		map.clear();
+		map.put("lang", lang);
+		map.put("memId", membre.getMemId());
+		Civilite civ = (Civilite)template.queryForObject("getCiviliteByMembreId", map);
+		membre.setCivilite(civ);
+		Profession prof = (Profession)template.queryForObject("getProfessionByMembreId", map);
+		membre.setProfession(prof);
+		for (Adresse adresse : membre.getAdresses()) {
+			map.clear();
+			map.put("lang", lang);
+			map.put("payId", adresse.getPayId());
+			Pays pays = (Pays)template.queryForObject("getPaysById", map);
+			adresse.setPays(pays);
+		}
+//		List<Filleul> filleuls = (List<Filleul>)template.queryForList("getAllFilleulsByMembreId", map);
+//		membre.setFilleuls(filleuls);
+		return membre;
+	}
+	
+	public Civilite getCiviliteByMembreId(String lang, String id) throws DataAccessException {
+		logger.info("getCiviliteByMembreId");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("lang", lang);
+        map.put("memId", id);
+        Civilite civ = (Civilite)template.queryForObject("getCiviliteByMembreId", map);
+        return civ;
+	}
+	
+	public Membre getMembreById(String lang, String id) throws DataAccessException {
+		logger.info("getMembreById");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("lang", lang);
+        map.put("memId", id);
+        Membre membre = (Membre)template.queryForObject("getMembreById", map);
+        Civilite civ = (Civilite)template.queryForObject("getCiviliteByMembreId", map);
+		membre.setCivilite(civ);
+		Profession prof = (Profession)template.queryForObject("getProfessionByMembreId", map);
+		membre.setProfession(prof);
+        return membre;
+	}
+	
+	public Membre getMembreByIdBO(String lang, String id) throws DataAccessException {
+		logger.info("getMembreById");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("lang", lang);
+        map.put("memId", id);
+        Membre membre = (Membre)template.queryForObject("getMembreByIdBO", map);
+        Civilite civ = (Civilite)template.queryForObject("getCiviliteByMembreId", map);
+		membre.setCivilite(civ);
+		Profession prof = (Profession)template.queryForObject("getProfessionByMembreId", map);
+		membre.setProfession(prof);
+        return membre;
+	}
+	
+	public Adresse getAdresseById(String id) throws DataAccessException {
+		logger.info("getAdresseById");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>();        
+        map.put("adrId", id);
+        Adresse adresse = (Adresse)template.queryForObject("getAdresseById", map);
+        return adresse;
+	}
+	
+	public Membre getMembreByLogin(String lang, String login) throws DataAccessException {
+		logger.info("getMembreByLogin");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("lang", lang);
+        map.put("login", login);
+        Membre membre = (Membre)template.queryForObject("getMembreByLogin", map);
+        if (membre == null)
+        	return null;
+        map.remove("login");
+        map.put("memId", membre.getMemId());
+        Civilite civ = (Civilite)template.queryForObject("getCiviliteByMembreId", map);
+		membre.setCivilite(civ);
+		Profession prof = (Profession)template.queryForObject("getProfessionByMembreId", map);
+		membre.setProfession(prof);
+        return membre;
+	}
+	
+	@Transactional
+	public void updateMembre(Membre membre) throws DataAccessException {
+		logger.info("update member");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        int nbRow = template.update("updateMembreById", membre);		
+		logger.debug("Nb row updated : " + nbRow);
+        
+		Adresse adresse = membre.getAdresses().get(0);
+        adresse.setCivId(membre.getCivId());
+    	adresse.setNom(membre.getNom());
+    	adresse.setPrenom(membre.getPrenom());
+		nbRow = template.update("updateAdresseById", adresse);		
+		logger.debug("Nb row updated pour adresse : " + nbRow);
+		
+//		this.deleteFilleulsByMembre(membre);
+//        this.insertFilleuls(membre);
+	}
+	
+	public void updateAdresse(Adresse adresse) throws DataAccessException {
+		logger.info("update adresse");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();        
+		int nbRow = template.update("updateAdresseById", adresse);		
+		logger.debug("Nb row updated pour adresse : " + nbRow);		
+	}
+	
+	@SuppressWarnings("unused")
+	private void insertFilleuls(Membre membre) {
+		SqlMapClientTemplate template = getSqlMapClientTemplate();
+		List<Filleul> listeFilleuls = membre.getFilleuls();
+        for (Filleul filleul : listeFilleuls) {
+        	if (!StringUtils.isEmpty(filleul.getMail())) {
+	        	filleul.setMembreId(membre.getMemId());
+	        	filleul.setEtat(0);
+	        	int filleulId = (Integer)template.insert("insertFilleul", filleul);
+	        	filleul.setId(filleulId);
+        	} 
+        }
+	}
+	
+	@SuppressWarnings("unused")
+	private void deleteFilleulsByMembre(Membre membre) {
+		SqlMapClientTemplate template = getSqlMapClientTemplate();
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("memId", membre.getMemId());
+		int nbRow = template.delete("deleteAllFilleulsByMembreId", map);
+		logger.debug("Nb row deleted : " + nbRow);
+	}
+	
+	public void deleteAdresse(String id) throws DataAccessException {
+		SqlMapClientTemplate template = getSqlMapClientTemplate();
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("adrId", id);
+		int nbRow = template.delete("deleteAdresseById", map);
+		logger.debug("Nb row deleted : " + nbRow);
+	}
+	
+	public void desinscription(String id) throws DataAccessException {
+		logger.info("desinscription member");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memId", id);
+		int nbUpdate = template.update("desinscription", map);
+		logger.debug("Nombre de membre desinscrits : " + nbUpdate);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Membre> getAllMembres() throws DataAccessException {
+		logger.info("getAllMembres");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        List<Membre> membres = (List<Membre>)template.queryForList("getAllMembre");
+        return membres;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Membre> getAllMembresWithFilter(FilterMembreForm filter) throws DataAccessException {
+		logger.info("getAllMembresWithFilter");
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>(); 
+      //gestion du filtre
+        map.put("nom", filter.getNom());
+        map.put("prenom", filter.getPrenom());
+        map.put("activation", filter.getActivation());
+        map.put("login", filter.getLogin());
+        map.put("cp", filter.getCodePostal());
+
+        List<Membre> membres = (List<Membre>)template.queryForList("getAllMembresWithFilter", map);
+        return membres;
+	}
+}

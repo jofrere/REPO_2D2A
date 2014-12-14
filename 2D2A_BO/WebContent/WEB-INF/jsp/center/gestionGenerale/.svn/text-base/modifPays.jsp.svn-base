@@ -1,0 +1,43 @@
+<%@ include file="../../head/include.jsp" %>
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+
+<form name="modifPays" method="post" action="">
+	<fieldset>
+		<c:choose>
+			<c:when test="${pays.action == 5}">
+				<legend>Modification d'un pays</legend>
+			</c:when>
+			<c:when test="${pays.action == 4}">
+				<legend>Création d'un pays</legend>
+			</c:when>
+		</c:choose>
+		
+		<spring:bind path="pays.payId">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		<spring:bind path="pays.action">
+			<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>">
+		</spring:bind>
+		
+		
+		<spring:bind path="pays.nom_FR">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Nom Français</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<spring:bind path="pays.nom_EN">
+			<p>
+				<label class="label" for="<c:out value="${status.expression}"/>">Nom Anglais</label>
+				<input type="text" id="<c:out value="${status.expression}"/>" name="<c:out value="${status.expression}"/>" value="<c:out value="${status.value}"/>" size="30" maxlength="50"/>
+			</p>
+		</spring:bind>
+		
+		<div align="center">
+			<input type="submit" name="Valider" value="Valider"/>
+		</div>
+	</fieldset>
+</form>

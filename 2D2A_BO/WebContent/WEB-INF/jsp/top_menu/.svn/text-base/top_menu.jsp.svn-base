@@ -1,0 +1,47 @@
+<%@ include file="../head/include.jsp" %>
+
+
+<a class="link_top_menu" href="/${ROOT}/gestionGenerale/modifAccueil.htm">
+ 	<div class="button_top_menu">
+ 		<div  class="inner_button_top_menu">
+			<img src="/${ROOT}/resources/img/menu/picto_button.gif" border="0"/>
+		</div>
+	 	<div align="center">Gestion Générale</div>
+	</div>
+</a>
+
+<a class="link_top_menu" href="/${ROOT}/boutique/rubrique.htm">
+ 	<div class="button_top_menu">
+ 		<div  class="inner_button_top_menu">
+			<img src="/${ROOT}/resources/img/menu/picto_button.gif" border="0"/>
+		</div>
+	 	<div align="center">Boutique</div>
+	</div>
+</a>
+
+<a class="link_top_menu" href="/${ROOT}/membre/membre.htm">
+ 	<div class="button_top_menu">
+ 		<div  class="inner_button_top_menu">
+			<img src="/${ROOT}/resources/img/menu/picto_button.gif" border="0"/>
+		</div>
+	 	<div align="center">Membres</div>
+	</div>
+</a>
+
+<a class="link_top_menu" href="/${ROOT}/commande/commande.htm">
+ 	<div class="button_top_menu">
+ 		<div  class="inner_button_top_menu">
+			<img src="/${ROOT}/resources/img/menu/picto_button.gif" border="0"/>
+		</div>
+	 	<div align="center">Commandes</div>
+	</div>
+</a>
+
+<a class="link_top_menu" href="/${ROOT}/office/mail.htm">
+ 	<div class="button_top_menu">
+ 		<div  class="inner_button_top_menu">
+			<img src="/${ROOT}/resources/img/menu/picto_button.gif" border="0"/>
+		</div>
+	 	<div align="center">Office</div>
+	</div>
+</a>

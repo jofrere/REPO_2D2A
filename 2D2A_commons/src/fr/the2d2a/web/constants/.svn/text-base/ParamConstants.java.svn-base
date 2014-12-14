@@ -1,0 +1,43 @@
+package fr.the2d2a.web.constants;
+
+public interface ParamConstants {
+
+	public static final String RUBRIQUE = "rubrique";
+	
+	public static final String PATTERN_DATE_FR = "EEEE dd MMMM yyyy";
+	public static final String PATTERN_DATE_EN = "EEEE-dd-MMMM-yyyy";
+	
+	
+	public static final int MAX_PRODUCT_BY_PAGE = 1;
+	
+	public static final int MAX_PRODUCT_ASSOC_BY_PAGE = 3;
+	
+	public static final String HOME_BOUTIQUE_SERVICE = "/homeBoutiqueService.htm";
+	
+	public static final String MAIL_INSCRIPTION_ID = "1";
+	public static final String MAIL_BIENVENUE_ID = "2";
+	public static final String MAIL_PASSWORD_ID = "3";
+	public static final String MAIL_DEPOT_ID = "4";
+	public static final String MAIL_INVITER_AMI_ID = "5";
+	public static final String MAIL_FORM_GENERAL_ID = "6";
+	public static final String MAIL_FORM_EVE_ID = "7";
+	public static final String MAIL_FORM_OUV_ID = "8";
+	public static final String MAIL_FORM_ARCH_ID = "9";
+	public static final String MAIL_LOCATION = "10";
+	
+	public static final String PATTERN_DATE_BO = "dd/MM/yyyy";
+	
+	public static final String PDF_FILE = "PDF_FILE";
+	public static final String PDF_CMD = "PDF_CMD";
+	
+	public static final int MAX_EVENT_BY_PAGE = 2;
+	
+	public static final int MAX_OUVRAGE_BY_PAGE = 2;
+	
+	//Pour différencier les artistes
+	public static final String DESIGNER = "DESIGNER";
+	public static final String EDITEUR = "EDITEUR";
+	
+	public static final String COMMANDE_EN_COURS = "0";
+	public static final String COMMANDE_HISTO = "1";
+}

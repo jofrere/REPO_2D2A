@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Designer" alias="designer"/>
+	
+	<resultMap class="designer" id="designer">
+    	<result property="id" column="ID"/>
+    	<result property="nom" column="Nom" />
+		<result property="prenom" column="Prenom" />
+		<result property="dateNaiss" column="DateNaissance" />
+		<result property="lieuNaiss" column="LieuNaissance" />
+		<result property="biographie" column="Biographie" />
+		<result property="information" column="Information" />
+		<result property="bibliographie" column="Bibliographie" />
+		<result property="collaboration" column="Collaboration" />
+		<result property="siteInternet" column="SiteInternet" />
+		<result property="pathPhoto" column="PathPhoto" />
+    </resultMap>
+	
+	<select id="getAllDesigner" resultMap="designer" >
+        select D.id, D.nom, D.prenom
+        from DESIGNER D
+    </select>
+	
+	<select id="getAllDesignerByLang" resultMap="designer" >
+        select *
+        from DESIGNER_$lang$
+    </select>
+    
+    <select id="getDesignerByNameAndLang" resultMap="designer" >
+        select *
+        from DESIGNER_$lang$
+        where nom = #nom#
+        and prenom = #prenom#
+    </select>
+	
+</sqlMap>

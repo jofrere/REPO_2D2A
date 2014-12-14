@@ -1,0 +1,277 @@
+package fr.the2d2a_bo.web.controller;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.log4j.Logger;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.springframework.web.servlet.view.RedirectView;
+
+import fr.the2d2a.bean.Artiste;
+import fr.the2d2a.bean.Coloris;
+import fr.the2d2a.bean.ImageProduit;
+import fr.the2d2a.bean.Pays;
+import fr.the2d2a.bean.Produit;
+import fr.the2d2a.bean.Rubrique;
+import fr.the2d2a.bean.SpecificiteProduit;
+import fr.the2d2a.service.ColorisService;
+import fr.the2d2a.service.DesignerService;
+import fr.the2d2a.service.EditeurService;
+import fr.the2d2a.service.PaysService;
+import fr.the2d2a.service.ProduitService;
+import fr.the2d2a.service.RubriqueService;
+import fr.the2d2a.service.SpecificiteService;
+import fr.the2d2a.utils.FileHelper;
+import fr.the2d2a.utils.RubriqueHelper;
+import fr.the2d2a.web.constants.ParamConstants;
+import fr.the2d2a.web.constants.WebConstants;
+import fr.the2d2a_bo.web.validator.ProduitValidator;
+
+public class ModifProduitController extends SimpleFormController {
+
+	protected static Logger logger = Logger.getLogger(ModifProduitController.class);
+	
+	private static SimpleDateFormat sdf = new SimpleDateFormat(ParamConstants.PATTERN_DATE_BO);
+	
+	private ProduitService produitService;
+	private PaysService paysService;
+	private RubriqueService rubriqueService;
+	private ColorisService colorisService;
+	private SpecificiteService specificiteService;
+	private DesignerService designerService;
+	private EditeurService editeurService;
+	
+	private ResourceBundleMessageSource messageSource;
+			
+	@Override
+	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
+		
+		logger.info("In onSubmit ModifProduitController...");
+		
+		String lang = (String)request.getSession().getAttribute(WebConstants.LANGUE);
+		
+		Produit produit = (Produit)command;
+		logger.debug("Visu de la current action : " + produit.getAction());
+		switch (produit.getAction()) {
+			case 1:
+				
+			case 2:
+				request.setAttribute("curr_produit", command);
+								
+				//this.referenceData(request);
+				
+				return this.showForm(request, response, errors);
+			case 3:
+				logger.debug("delete produit");
+				//produitService.deleteProduit(produit.getId());
+				break;
+			case 4:
+			case 5:
+				
+				logger.debug("Visu du bean : " + ToStringBuilder.reflectionToString(command));
+				
+				//Gestion du path des images sur le disque
+				String path = messageSource.getMessage("produit.path.contribution.image", null, null);
+				logger.debug("Visu du path : " + path);
+				
+				String pathServer = messageSource.getMessage("produit.path.image", null, null);
+				List<ImageProduit> imgToDelete = new ArrayList<ImageProduit>();
+				for (ImageProduit img : produit.getImages()) {
+					if (img != null) {
+						logger.info("Visu image : " + img.getPhotoFile().getOriginalFilename());
+						
+						//Gestion des images
+						MultipartFile photoFile = img.getPhotoFile();
+						String newPhotoFileName = FileHelper.manageUploadedImageFile(photoFile, img.getPhoto(), path, pathServer);
+						if (newPhotoFileName == null)
+							imgToDelete.add(img);
+						else {
+							img.setPhoto(newPhotoFileName);
+							img.setVignette(newPhotoFileName);
+						}
+					}
+				}
+				
+				for (ImageProduit img : imgToDelete) {
+					logger.debug("Image à deleted : ");
+					produit.getImages().remove(img);
+				}
+				
+				//Gestion de la date
+				if (produit.getDateEntreeStr() != null) {
+					try {
+						produit.setDateEntree(sdf.parse(produit.getDateEntreeStr()));
+					} catch(ParseException e) {
+						logger.warn("Date entrée imparsable => Pas de date.");
+					}
+				}
+				
+				if (produit.getAction() == 5) {
+					logger.debug("MAJ du produit en : " + lang);
+					
+					List<ImageProduit> listeToDelete = produitService.getAllImageProduit(String.valueOf(produit.getProId()));
+					logger.debug("ImgToDelete : " + ToStringBuilder.reflectionToString(listeToDelete));
+					for (ImageProduit img : listeToDelete) {
+						boolean found = false;
+						for (ImageProduit img2 : produit.getImages()) {
+							if (img2!=null && (img2.getPhoto().equals(img.getPhoto()))) {
+								logger.debug("On ne delete pas sur le file");
+								found = true;
+							}
+						}
+						if (! found) {
+							logger.debug("On delete sur le file");
+							String fileName = img.getPhoto().substring(pathServer.length()); 
+							FileHelper.deleteFile(path, fileName);
+						}
+					}
+					produit.setLang(lang);
+					produitService.updateProduit(produit);
+				}
+				else {
+					logger.debug("Creation du produit en : " + lang);
+					produitService.insertProduit(produit);
+				}
+				break;
+			default:
+				break;
+		}
+		return new ModelAndView(new RedirectView(this.getSuccessView()));
+	}
+	
+	@Override
+	protected ModelAndView showForm(HttpServletRequest request, HttpServletResponse response, BindException errors) throws Exception {
+		logger.info("In showForm ModifProduitController...");
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		this.referenceData(request);
+
+		//cas update
+		Produit produit = (Produit)request.getAttribute("curr_produit");
+		if (produit == null) {
+			logger.debug("On recupere le prod depuis le validator");
+			produit = (Produit)((ProduitValidator)this.getValidators()[0]).getCurrentCommand();
+		}
+		
+		//Récupération de la langue
+		String lang = (String)request.getSession().getAttribute(WebConstants.LANGUE);
+		
+		if (produit.getAction() == 5 || produit.getAction() == 2) {
+			Produit temp = produitService.getProduitById(lang, String.valueOf(produit.getProId()));
+			temp.setAction(produit.getAction());
+			temp.setRubriques(rubriqueService.getRubriquesByProduitId(lang, produit.getProId()));
+			
+			//gestion des produits associés
+			List<Produit> produitsAssociated = produitService.getProduitAssociatedById(lang, String.valueOf(produit.getProId()));
+			temp.setProduitsAssociated(produitsAssociated);
+			produit = temp;
+		}
+		
+		logger.debug("Visu produit : " + produit);
+		if (produit.getDateEntree() != null)
+			produit.setDateEntreeStr(sdf.format(produit.getDateEntree()));
+		model.put("produit", produit);
+
+		if (produit.getAction() == 2)
+			produit.setAction(5);
+		if (produit.getAction() == 1)
+			produit.setAction(4);
+		ModelAndView modelVue = new ModelAndView(this.getFormView(), model);
+		if(errors.hasErrors()) {
+			modelVue.addObject(BindingResult.MODEL_KEY_PREFIX + "produit",errors.getBindingResult());
+		}
+		return modelVue;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Map referenceData(HttpServletRequest request) throws Exception {
+		
+		logger.debug("In referenceData de ModifProduitController");
+		
+		String lang = (String)request.getSession().getAttribute(WebConstants.LANGUE);
+		
+		//gestion liste des pays
+		List<Pays> pays = paysService.getAllPays();
+		request.setAttribute("listePays", pays);
+		
+		//gestion liste de rubrique
+		List<Rubrique> rubriques = rubriqueService.getAllRubriques(lang);
+		//request.setAttribute("listeRubrique", rubriques);
+		
+		List<Rubrique> listeDisplay = new ArrayList<Rubrique>();
+		RubriqueHelper.displayAllRubriqueInOrder(rubriques, listeDisplay, -1, 0);
+		RubriqueHelper.displayAllRubriqueInOrder(rubriques, listeDisplay, -2, 0);
+		request.setAttribute("listeRubrique", listeDisplay);
+		
+		//gestion liste des coloris
+		List<Coloris> coloris = colorisService.getAllColoris();
+		request.setAttribute("listeColoris", coloris);
+		
+		//gestion des specificites produit
+		List<SpecificiteProduit> specs = specificiteService.getAllSpec();
+		request.setAttribute("listeSpec", specs);
+		
+		//gestion des designers
+		List<Artiste> designers = designerService.getAllDesignerByLang(lang);
+		request.setAttribute("listeDesigner", designers);
+		
+		//gestion des editeurs
+		List<Artiste> editeurs = editeurService.getAllEditeurByLang(lang);
+		request.setAttribute("listeEditeur", editeurs);
+		
+		//gestion des produits
+		List<Produit> produits = produitService.getAllProduit(lang);
+		request.setAttribute("listeProduit", produits);
+		
+		return super.referenceData(request);
+	}
+
+	
+	public void setPaysService(PaysService paysService) {
+		this.paysService = paysService;
+	}
+	
+	public void setProduitService(ProduitService produitService) {
+		this.produitService = produitService;
+	}
+	
+	public void setRubriqueService(RubriqueService rubriqueService) {
+		this.rubriqueService = rubriqueService;
+	}
+	
+	public void setColorisService(ColorisService colorisService) {
+		this.colorisService = colorisService;
+	}
+	
+	public void setSpecificiteService(SpecificiteService specificiteService) {
+		this.specificiteService = specificiteService;
+	}
+
+	public void setMessageSource(ResourceBundleMessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+
+	public void setDesignerService(DesignerService designerService) {
+		this.designerService = designerService;
+	}
+
+	public void setEditeurService(EditeurService editeurService) {
+		this.editeurService = editeurService;
+	}
+
+}

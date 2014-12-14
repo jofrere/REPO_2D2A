@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Pays" alias="pays"/>
+	
+	<resultMap class="pays" id="pays">
+    	<result property="payId" column="PAYID"/>
+    	<result property="nom" column="Nom" />		
+    </resultMap> 
+    
+    <select id="getAllPays" resultMap="pays">
+        select PL.payId, PL.nom
+        from PAYS_$lang$ PL
+    </select>
+    
+    <select id="getPaysById" resultMap="pays">
+        select PL.payId, PL.nom
+        from PAYS_$lang$ PL
+        where PL.PAYID = #payId#
+    </select>
+    
+    <update id="updatePays" parameterClass="fr.the2d2a.bean.Pays">
+        update PAYS_$lang$ PL
+        set PL.nom = #nom#
+        where PL.PAYID = #payId#
+    </update>
+    
+    <insert id="insertPays" parameterClass="fr.the2d2a.bean.Pays">
+        insert into PAYS()
+        values()
+        <selectKey keyProperty="payId">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <insert id="insertPaysLangue" parameterClass="fr.the2d2a.bean.Pays">
+        insert into PAYS_$lang$(payId, nom)
+        values (#payId#, #nom#)
+    </insert>
+    
+    <delete id="deletePaysLangueById">
+        delete 
+        from PAYS_FR, PAYS_EN
+        using PAYS_FR, PAYS_EN
+        where PAYS_FR.PAYID = #payId# 
+        and PAYS_EN.PAYID = #payId#
+    </delete>
+       
+    <delete id="deletePaysProduitById">
+        update PRODUIT
+        set PRODUIT.PAYID = null        
+        where PRODUIT.PAYID = #payId#
+    </delete>
+        
+    <delete id="deletePaysById">
+        delete 
+        from PAYS
+        using PAYS
+        where PAYS.PAYID = #payId#
+    </delete>
+    
+</sqlMap>

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Membre" alias="membre"/>
+	<typeAlias type="fr.the2d2a.bean.Adresse" alias="adresse"/>
+	<typeAlias type="fr.the2d2a.bean.Profession" alias="profession"/>
+	<typeAlias type="fr.the2d2a.bean.Civilite" alias="civilite"/>
+	<!-- <typeAlias type="fr.the2d2a.bean.Filleul" alias="filleul"/> -->
+	
+	<resultMap class="membre" id="membre">
+		<result property="memId" column="MEMID"/>
+		<result property="profId" column="PROFID"/>
+		<result property="civId" column="CIVID"/>
+		<result property="login" column="LOGIN"/>
+		<result property="password" column="PASS"/>
+		<result property="prenom" column="PRENOM"/>
+		<result property="nom" column="NOM"/>
+		<result property="jourNaiss" column="JOURNAISS"/>
+		<result property="moisNaiss" column="MOISNAISS"/>
+		<result property="anneeNaiss" column="ANNEENAISS"/>
+		<result property="centreInteret" column="CENTREINTERET"/>
+		<result property="newsletter" column="NEWSLETTER"/>
+		<result property="typeActivation" column="TYPEACTIVATION"/>
+		<result property="dateInscription" column="DATEINSCRIPTION" typeHandler="fr.the2d2a.utils.BigIntegerTypeHandler"/>
+		<result property="adresses" column="MEMID" select="getAdressesByMembreId"/>
+		<!--<result property="filleuls" column="ID" select="getAllFilleulsByMembreId"/>-->
+	</resultMap>
+	
+	<resultMap class="adresse" id="adresse">
+		<result property="adrId" column="ADRCOMID"/>
+		<result property="payId" column="PAYID"/>
+		<result property="civId" column="CIVID"/>
+		<result property="memId" column="MEMID"/>
+		<result property="nomAdresse" column="NOMADRESSE"/>
+		<result property="prenom" column="PRENOM"/>
+		<result property="nom" column="NOM"/>
+		<result property="societe" column="SOCIETE"/>
+		<result property="adresse" column="ADRESSE"/>
+		<result property="complementAdresse" column="COMPLEMENT_ADRESSE"/>
+		<result property="codePostal" column="CODEPOSTAL"/>
+		<result property="ville" column="VILLE"/>
+		<result property="telPrive" column="TELPRIVE"/>
+		<result property="telBureau" column="TELBUREAU"/>
+		<result property="fax" column="FAX"/>
+	</resultMap>
+	
+	<resultMap class="civilite" id="civilite">
+		<result property="civId" column="CIVID"/>
+		<result property="titre" column="Titre"/>
+	</resultMap>
+	
+	<resultMap class="profession" id="profession">
+		<result property="profId" column="PROFID"/>
+		<result property="titre" column="Titre"/>		
+	</resultMap>
+	
+	<!-- 
+	<resultMap class="filleul" id="filleul">
+		<result property="id" column="ID"/>
+		<result property="membreId" column="MEM_ID"/>
+		<result property="mail" column="MAIL"/>
+		<result property="etat" column="ETAT"/>
+	</resultMap>
+	 -->
+	
+	<select id="getAllCivilite" resultMap="civilite">
+        select CL.civid, CL.titre
+        from CIVILITE_$lang$ CL
+    </select>
+    
+    <select id="getAllProfession" resultMap="profession">
+        select PL.profId, PL.titre
+        from PROFESSION_$lang$ PL
+    </select>
+    
+    <select id="getNomProfessionById" resultClass="java.lang.String">
+        select PL.titre
+        from PROFESSION_$lang$ PL
+        where PL.PROFID = #profId#        
+    </select>
+    
+    <update id="updateProfession" parameterClass="fr.the2d2a.bean.Profession">
+        update PROFESSION_$lang$ PL
+        set PL.titre = #titre#        	
+        where PL.PROFID = #profId#        	
+    </update>
+    
+    <insert id="insertProfession" parameterClass="fr.the2d2a.bean.Profession">
+        insert into PROFESSION()
+        values ()
+        <selectKey keyProperty="profId">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <insert id="insertProfessionLangue" parameterClass="fr.the2d2a.bean.Profession">
+        insert into PROFESSION_$lang$(profId, titre)
+        values (#profId#, #titre#)
+    </insert>
+    
+    <delete id="deleteProfessionById">
+        delete 
+        from PROFESSION
+        using PROFESSION
+        where PROFESSION.PROFID = #profId#
+    </delete>
+    
+    <select id="getCiviliteByMembreId" resultMap="civilite">
+        select CL.civid, CL.titre
+        from CIVILITE_$lang$ CL, MEMBRE M
+        where M.CIVID = CL.CIVID
+        and M.MEMID = #memId#
+    </select>
+		
+	<select id="getProfessionByMembreId" resultMap="profession">
+        select PL.profId, PL.titre
+        from PROFESSION_$lang$ PL, MEMBRE M
+        where M.PROFID = PL.PROFID
+        and M.MEMID = #memId#
+    </select>
+    
+    <select id="getAdressesByMembreId" resultMap="adresse">
+        select *
+        from ADRESSE
+        where MEMID = #memId#
+    </select>
+    
+    <select id="getAdresseById" resultMap="adresse">
+        select *
+        from ADRESSE
+        where ADRCOMID = #adrId#
+    </select>
+    
+    <insert id="insertMembre" parameterClass="fr.the2d2a.bean.Membre">
+        insert into MEMBRE(memId, profId, civId, Login, Pass, Prenom, nom, jourNaiss, moisNaiss, anneeNaiss, centreInteret, newsletter, typeActivation, dateInscription)
+        values (#memId#, #profId#, #civId#, #login#, #password#, #prenom#, #nom#, #jourNaiss#, #moisNaiss#, #anneeNaiss#, #centreInteret#, #newsletter#, 0, #dateInscription#)
+        <selectKey keyProperty="memId">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <insert id="insertAdresse" parameterClass="fr.the2d2a.bean.Adresse">
+        insert into ADRESSE(payId, civId, memId, NomAdresse, Prenom, nom, societe, adresse, complement_adresse, codePostal, ville, telPrive, telBureau, fax)
+        values (#payId#, #civId#, #memId#, #nomAdresse#, #prenom#, #nom#, #societe#, #adresse#, #complementAdresse#, #codePostal#, #ville#, #telPrive#, #telBureau#, #fax#)
+        <selectKey keyProperty="adrId">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <update id="updateAdresseById" parameterClass="fr.the2d2a.bean.Adresse">
+        update ADRESSE 
+        set payId = #payId#,
+        	civId = #civId#, 
+        	NomAdresse = #nomAdresse#, 
+        	Prenom = #prenom#, 
+        	nom = #nom#, 
+        	societe = #societe#, 
+        	adresse = #adresse#, 
+        	complement_adresse = #complementAdresse#, 
+        	codePostal = #codePostal#, 
+        	ville = #ville#, 
+        	telPrive = #telPrive#, 
+        	telBureau = #telBureau#, 
+        	fax = #fax#
+        where adrComId = #adrId#          
+    </update>
+    
+    <delete id="deleteAdresseById">
+    	delete from ADRESSE
+    	where adrComId = #adrId#
+    </delete>
+    
+    <!-- 
+    <insert id="insertFilleul" parameterClass="fr.the2d2a.bean.Filleul">
+        insert into FILLEUL(Id, Mem_id, mail, etat)
+        values (#id#, #membreId#, #mail#, #etat#)
+        <selectKey keyProperty="id">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <delete id="deleteAllFilleulsByMembreId">
+    	delete from FILLEUL
+    	where Mem_id = #id#
+    </delete>
+    
+    <select id="getAllFilleulsByMembreId" resultMap="filleul">
+    	select * 
+    	from FILLEUL
+    	where Mem_id = #id#    	
+    </select>
+    
+     -->
+    
+    <update id="activateMember">
+    	update MEMBRE
+    	set typeActivation = 1
+    	where memId = #memId#
+    	and dateInscription = #dateInscription#
+    </update>
+    
+    <select id="authenticateMember" resultMap="membre">
+    	select * 
+    	from MEMBRE
+    	where login = #login#
+    	and pass = #password#
+    	and typeActivation = 1
+    </select>
+    
+    <select id="getMembreById" resultMap="membre">
+    	select * 
+    	from MEMBRE
+    	where memId = #memId#
+    	and typeActivation = 1
+    </select>
+    
+    <select id="getMembreByIdBO" resultMap="membre">
+    	select * 
+    	from MEMBRE
+    	where memId = #memId#
+    </select>
+    
+    <select id="getAllMembre" resultMap="membre">
+    	select * 
+    	from MEMBRE
+    </select>
+    
+    <select id="getAllMembresWithFilter" resultMap="membre">
+		select *
+		from MEMBRE M
+		<isNotEmpty property="cp">
+			, ADRESSE A
+		</isNotEmpty>
+		where M.MEMID = M.MEMID
+		<isNotEmpty property="login">
+			and M.LOGIN like '$login$%'
+		</isNotEmpty>
+		<isNotEmpty property="nom">
+			and M.NOM like '$nom$%'
+		</isNotEmpty>
+		<isNotEmpty property="prenom">
+			and M.PRENOM like '$prenom$%'
+		</isNotEmpty> 
+		<isGreaterThan property="activation" compareValue="-1">
+			and M.TYPEACTIVATION = $activation$
+		</isGreaterThan> 
+		<isNotEmpty property="cp">
+			and M.MEMID = A.MEMID 
+			and A.CODEPOSTAL like '$cp$%'
+		</isNotEmpty> 
+	</select>
+	
+        
+    <select id="getMembreByLogin" resultMap="membre">
+    	select * 
+    	from MEMBRE
+    	where login = #login#
+    	and typeActivation = 1
+    </select>
+    
+    <update id="updateMembreById" parameterClass="fr.the2d2a.bean.Membre">
+        update MEMBRE
+        set ProfId = #profId#, 
+        	CivId = #civId#, 
+        	Login = #newLogin#, 
+        	Pass = #newPassword#, 
+        	Prenom = #prenom#, 
+        	nom = #nom#, 
+        	jourNaiss = #jourNaiss#, 
+        	moisNaiss = #moisNaiss#, 
+        	anneeNaiss = #anneeNaiss#, 
+        	centreInteret = #centreInteret#, 
+        	newsletter = #newsletter#
+        where MemId = #memId#
+    </update>
+    
+    <update id="desinscription">
+    	update MEMBRE
+    	set typeActivation = 2
+    	where memId = #memId#
+    </update>
+    
+</sqlMap>

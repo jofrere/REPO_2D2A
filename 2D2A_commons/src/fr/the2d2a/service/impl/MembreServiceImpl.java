@@ -1,0 +1,176 @@
+package fr.the2d2a.service.impl;
+
+import java.math.BigInteger;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import fr.the2d2a.bean.Adresse;
+import fr.the2d2a.bean.Civilite;
+import fr.the2d2a.bean.Membre;
+import fr.the2d2a.bean.Pays;
+import fr.the2d2a.bean.Profession;
+import fr.the2d2a.dao.MembreDao;
+import fr.the2d2a.exception.FonctionalException;
+import fr.the2d2a.exception.TechnicalException;
+import fr.the2d2a.service.MembreService;
+import fr.the2d2a_bo.beanform.FilterMembreForm;
+
+public class MembreServiceImpl implements MembreService {
+
+	private static Logger logger = Logger.getLogger(MembreServiceImpl.class);
+	
+	private MembreDao dao;
+	
+	public List<Civilite> getAllCivilite(String lang) throws TechnicalException {
+		return dao.getAllCivilite(lang);
+	}
+	
+	public List<Profession> getAllProfession(String lang) throws TechnicalException {
+		if (lang == null)
+			return dao.getAllProfession();
+		else
+			return dao.getAllProfession(lang);
+	}
+	
+	public void updateProfession(Profession profession) throws TechnicalException, FonctionalException {
+		dao.updateProfession(profession);
+	}
+	
+	public void insertProfession(Profession profession) throws TechnicalException, FonctionalException {
+		dao.insertProfession(profession);
+	}
+	
+	public void deleteProfession(int id) throws TechnicalException, FonctionalException {
+		dao.deleteProfession(id);
+	}
+	
+	public List<Pays> getAllPays(String lang) throws TechnicalException {
+		return dao.getAllPays(lang);
+	}
+
+	public void setDao(MembreDao dao) {
+		this.dao = dao;
+	}
+
+	public void insertMembre(Membre membre) throws FonctionalException, TechnicalException {
+		int id = 0;
+		try {
+			id = dao.insertMembre(membre);
+			membre.setMemId(id);
+		} catch(DataAccessException e) {
+			if (e instanceof DataIntegrityViolationException && e.getCause().getMessage().contains("Duplicate entry")) {
+				logger.warn("Duplicate entry during insertion member");
+				throw new FonctionalException();
+			}
+			throw new TechnicalException(e);
+		}		
+	}
+	
+	public void insertAdresse(Adresse adresse) throws TechnicalException {
+		try {
+			dao.insertAdresse(adresse);			
+		} catch(DataAccessException e) {			
+			throw new TechnicalException(e);
+		}
+	}
+
+	public void activateMember(String id, BigInteger dateInscription) throws FonctionalException, TechnicalException {
+		try {
+			int nbUpdate = dao.activateMember(id, dateInscription);
+			if (nbUpdate != 1)
+				throw new FonctionalException();
+		}
+		catch (DataAccessException e) {
+			throw new TechnicalException(e);
+		}
+	}
+
+	public Membre authenticateMember(String login, String password, String lang) throws FonctionalException, TechnicalException {
+		try {
+			Membre membre = dao.authenticateMember(login, password, lang);
+			if (membre == null)
+				throw new FonctionalException();
+			else
+				return membre;
+		}
+		catch (DataAccessException e) {
+			throw new TechnicalException(e);
+		}
+	}
+	
+	public Civilite getCiviliteByMembreId(String lang, String id) throws TechnicalException {
+		return dao.getCiviliteByMembreId(lang, id);
+	}
+	
+	public Membre getMembreById(String lang, String id) throws TechnicalException {
+		return dao.getMembreById(lang, id);
+	}
+	
+	public Membre getMembreByIdBO(String lang, String id) throws DataAccessException {
+		return dao.getMembreByIdBO(lang, id);
+	}
+	
+	public Membre getMembreByLogin(String lang, String login) throws FonctionalException, TechnicalException {
+		Membre membre = dao.getMembreByLogin(lang, login); 
+		if (membre == null)
+			throw new FonctionalException();
+		return membre;
+	}
+	
+	public void updateMembre(Membre membre) throws FonctionalException, TechnicalException {
+		try {
+			dao.updateMembre(membre);
+		} catch(DataAccessException e) {
+			if (e instanceof DataIntegrityViolationException && e.getCause().getMessage().contains("Duplicate entry")) {
+				logger.warn("Duplicate entry during insertion member");
+				throw new FonctionalException();
+			}
+			throw new TechnicalException(e);
+		}	
+	}
+	
+	public Adresse getAdresseById(String id) throws TechnicalException {
+		try {
+			Adresse adresse = dao.getAdresseById(id);
+			return adresse;
+		} catch(DataAccessException e) {			
+			throw new TechnicalException(e);
+		}
+	}
+	
+	public void updateAdresse(Adresse adresse) throws TechnicalException {
+		try {
+			dao.updateAdresse(adresse);
+		} catch(DataAccessException e) {
+			throw new TechnicalException(e);
+		}
+	}
+	
+	public void deleteAdresse(String id) throws TechnicalException {
+		try {
+			dao.deleteAdresse(id);
+		} catch(DataAccessException e) {
+			throw new TechnicalException(e);
+		}
+	}
+	
+	public void desinscription(String id) throws TechnicalException {
+		try {
+			dao.desinscription(id);			
+		}
+		catch (DataAccessException e) {
+			throw new TechnicalException(e);
+		}
+	}
+	
+	public List<Membre> getAllMembres() throws TechnicalException {
+		return dao.getAllMembres();
+	}
+	
+	public List<Membre> getAllMembresWithFilter(FilterMembreForm filter) throws TechnicalException {
+		return dao.getAllMembresWithFilter(filter);
+	}
+}

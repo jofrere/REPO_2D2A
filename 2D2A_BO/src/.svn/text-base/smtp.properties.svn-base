@@ -1,0 +1,4 @@
+smtp.host=smtp.mail.yahoo.fr
+smtp.username=rdubar2000@yahoo.fr
+smtp.password=xxxx
+smtp.port=25

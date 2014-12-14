@@ -1,0 +1,38 @@
+<%@ include file="../../head/include.jsp" %>
+
+<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/form.css" media="all" />
+
+<fieldset>
+	<legend>Gestion des professions</legend>
+
+	<c:forEach var="profession" items="${listeProfessions}" varStatus="i">
+						
+		<span class="label">Nom FR : </span><input type="text" value="<c:out value="${profession.titre_FR}"/>" readonly="readonly"/>
+		
+		&nbsp;&nbsp;&nbsp;<span class="label">Nom EN : </span><input type="text" value="<c:out value="${profession.titre_EN}"/>" readonly="readonly"/>
+			
+		<form style="display:inline;" name="profession_modif_<c:out value="${i.index}"/>" method="post" action="./modifProfession.htm">
+			<input type="hidden" name="id" value="<c:out value="${profession.id}"/>">
+			<input type="hidden" name="titre_FR" value="<c:out value="${profession.titre_FR}"/>">
+			<input type="hidden" name="titre_EN" value="<c:out value="${profession.titre_EN}"/>">
+			<input type="hidden" name="action" value="2"/>
+			<a href="#" onclick="document.profession_modif_<c:out value="${i.index}"/>.submit();"><img src="/${ROOT}/resources/img/picto_site/edit.gif" border="0"/></a>
+		</form>
+			
+		<form style="display:inline;" name="profession_del_<c:out value="${i.index}"/>" method="post" action="./modifProfession.htm">
+			<input type="hidden" name="id" value="<c:out value="${profession.id}"/>">
+			<input type="hidden" name="action" value="3"/>
+			<a href="#" onclick="if (confirm('Etes-vous certain de vouloir supprimer cette profession ?')) eval('document.profession_del_<c:out value="${i.index}"/>.submit();')"><img src="/${ROOT}/resources/img/picto_site/delete.gif" border="0"/></a>
+		</form>
+		<br />
+	</c:forEach>
+</fieldset>
+<br />
+<hr />
+<br />
+<div align="center">
+	<form style="display:inline;" name="profession_add" method="post" action="./modifProfession.htm">
+		<input type="hidden" name="action" value="1"/>
+		<input type="submit" value="Créer une nouvelle profession"/>
+	</form>
+</div>

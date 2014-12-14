@@ -1,0 +1,9 @@
+<%@ include file="../../head/include.jsp" %>
+ 
+<a class="link_left_down_menu" href="/${ROOT}/commande/commande.htm">
+	<div class="button_left_down_menu"> 		
+	 	<div align="center">Gestion des commandes</div>
+	</div>
+</a>
+
+<div class="spacer_left_menu">&nbsp;</div>

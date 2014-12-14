@@ -1,0 +1,18 @@
+<%@ include file="../../head/include.jsp" %>
+ 
+<a class="link_left_down_menu" href="/${ROOT}/office/mail.htm">
+	<div class="button_left_down_menu"> 		
+	 	<div align="center">Gestion des mails</div>
+	</div>
+</a>
+
+<div class="spacer_left_menu">&nbsp;</div>
+
+<a class="link_left_down_menu" href="/${ROOT}/office/conditionsGenerales.htm">
+	<div class="button_left_down_menu"> 		
+	 	<div align="center">Gestion des conditions générales</div>
+	</div>
+</a>
+
+<div class="spacer_left_menu">&nbsp;</div>
+

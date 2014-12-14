@@ -1,0 +1,94 @@
+package fr.the2d2a_bo.web.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.springframework.validation.BindException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.springframework.web.servlet.view.RedirectView;
+
+import fr.the2d2a.bean.Commande;
+import fr.the2d2a.service.CommandeService;
+import fr.the2d2a.web.constants.ParamConstants;
+
+public class ModifCommandeController extends SimpleFormController {
+
+	protected static Logger logger = Logger.getLogger(ModifProduitController.class);
+	
+	private CommandeService commandeService;
+	
+	@Override
+	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
+		
+		logger.info("In onSubmit ModifCommandeController...");
+		
+		Commande commande = (Commande)command;
+		logger.debug("Visu de la current action : " + commande.getAction());
+		switch (commande.getAction()) {
+			case 1:
+				
+			case 2:
+				if (commande.getAction() == 2) {
+					logger.debug("update commande");
+					Commande cmd = commandeService.getCommandeById(String.valueOf(commande.getId()));
+					cmd.setAction(commande.getAction());
+					request.setAttribute("command", cmd);
+				} else {
+					request.setAttribute("command", command);
+				}
+				
+				return this.showForm(request, response, errors);
+			case 3:
+				logger.debug("delete commande");
+				//produitService.deleteProduit(produit.getId());
+				break;
+			case 4:
+			case 5:
+				if (commande.getAction() == 5) {
+					logger.debug("MAJ de la commande.");
+					commandeService.updateCommande(commande);
+				}
+				else {
+					logger.debug("Creation d'une commande.");
+					
+				}
+				
+				break;		
+			default:
+				break;
+		}
+		return new ModelAndView(new RedirectView(this.getSuccessView()));
+	}
+	
+	@Override
+	protected ModelAndView showForm(HttpServletRequest request, HttpServletResponse response, BindException errors) throws Exception {
+		logger.info("In showForm ModifCommandeController...");
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+	
+		//cas update
+		Commande commande = (Commande)request.getAttribute("command");
+		
+		model.put("commande", commande);
+		
+		if (commande.getAction() == 2)
+			commande.setAction(5);
+		if (commande.getAction() == 1)
+			commande.setAction(4);
+		
+		//pour le PDF
+		Commande cmd = commandeService.getCommandeById(String.valueOf(commande.getId()));
+		request.getSession().setAttribute(ParamConstants.PDF_CMD, cmd);
+		
+		return new ModelAndView(this.getFormView(), model);
+	}
+
+	public void setCommandeService(CommandeService commandeService) {
+		this.commandeService = commandeService;
+	}
+}

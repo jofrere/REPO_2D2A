@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Ouvrage" alias="ouvrage"/>
+	<typeAlias type="fr.the2d2a.bean.ImageOuvrage" alias="imageOuvrage"/>
+	
+	<resultMap class="ouvrage" id="ouvrage">
+    	<result property="id" column="OUVID"/>
+    	<result property="type" column="TYPE"/>
+    	<result property="reference" column="REFERENCE"/>
+    	<result property="titre" column="TITRE"/>
+		<result property="auteur" column="AUTEUR"/>
+		<result property="langue" column="LANGUE"/>
+		<result property="annee" column="ANNEE"/>
+		<result property="reliure" column="RELIURE"/>
+		<result property="format" column="FORMAT"/>
+		<result property="nbPages" column="NBPAGES"/>
+		<result property="nbPhotos" column="NBPHOTOS"/>
+		<result property="theme" column="THEME"/>
+		<result property="sommaire" column="SOMMAIRE"/>
+		<result property="information" column="INFORMATION"/>
+		<result property="prix" column="PRIX"/>
+		<result property="images" column="OUVID" select="getImageOuvrageByOuvrageId"/>
+		<result property="quantite" column="QUANTITE"/>
+    </resultMap>
+    
+    <resultMap class="imageOuvrage" id="imageOuvrage">
+    	<result property="id" column="IMGID"/>
+    	<result property="ouvId" column="OUVID" />
+		<result property="pathPhoto" column="PathPhoto" />
+		<result property="position" column="position" />
+    </resultMap>
+    
+    <select id="getAllOuvrages" resultMap="ouvrage">
+		select *
+		from OUVRAGE O, OUVRAGE_$lang$ OL
+		where O.OUVID = OL.OUVID
+	</select>
+	
+	<select id="getImageOuvrageByOuvrageId" resultMap="imageOuvrage">
+		select *
+		from IMAGE_OUVRAGE IO
+		where IO.OUVID = #ouvId#
+		order by IO.POSITION ASC
+	</select>
+	
+	<select id="getOuvrageById" resultMap="ouvrage">
+		select *
+		from OUVRAGE O, OUVRAGE_$lang$ OL
+		where O.OUVID = OL.OUVID
+		and OL.OUVID = #ouvId#
+	</select>
+	
+	<update id="destockOuvrage">
+		update OUVRAGE
+		set QUANTITE = #newQuantite#
+		where OUVID = #id#
+	</update>
+	
+</sqlMap>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Accueil" alias="accueil"/>
+	
+    <resultMap class="accueil" id="accueil">
+    	<result property="accId" column="AccId"/>
+    	<result property="titreAccueil" column="TitreAccueil"/>
+		<result property="logoAccueil" column="LogoAccueil"/>
+        <result property="texteAccueil" column="TexteAccueil"/>
+		<result property="imageAccueil" column="ImageAccueil"/>
+    </resultMap>  
+
+    <select id="getAccueilById" parameterClass="java.util.Map" resultMap="accueil" >
+        select *
+        from ACCUEIL_$lang$
+        where accId = #id#
+    </select>
+    
+    <select id="getAllAccueils" parameterClass="java.util.Map" resultMap="accueil" >
+        select *
+        from ACCUEIL_$lang$
+    </select>
+    
+    
+    <update id="updateAccueil" parameterClass="fr.the2d2a.bean.Accueil">
+    	update ACCUEIL_$lang$ AL
+    	set AL.TitreAccueil = #titreAccueil#,
+    		AL.LogoAccueil = #logoAccueil#,
+    		AL.TexteAccueil = #texteAccueil#,
+    		AL.ImageAccueil = #imageAccueil#
+    	where AL.ACCID = #accId#
+    </update>
+    
+</sqlMap>

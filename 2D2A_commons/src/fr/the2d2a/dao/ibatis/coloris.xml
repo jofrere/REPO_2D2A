@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Coloris" alias="coloris"/>
+	
+	<resultMap class="coloris" id="coloris">
+    	<result property="colId" column="COLID"/>
+    	<result property="nom" column="Nom" />
+		<result property="picto" column="Picto" />		
+    </resultMap>	 
+    
+    <select id="getAllColoris" resultMap="coloris">
+        select CL.colId, CL.nom, C.picto
+        from COLORIS_$lang$ CL, COLORIS C
+        where CL.COLID = C.colId        
+    </select>
+    
+    <select id="getNomColorisById" resultClass="java.lang.String">
+        select CL.nom
+        from COLORIS_$lang$ CL
+        where CL.COLID = #id#        
+    </select>
+    
+    <select id="getColorisWithoutLangById" resultMap="coloris">
+        select CL.colId, CL.nom, C.picto
+        from COLORIS_FR CL, COLORIS C
+        where CL.COLID = C.colId
+        and CL.COLID = #id#        
+    </select>
+    
+    <update id="updateColoris" parameterClass="fr.the2d2a.bean.Coloris">
+        update COLORIS_$lang$ CL, COLORIS C
+        set CL.nom = #nom#,
+        	C.picto = #picto#
+        where CL.COLID = #colId#
+        	and C.COLID = #colId#
+    </update>
+    
+    <insert id="insertColoris" parameterClass="fr.the2d2a.bean.Coloris">
+        insert into COLORIS(picto)
+        values (#picto#)
+        <selectKey keyProperty="colId">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <insert id="insertColorisLangue" parameterClass="fr.the2d2a.bean.Coloris">
+        insert into COLORIS_$lang$(colId, nom)
+        values (#colId#, #nom#)
+    </insert>
+     
+    <delete id="deleteColorisLangueById">
+        delete 
+        from COLORIS_FR, COLORIS_EN
+        using COLORIS_FR, COLORIS_EN
+        where COLORIS_FR.COLID = #id# 
+        and COLORIS_EN.COLID = #id#
+    </delete>
+    
+    <delete id="deleteColorisProduitById">
+        delete 
+        from PRODUIT_COLORIS
+        using PRODUIT_COLORIS
+        where PRODUIT_COLORIS.PRO_ID = #id#
+    </delete>
+    
+    <delete id="deleteColorisById">
+        delete 
+        from COLORIS
+        using COLORIS
+        where COLORIS.COLID = #id#
+    </delete>
+    
+</sqlMap>

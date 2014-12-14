@@ -1,0 +1,53 @@
+package fr.the2d2a.dao.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.springframework.dao.DataAccessException;
+import org.springframework.orm.ibatis.SqlMapClientTemplate;
+import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+
+import fr.the2d2a.bean.Ouvrage;
+import fr.the2d2a.dao.PresseDao;
+import fr.the2d2a.exception.TechnicalException;
+
+public class PresseDaoImpl extends SqlMapClientDaoSupport implements PresseDao {
+
+	protected final Logger logger = Logger.getLogger(PresseDaoImpl.class);
+	
+	@SuppressWarnings("unchecked")
+	public List<Ouvrage> getAllOuvrage(String lang) throws TechnicalException {
+		logger.debug("Recup Ouvrages en " + lang);
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("lang", lang);
+        
+        List<Ouvrage> ouvrages = (List<Ouvrage>)template.queryForList("getAllOuvrages", map);
+        logger.debug("Visu ouvrages : " + ouvrages.toString());
+        
+        return ouvrages; 
+	}
+
+	public Ouvrage getOuvrageById(String ouvId, String lang) throws DataAccessException {
+		logger.debug("Recup Ouvrage en " + lang);
+        SqlMapClientTemplate template = getSqlMapClientTemplate();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("lang", lang);
+        map.put("ouvId", ouvId);
+        Ouvrage ouvrage = (Ouvrage)template.queryForObject("getOuvrageById", map);
+        
+        return ouvrage; 
+	}
+
+	public void destockOuvrage(Ouvrage ouvrage) throws DataAccessException {
+		logger.debug("Destockage Ouvrage d'id: " + ouvrage.getId());
+		SqlMapClientTemplate template = getSqlMapClientTemplate();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", ouvrage.getId());
+		int newQuantite = ouvrage.getQuantite()-ouvrage.getQuantiteReservee();
+		map.put("newQuantite", newQuantite);
+		template.update("destockOuvrage", map);
+	}
+}

@@ -1,0 +1,21 @@
+test=test
+
+
+#Path Images
+global.path.contribution.image=E:/win32App/apache/htdocs/2d2a/resources/img/contribution/accueil/
+home.path.image=./resources/img/contribution/accueil/
+
+coloris.path.contribution.image=E:/win32App/apache/htdocs/2d2a/resources/img/contribution/coloris/
+coloris.path.image=./resources/img/contribution/coloris/
+
+rubrique.path.contribution.image=E:/win32App/apache/htdocs/2d2a/resources/img/contribution/rubrique/
+rubrique.path.image=./resources/img/contribution/rubrique/
+
+rubrique.path.contribution.css=E:/win32App/apache/htdocs/2d2a/resources/css/
+rubrique.path.css=./resources/css/
+
+produit.path.contribution.image=E:/win32App/apache/htdocs/2d2a/resources/img/contribution/produit/
+produit.path.image=./resources/img/contribution/produit/
+
+#Validation fiche produit
+produit.nom.obligatoire=Le nom est obligatoire
