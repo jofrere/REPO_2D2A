@@ -1,40 +1,0 @@
-9
-
-dir
-72
-svn://192.168.0.10/2D2A/trunk/2D2A/WebContent/resources
-svn://192.168.0.10
-
-
-
-2009-05-04T22:44:48.750000Z
-71
-fufu
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-d5deab09-de6d-8041-9c58-c18561a3535f
-
-css
-dir
-
-img
-dir
-
-js
-dir
-
-flex
-dir
-
