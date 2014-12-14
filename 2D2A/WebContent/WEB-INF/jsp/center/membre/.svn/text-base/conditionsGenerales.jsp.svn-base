@@ -1,0 +1,24 @@
+<%@ include file="../../head/include.jsp" %>
+<script type="text/javascript" src="/${ROOT}/resources/js/print.js"></script> 
+
+
+
+<div id="enteteFiche">
+     <c:if test="${empty param['imprimer']}">
+        <div id="actionPage">
+    	    <a href="#" onclick="javascript:imprime_zone('Imprimer', 'ficheCorps', window.location);" class="imprimer" title="Imprimer"></a>
+	    </div>
+	</c:if>
+</div>
+
+<!-- startCorpsFiche -->
+<div id="ficheCorps">
+	<table class="formulaire">
+		<tbody>
+			<tr>
+				<td class="left noborder"><c:out value="${conditionsGenerales}" escapeXml="false"/></td>
+			</tr>
+		</tbody>
+	</table>				
+	<a class="bouton" href="#" onclick="window.close();" title="Valider"><span><span><spring:message code="conditionsGenerales.close" /></span></span></a>
+</div>

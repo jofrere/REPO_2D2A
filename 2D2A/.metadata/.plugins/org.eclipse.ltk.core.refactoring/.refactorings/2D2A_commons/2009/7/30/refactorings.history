@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;2D2A_commons/src/fr/the2d2a/dao/ibatis/presse.xml&apos; to &apos;ouvrage.xml&apos;" description="Rename resource &apos;presse.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/fr/the2d2a/dao/ibatis/presse.xml" name="ouvrage.xml" stamp="1248102620218" updateReferences="true"/>
+</session>

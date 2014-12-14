@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;fr.the2d2a_bo.web.controller.ConditionsGenerales&apos; to &apos;ConditionsController&apos;&#x0D;&#x0A;- Original project: &apos;2D2A_BO&apos;&#x0D;&#x0A;- Original element: &apos;fr.the2d2a_bo.web.controller.ConditionsGenerales&apos;&#x0D;&#x0A;- Renamed element: &apos;fr.the2d2a_bo.web.controller.ConditionsController&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;ConditionsGenerales&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;fr.the2d2a_bo.web.controller{ConditionsGenerales.java[ConditionsGenerales" matchStrategy="1" name="ConditionsController" qualified="false" references="true" similarDeclarations="false" stamp="1228163463343" textual="false" version="1.0"/>
+</session>

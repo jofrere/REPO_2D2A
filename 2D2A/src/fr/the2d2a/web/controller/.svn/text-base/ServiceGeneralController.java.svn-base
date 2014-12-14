@@ -1,0 +1,205 @@
+package fr.the2d2a.web.controller;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.log4j.Logger;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.validation.BindException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import fr.the2d2a.bean.Civilite;
+import fr.the2d2a.bean.ImageProduit;
+import fr.the2d2a.bean.Mail;
+import fr.the2d2a.bean.Pays;
+import fr.the2d2a.bean.ServiceGeneral;
+import fr.the2d2a.exception.TechnicalException;
+import fr.the2d2a.service.MailService;
+import fr.the2d2a.service.MembreService;
+import fr.the2d2a.utils.FileHelper;
+import fr.the2d2a.web.constants.ParamConstants;
+import fr.the2d2a.web.constants.WebConstants;
+
+public class ServiceGeneralController extends SimpleFormController {
+
+	private static Logger logger = Logger.getLogger(ServiceGeneralController.class);
+
+	private MembreService membreService;
+	private MailService mailService;
+	private ResourceBundleMessageSource messageSource;
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected ModelAndView onSubmit(HttpServletRequest request,
+			HttpServletResponse response, Object command, BindException errors)
+			throws Exception {
+		
+		logger.debug("In onSubmit de ServiceGeneralController");
+		
+		ServiceGeneral serviceGeneral = (ServiceGeneral)command;
+		
+		logger.info("Visu demande de service : " + ToStringBuilder.reflectionToString(serviceGeneral));
+			
+		String lang = (String)request.getSession().getAttribute(WebConstants.LANGUE);
+		
+		MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+		final Map<Object, MultipartFile> files = multiRequest.getFileMap();
+        
+        
+        //Gestion du path des images sur le disque
+		Locale locale = null;
+		if (lang.equals(WebConstants.LANGUE_FR)) {
+			locale = Locale.FRENCH;
+		} else {
+			locale = Locale.ENGLISH;
+		}
+		String path = messageSource.getMessage("service.general.path.contribution.fichier", null, locale);
+		logger.debug("Visu du path : " + path);
+		
+		List<ImageProduit> filesToSend = new ArrayList<ImageProduit>();
+		for (MultipartFile file : files.values()) {
+			if (file != null && !file.isEmpty()) {
+				logger.info("Visu image : " + file.getOriginalFilename());
+				//Gestion des images
+				String newPhotoFileName = FileHelper.manageUploadedImageFile(file, null, path, "");
+				ImageProduit img = new ImageProduit();
+				img.setPhoto(path + newPhotoFileName);
+				img.setPhotoFile(file);
+				filesToSend.add(img);
+			}
+		}
+		serviceGeneral.setFiles(filesToSend);
+		
+		if (serviceGeneral.getCivId() != null && !StringUtils.isEmpty(serviceGeneral.getCivId())) {
+			List<Civilite> civilites = membreService.getAllCivilite(lang);
+			for (Civilite civ : civilites) {
+				if (String.valueOf(civ.getCivId()).equals(serviceGeneral.getCivId())) {
+					serviceGeneral.setCivilite(civ);
+				}
+			}
+		}
+		
+		if (serviceGeneral.getPayId() != null && !StringUtils.isEmpty(serviceGeneral.getPayId())) {
+			List<Pays> pays = membreService.getAllPays(lang);
+			for (Pays p : pays) {
+				if (String.valueOf(p.getPayId()).equals(serviceGeneral.getPayId())) {
+					serviceGeneral.setPays(p);
+				}
+			}
+		}
+		
+		try {
+			Mail mail = mailService.getMail(ParamConstants.MAIL_FORM_GENERAL_ID, lang);
+			this.manageMail(mail, serviceGeneral, lang);
+			mailService.sendMailToAdmin(serviceGeneral.getEmail(), mail, filesToSend);
+			for (ImageProduit img : filesToSend) {
+				FileHelper.deleteFile(img.getPhoto());
+			}
+			
+		} catch (TechnicalException e) {
+			e.printStackTrace();
+			//TODO : enlever ce catch et gérer les technicals dans les pages (error 500 custo)
+		}
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("service", serviceGeneral);
+		
+		return new ModelAndView(this.getSuccessView(), model);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Map referenceData(HttpServletRequest request) throws Exception {
+		
+		logger.debug("In referenceData");
+		
+		String lang = (String)request.getSession().getAttribute(WebConstants.LANGUE); 
+		
+		//gestion des civilites
+		List<Civilite> civilites = membreService.getAllCivilite(lang);
+		request.setAttribute("listeCivilite", civilites);
+		
+		//gestion des pays
+		List<Pays> pays = membreService.getAllPays(lang);
+		request.setAttribute("listePays", pays);
+		
+		return super.referenceData(request);
+	}
+	
+	@Override
+	protected Object formBackingObject(HttpServletRequest request) throws Exception {
+		logger.debug("In formBackingObject");
+		return new ServiceGeneral();
+	}
+	
+	private void manageMail(Mail mail, ServiceGeneral serviceGeneral, String lang) {
+		String contenu = mail.getContenu();
+		if (serviceGeneral.getCivilite() == null) {
+			contenu = contenu.replace("$civ", "");
+		} else {
+			contenu = contenu.replace("$civ", serviceGeneral.getCivilite().getTitre());
+		}
+		contenu = contenu.replace("$prenom", serviceGeneral.getPrenom());
+		contenu = contenu.replace("$nom", serviceGeneral.getNom());
+		contenu = contenu.replace("$lang", lang);
+		if (serviceGeneral.getObjetDemande() == 8) {
+			contenu = contenu.replace("$demande", serviceGeneral.getAutreDemande());
+		} else {
+			contenu = contenu.replace("$demande", serviceGeneral.getObjetDemandeStr());
+		}
+		
+		if (StringUtils.isBlank(serviceGeneral.getTypePersonneStr())) {
+			serviceGeneral.setTypePersonneStr("");
+		}
+		contenu = contenu.replace("$typePersonne", serviceGeneral.getTypePersonneStr());
+		contenu = contenu.replace("$adresse", serviceGeneral.getAdresse());
+		contenu = contenu.replace("$complAdresse", serviceGeneral.getComplementAdresse());
+		contenu = contenu.replace("$ville", serviceGeneral.getVille());
+		contenu = contenu.replace("$codePostal", serviceGeneral.getCodePostal());
+		if (serviceGeneral.getPays() == null) {
+			contenu = contenu.replace("$pays", "");
+		} else {
+			contenu = contenu.replace("$pays", serviceGeneral.getPays().getNom());
+		}
+		contenu = contenu.replace("$email", serviceGeneral.getEmail());
+		contenu = contenu.replace("$question", serviceGeneral.getQuestion());
+		
+		
+		// données Pros
+		contenu = contenu.replace("$organisationPro", serviceGeneral.getOrganisationPro());
+		contenu = contenu.replace("$adressePro", serviceGeneral.getAdressePro());
+		contenu = contenu.replace("$complAdressePro", serviceGeneral.getComplementAdressePro());
+		contenu = contenu.replace("$villePro", serviceGeneral.getVillePro());
+		contenu = contenu.replace("$codePostalPro", serviceGeneral.getCodePostalPro());
+		contenu = contenu.replace("$telPro", serviceGeneral.getTelPro());
+		contenu = contenu.replace("$faxPro", serviceGeneral.getFaxPro());
+		contenu = contenu.replace("$sitePro", serviceGeneral.getSitePro());
+		contenu = contenu.replace("$sadresser", serviceGeneral.getSadresserPro());
+		contenu = contenu.replace("$direction", serviceGeneral.getDirectionPro());
+		
+		mail.setContenu(contenu);
+	}
+	
+	public void setMembreService(MembreService membreService) {
+		this.membreService = membreService;
+	}
+
+	public void setMailService(MailService mailService) {
+		this.mailService = mailService;
+	}
+
+	public void setMessageSource(ResourceBundleMessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+}

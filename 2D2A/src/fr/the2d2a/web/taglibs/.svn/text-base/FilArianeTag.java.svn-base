@@ -1,0 +1,171 @@
+package fr.the2d2a.web.taglibs;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.BodyTagSupport;
+
+import org.apache.log4j.Logger;
+
+import fr.the2d2a.bean.Rubrique;
+import fr.the2d2a.utils.LinkHelper;
+import fr.the2d2a.web.constants.WebConstants;
+
+public class FilArianeTag extends BodyTagSupport {
+
+	private static final long serialVersionUID = 1079355610520015225L;
+
+	private static Logger logger = Logger.getLogger(FilArianeTag.class);
+
+	private String varRetour = "filAriane";
+	private String typeRubrique = "1";
+	
+	private int idRub = 0;
+	
+	@SuppressWarnings("unchecked")
+	public int doStartTag() throws JspException {
+		
+		logger.debug("doStartTag of FilArianeTag with rub Id : " + idRub + " and typeRubrique : " + typeRubrique);
+		
+		HttpServletRequest req = (HttpServletRequest) pageContext.getRequest();
+		req.getAttribute("rubrique");
+		String lang = (String)req.getSession().getAttribute(WebConstants.LANGUE);
+		List<Rubrique> rubriques = new ArrayList<Rubrique>();
+		Map<Integer, Rubrique> menuMap = (Map<Integer, Rubrique>)req.getSession().getAttribute(WebConstants.MENU_ + WebConstants.MAP_ + lang);
+		String root = (String)pageContext.getServletContext().getAttribute(WebConstants.ROOT);
+				
+		Rubrique current = menuMap.get(idRub);
+		if (current != null) {
+			while (current.getRub_rubId() > 0) {
+				logger.info("Current : " + current.getFriendlyName());
+				String link = LinkHelper.createLinkFromRubrique(menuMap, current.getRubId(), root, typeRubrique);
+				current.setLink(link);
+				rubriques.add(0, current);
+				current = menuMap.get(current.getRub_rubId());
+			}
+			logger.debug("Current : " + current.getFriendlyName());
+			String link = LinkHelper.createLinkFromRubrique(menuMap, current.getRubId(), root, typeRubrique);
+			current.setLink(link);
+			rubriques.add(0, current);
+		} else {
+			//cas spécifiques (pas ds une boutique)
+			logger.debug(req.getRequestURI());
+			Rubrique mito = new Rubrique();
+			if (req.getRequestURI().endsWith("inscription.jsp")) {
+				mito.setNom("Devenir Membre");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("successInscription.jsp")) {
+				mito.setNom("Devenir Membre - Identification");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("activation.jsp")) {
+				mito.setNom("Devenir Membre - Bienvenue");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("conditionsGenerales.jsp")) {
+				mito.setNom("Conditions générales");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("monCompte.jsp")) {
+				mito.setNom("Mon compte");
+				rubriques.add(mito);
+			}
+//			if (req.getRequestURI().endsWith("monPanier.jsp")) {
+//				mito.setNom("Mon panier");
+//				rubriques.add(mito);
+//			}
+//			if (req.getRequestURI().endsWith("monPanierRecapitulatif.jsp")) {
+//				mito.setNom("Mon panier  - 2ème étape : Récapitulatif de la commande");
+//				rubriques.add(mito);
+//			}
+//			if (req.getRequestURI().endsWith("monPanierPaiement.jsp")) {
+//				mito.setNom("Mon panier  - 3ème étape : Paiement de la commande");
+//				rubriques.add(mito);
+//			}
+//			if (req.getRequestURI().endsWith("monPanierConf.jsp")) {
+//				mito.setNom("Mon panier  - 4ème étape : Confirmation de la commande");
+//				rubriques.add(mito);
+//			}
+			if (req.getRequestURI().endsWith("planSite.jsp")) {
+				mito.setNom("Plan du site");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("calendrier.jsp")) {
+				mito.setNom("Actualités - Calendrier");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("presse.jsp")) {
+				mito.setNom("Actualités - Coin Presse");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("agenda.jsp")) {
+				mito.setNom("Actualités - Agenda");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("bibliotheque.jsp")) {
+				mito.setNom("Actualités - Bibliothèque");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("depot.jsp")) {
+				mito.setNom("Services - Déposez vos objets");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("inviterAmi.jsp")) {
+				mito.setNom("Inviter un ami");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("mesAchats.jsp")) {
+				mito.setNom("Mon compte - Mes achats");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("detailCommande.jsp")) {
+				mito.setNom("Mon compte - Mes achats - Détail d'une commande");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("serviceGeneral.jsp")) {
+				mito.setNom("Services - Formulaire général");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("serviceOuvrage.jsp")) {
+				mito.setNom("Services - Formulaire ouvrage");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("serviceEvenement.jsp")) {
+				mito.setNom("Services - Formulaire évènement");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("serviceArchives.jsp")) {
+				mito.setNom("Services - Formulaire archives");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("recherche.jsp")) {
+				mito.setNom("Services - Recherche avancée");
+				rubriques.add(mito);
+			}
+			if (req.getRequestURI().endsWith("location.jsp") || req.getRequestURI().endsWith("locationValidation.jsp")) {
+				mito.setNom("Services - Demande de location");
+				rubriques.add(mito);
+			}
+		}
+		
+		pageContext.setAttribute(varRetour, rubriques);
+		
+		return SKIP_BODY;
+	}
+
+	public void setVarRetour(String varRetour) {
+		this.varRetour = varRetour;
+	}
+
+	public void setIdRub(int idRub) {
+		this.idRub = idRub;
+	}
+
+	public void setTypeRubrique(String typeRubrique) {
+		this.typeRubrique = typeRubrique;
+	}
+}

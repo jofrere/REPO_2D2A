@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	
+	<typeAlias type="fr.the2d2a.bean.Membre" alias="membre"/>
+	<typeAlias type="fr.the2d2a.bean.Adresse" alias="adresse"/>
+	<typeAlias type="fr.the2d2a.bean.Profession" alias="profession"/>
+	<typeAlias type="fr.the2d2a.bean.Civilite" alias="civilite"/>
+	
+	<resultMap class="membre" id="membre">
+		<result property="id" column="ID"/>
+		<result property="proId" column="PRO_ID"/>
+		<result property="civId" column="CIV_ID"/>
+		<result property="login" column="LOGIN"/>
+		<result property="password" column="PASS"/>
+		<result property="prenom" column="PRENOM"/>
+		<result property="nom" column="NOM"/>
+		<result property="jourNaiss" column="JOURNAISS"/>
+		<result property="moisNaiss" column="MOISNAISS"/>
+		<result property="anneeNaiss" column="ANNEENAISS"/>
+		<result property="centreInteret" column="CENTREINTERET"/>
+		<result property="newsletter" column="NEWSLETTER"/>
+		<result property="typeActivation" column="TYPEACTIVATION"/>
+		<result property="dateInscription" column="DATEINSCRIPTION" typeHandler="fr.the2d2a.utils.BigIntegerTypeHandler"/>
+		<!-- <result property="adresses" column="ID" select="getAdressesByMembreId"/> -->
+	</resultMap>
+	
+	<resultMap class="adresse" id="adresse">
+		<result property="id" column="ID"/>
+		<result property="paysId" column="PAY_ID"/>
+		<result property="civId" column="CIV_ID"/>
+		<result property="membreId" column="MEM_ID"/>
+		<result property="nomAdresse" column="NOMADRESSE"/>
+		<result property="prenom" column="PRENOM"/>
+		<result property="nom" column="NOM"/>
+		<result property="societe" column="SOCIETE"/>
+		<result property="adresse" column="ADRESSE"/>
+		<result property="complementAdresse" column="COMPLEMENT_ADRESSE"/>
+		<result property="codePostal" column="CODEPOSTAL"/>
+		<result property="ville" column="VILLE"/>
+		<result property="telPrive" column="TELPRIVE"/>
+		<result property="telBureau" column="TELBUREAU"/>
+		<result property="fax" column="FAX"/>
+		<result property="typeAdresse" column="TYPE_ADRESSE"/>
+		<result property="pays" column="PAY_ID" select="getPaysById"/>		
+	</resultMap>
+	
+	<resultMap class="civilite" id="civilite">
+		<result property="id" column="ID"/>
+		<result property="titre" column="Titre"/>		
+	</resultMap>
+	
+	<resultMap class="profession" id="profession">
+		<result property="id" column="ID"/>
+		<result property="titre" column="Titre"/>		
+	</resultMap>
+	
+	<select id="getAllCivilite" resultMap="civilite">
+        select CL.id, CL.titre
+        from CIVILITE_$lang$ CL
+    </select>
+    
+    <select id="getAllProfession" resultMap="profession">
+        select PL.id, PL.titre
+        from PROFESSION_$lang$ PL
+    </select>
+    
+    <select id="getCiviliteByMembreId" resultMap="civilite">
+        select CL.id, CL.titre
+        from CIVILITE_$lang$ CL, MEMBER M
+        where M.CIV_ID = CL.ID
+        and M.ID = #id#
+    </select>
+		
+	<select id="getProfessionByMembreId" resultMap="profession">
+        select PL.id, PL.titre
+        from PROFESSION_$lang$ PL, MEMBER M
+        where M.CIV_ID = PL.ID
+        and M.ID = #id#
+    </select>
+    
+    <insert id="insertMembre" parameterClass="fr.the2d2a.bean.Membre">
+        insert into MEMBER(Id, Pro_id, Civ_id, Login, Pass, Prenom, nom, jourNaiss, moisNaiss, anneeNaiss, centreInteret, newsletter, typeActivation, dateInscription)
+        values (#id#, #proId#, #civId#, #login#, #password#, #prenom#, #nom#, #jourNaiss#, #moisNaiss#, #anneeNaiss#, #centreInteret#, #newsletter#, 0, #dateInscription#)
+        <selectKey keyProperty="id">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <insert id="insertAdresse" parameterClass="fr.the2d2a.bean.Adresse">
+        insert into ADRESSE(Id, Pay_id, Civ_id, Mem_id, NomAdresse, Prenom, nom, societe, adresse, complement_adresse, codePostal, ville, telPrive, telBureau, fax)
+        values (#id#, #paysId#, #civId#, #membreId#, #nomAdresse#, #prenom#, #nom#, #societe#, #adresse#, #complementAdresse#, #codePostal#, #ville#, #telPrive#, #telBureau#, #fax#)
+        <selectKey keyProperty="id">
+			select LAST_INSERT_ID() as value
+		</selectKey>
+    </insert>
+    
+    <update id="activateMember">
+    	update MEMBER
+    	set typeActivation = 1
+    	where id = #id#
+    	and login = #login#
+    	and dateInscription = #dateInscription#
+    </update>
+    
+    <select id="authenticateMember" resultMap="membre">
+    	select * 
+    	from MEMBER
+    	where login = #login#
+    	and pass = #password#
+    	and typeActivation = 1
+    </select>
+    
+</sqlMap>

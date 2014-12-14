@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;2D2A/WebContent/WEB-INF/jsp/left_menu/acualites&apos; to &apos;actualites&apos;" description="Rename resource &apos;acualites&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="WebContent/WEB-INF/jsp/left_menu/acualites" name="actualites" stamp="1241269370656" updateReferences="true"/>
+</session>

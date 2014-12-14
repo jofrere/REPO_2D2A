@@ -1,0 +1,189 @@
+body  {
+	font: 100% Verdana, Arial, Helvetica, sans-serif;
+	background: #ffffff;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	color: #000000;
+}
+
+.page #container { 
+	width: 1024px;
+	background: #FFFFFF;
+	margin: 0 auto; /* les marges automatiques (et dotées d'une largeur positive) centrent la page */
+	/*border: 1px solid #000000;*/
+	text-align: left; /* ce paramétrage annule le paramètre text-align: center de l'élément body. */
+	min-height: 800px;	
+}
+
+.page #header {
+	margin: 0 0 0 0; 
+	padding: 0 0 0 0; 
+	background-image: url("../img/header/bg_banniere_repeater.gif");
+	background-repeat: repeat-x;
+	width: 100%;
+	height: 64px;
+}
+
+#authenticationFailed {
+	vertical-align: top;
+	float : right;
+	font-size: 60%;
+	color: red;
+	font-weight: bold;
+	text-align: right;
+}
+
+#authentication { 
+	vertical-align: top;
+	float : right;
+	font-size: 80%;
+	color: #ffffff;
+	font-weight: bold;
+	text-align: right;
+}
+
+#form_athentification {
+	margin: 0 0 0 0;
+
+}
+#authentication input {
+	height: 15px;
+	font-size: 70%;
+	color: #000000;
+	background: #ffffff;
+	border: 1px solid #000000;
+}
+
+.page #top_menu {
+	background-color: #B8B8B8;
+	height: 25px;
+	padding: 5 5 5 5;
+	margin: 0 0 0 0; 
+}
+
+.page #top_menu_bas {
+	background-color: #E0E0E0;
+	height: 30px;
+	padding: 5 5 5 5;
+	margin: 0 0 0 0;  
+}
+
+.page #left_menu {
+	background-image: url("../img/global/bg_left_right_global.gif");
+	background-repeat: repeat-x;
+	float: left; 	
+	min-height: 580px;
+	width: 150px;
+	padding: 15px 0;	
+}
+
+.page #right_menu {
+	background-image: url("../img/global/bg_left_right_global.gif");
+	background-repeat: repeat-x;
+	float: right;
+	min-height: 580px;
+	width: 150px;	
+	padding: 15px 0;	
+}
+
+.page #center {
+	margin: 0 155px 0 155px;
+	background: #ffffff;
+	/*border: 1px black solid;*/
+	/*min-height: 580px;*/
+}
+
+.page #center_private {
+	margin: 0 155px 0 155px; 
+	width: 850px;
+}
+
+.page #center_without_menu {
+	margin: 0 0 0 0; 
+}
+
+#filAriane {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #DDDDDD;
+	width: 100%;
+}
+
+#filAriane a:link {
+	text-decoration: none;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #DDDDDD;	
+}
+#filAriane a:visited {
+	text-decoration: none;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #DDDDDD;
+}
+#filAriane a:active {
+	text-decoration: none;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #DDDDDD;
+}
+#filAriane a:hover {
+	text-decoration: underline;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #DDDDDD;
+}
+
+
+/* Diverses classes à réutiliser */
+.fltrt { /* cette classe permet de rendre flottant le côté droit d'un élément dans la page. L'élément flottant doit précéder l'élément à côté duquel il doit se trouver dans la page. */
+	float: right;
+	margin-left: 8px;
+}
+
+.fltlft { /* cette classe permet de rendre flottant le côté gauche d'un élément dans la page */
+	float: left;
+	margin-right: 8px;
+}
+
+.clearfloat { /* cette classe doit être placée pour un élément div ou break et doit être l'élément final avant la balise de fin d'un conteneur qui doit contenir entièrement un élément flottant */
+	clear:both;
+	height:0px;
+	font-size: 1px;
+	line-height: 0px;
+}
+
+.div_clear {
+	clear: both;
+	width: 0px;
+	height: 0px;
+}
+
+#bulle { 
+	position: absolute;
+	visibility: hidden;  
+	font-size:12px;
+}
+
+.info {
+	border:1px solid #666666;
+	color:#666666;
+	background-color:#FFFFFF;
+	font-family:"trebuchet MS";	
+}
+
+#tooltip_link:link {text-decoration: none}
+#tooltip_link:visited {text-decoration: none}
+#tooltip_link:active {text-decoration: none}
+#tooltip_link:hover {text-decoration: none}
+
+.todo {
+	color:#FF0000;
+	border: 1px solid #FF0000;
+}

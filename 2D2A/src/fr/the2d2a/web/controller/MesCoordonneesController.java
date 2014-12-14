@@ -1,0 +1,144 @@
+package fr.the2d2a.web.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.validation.BindException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.springframework.web.servlet.view.RedirectView;
+
+import fr.the2d2a.bean.Adresse;
+import fr.the2d2a.bean.Civilite;
+import fr.the2d2a.bean.Membre;
+import fr.the2d2a.bean.Pays;
+import fr.the2d2a.bean.Profession;
+import fr.the2d2a.exception.FonctionalException;
+import fr.the2d2a.exception.TechnicalException;
+import fr.the2d2a.service.MembreService;
+import fr.the2d2a.web.constants.WebConstants;
+
+public class MesCoordonneesController extends SimpleFormController {
+
+	private static Logger logger = Logger.getLogger(MesCoordonneesController.class);
+	
+	private MembreService membreService;
+	
+	protected ModelAndView onSubmit(HttpServletRequest request,
+			HttpServletResponse response, Object command, BindException errors)
+			throws Exception {
+		logger.debug("In onSubmit de MesCoordonneesController");
+		
+		Membre membre = (Membre)command;
+		
+		
+		if (membre.getAction() == 1) {
+			//update adresse
+			String idAdresse = request.getParameter("idAdresse");
+			request.getSession().setAttribute("idAdresse", idAdresse);
+			return new ModelAndView(new RedirectView("./mesAdresses.htm"));
+		}
+		else if (membre.getAction() == 2) {
+			//delete adresse
+			String idAdresse = request.getParameter("idAdresse");
+			membreService.deleteAdresse(idAdresse);
+			int index = 0, i = 0;
+			for (Adresse adr : membre.getAdresses()) {
+				if (adr.getAdrId() == Integer.parseInt(idAdresse)) {
+					index = i;
+				}
+				i++;
+			}
+			membre.getAdresses().remove(index);
+		} 
+		else {
+			//modif membre
+			try {
+				if (StringUtils.isEmpty(membre.getNewLogin()))
+					membre.setNewLogin(membre.getLogin());
+				if (StringUtils.isEmpty(membre.getNewPassword()))
+					membre.setNewPassword(membre.getPassword());
+				membreService.updateMembre(membre);
+				
+				//on clean le bean
+				membre.setLogin(membre.getNewLogin());
+				membre.setNewLogin("");
+				membre.setNewLoginConf("");				
+				
+				membre.setPassword(membre.getNewPassword());
+				membre.setNewPassword("");
+				membre.setNewPasswordConf("");				
+				
+			} catch (FonctionalException e) {
+				logger.info("FonctionalException : Duplicate Entry");
+				errors.rejectValue("login", "inscription.error.duplicateEntry", null, null);
+				return super.showForm(request, response, errors);
+			} catch (TechnicalException e) {
+				logger.error("TechnicalException : " + e.getMessage());
+				//TODO : gérer Exception
+			}
+		}
+		
+		this.referenceData(request);
+		
+		//on clean le modele
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("membre", membre);
+		
+		//on clean la session
+		request.getSession().removeAttribute(WebConstants.AUTHENTICATED_MEMBER);
+		request.getSession().setAttribute(WebConstants.AUTHENTICATED_MEMBER, membre);
+		
+		return new ModelAndView(this.getSuccessView(), model);		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Map referenceData(HttpServletRequest request) throws Exception {
+		
+		logger.debug("In referenceData");
+		
+		String lang = (String)request.getSession().getAttribute(WebConstants.LANGUE); 
+		
+		//gestion des civilites
+		List<Civilite> civilites = membreService.getAllCivilite(lang);
+		request.setAttribute("listeCivilite", civilites);
+		
+		//gestion des professions
+		List<Profession> professions = membreService.getAllProfession(lang);
+		request.setAttribute("listeProfession", professions);
+		
+		//gestion des pays
+		List<Pays> pays = membreService.getAllPays(lang);
+		request.setAttribute("listePays", pays);
+		
+		return super.referenceData(request);
+	}
+	
+	@Override
+	protected Object formBackingObject(HttpServletRequest request) throws Exception {
+		logger.debug("In formBackingObject");
+		Membre membre = (Membre) request.getSession().getAttribute(WebConstants.AUTHENTICATED_MEMBER);
+		
+		membre.setNewLogin("");
+		membre.setNewLoginConf("");				
+		
+		membre.setNewPassword("");
+		membre.setNewPasswordConf("");
+		
+		//request.getSession().setAttribute(WebConstants.AUTHENTICATED_MEMBER, membre);
+		
+		return membre;
+	}
+	
+	public void setMembreService(MembreService membreService) {
+		this.membreService = membreService;
+	}
+	
+}

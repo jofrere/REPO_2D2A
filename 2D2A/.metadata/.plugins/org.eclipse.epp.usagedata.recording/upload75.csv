@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227127742617
+activated,view,org.eclipse.wst.server.ui,1.1.2.v20080916,org.eclipse.wst.server.ui.ServersView,1227127744008
+executed,command,org.eclipse.wst.server.ui,1.1.2.v20080916,org.eclipse.wst.server.publish,1227127744601
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227127745883
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227127797726
+activated,editor,org.eclipse.wst.css.ui,1.0.301.v200807170605,org.eclipse.wst.css.core.csssource.source,1227127799398
+activated,editor,org.eclipse.jst.jsp.ui,1.1.310.v200809120122,org.eclipse.jst.jsp.core.jspsource.source,1227127804289
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.cut,1227127806742
+no handler,command,org.eclipse.datatools.sqltools.result,,org.eclipse.datatools.sqltools.result.removeAllInstances,1227127809148
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.paste,1227127812851
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.paste,1227127815726
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.undo,1227127816664
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.undo,1227127816992
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.undo,1227127817336
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.undo,1227127817695
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.undo,1227127818148
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.cut,1227127819351
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.delete,1227127821211
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.paste,1227127823945
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.file.save,1227127824945
+activated,view,org.eclipse.wst.server.ui,1.1.2.v20080916,org.eclipse.wst.server.ui.ServersView,1227127826086
+executed,command,org.eclipse.wst.server.ui,1.1.2.v20080916,org.eclipse.wst.server.publish,1227127826211
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227127827086
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227131891195
+activated,view,org.eclipse.ui.console,3.3.0.v20080529-1300,org.eclipse.ui.console.ConsoleView,1227131892961

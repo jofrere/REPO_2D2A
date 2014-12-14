@@ -1,0 +1,125 @@
+<%@ include file="../../head/include.jsp" %>
+<script type="text/javascript" src="/${ROOT}/resources/js/print.js"></script> 
+
+<!-- startEnteteFiche -->
+<div id="enteteFiche">
+
+	<p class="b brown fs13 mt5"><spring:message code="bibliotheque.nom" /></p>
+    <!-- endTitleFiche -->
+    <!-- startInfoArticles -->
+       <div class="pagination infoCalendrier">
+           Nombre de livres <span class="magenta b">[<c:out value="${nbOuvrages}"/>]</span>
+		
+			<c:if test="${not empty pager}">
+				<br/>
+	           	<spring:message code="evt.nbPages"/>
+	           	<c:if test="${currentPage != 1}"><a href="#" onclick="document.page<c:out value="${currentPage-1}"/>.submit();" style="font-size: 16px;">&lt;</a></c:if>
+		    	<c:forEach begin="1" end="${nbPages}" varStatus="v">
+		    		<c:choose>
+			    		<c:when test="${v.count == currentPage}">
+			    			<span class="first sel">[<c:out value="${v.count}"/>]</span>
+			    		</c:when>
+			    		<c:otherwise>
+			    			<form style="display: inline;" name="page<c:out value="${v.count}"/>" action="" method="post">
+		    					<input type="hidden" name="rubrique" value="<c:out value="${rubId}"/>" />
+		    					<input type="hidden" name="pageIndex" value="<c:out value="${v.count-1}"/>" />
+		    					<input type="hidden" name="selectedDate" value="<c:out value="${filter.selectedDate}"/>" />
+		    					<a href="#" onclick="document.page<c:out value="${v.count}"/>.submit();"><c:out value="${v.count}"/></a>
+		    				</form>
+			    		</c:otherwise>
+		    		</c:choose>
+		    		<c:if test="${not v.last}"><img src="/${ROOT}/resources/pic/crawlBar/tiret2.jpg"/></c:if>
+		    	</c:forEach>
+		    	<c:if test="${currentPage != nbPages}"><a href="#" onclick="document.page<c:out value="${currentPage+1}"/>.submit();" style="font-size: 16px;">&gt;</a></c:if>
+  			</c:if>
+       </div>
+       <!-- endInfoArticles -->
+    <!-- startActionPage -->
+	<c:if test="${empty param['imprimer']}">
+	    <div id="actionPage">
+	        <a href="#" onclick="javascript:imprime_zone('Imprimer', 'ficheCorps', window.location);" class="imprimer" title="Imprimer"></a>
+	    </div>
+	</c:if>
+    <!-- startActionPage -->
+    
+</div>
+
+<div id="separationEnteteFiche"></div>
+
+<!-- startCorpsFiche -->
+<div id="ficheCorps">
+	<!-- startLeftColumn -->
+	<c:forEach var="ouv" items="${ouvrages}" varStatus="i">
+	
+		<div class="leftColumn">
+		<h1><c:out value="${ouv.titre}" /></h1>
+			<div class="zoomProduit">
+	    		<c:forEach var="image" items="${ouv.images}" varStatus="i" end="2">
+	    			<img class="borderimage" src="/${ROOT}/<c:out value="${image.pathPhoto}"/>" width="200" height="200" alt="calendrier" />&nbsp;
+	    		</c:forEach>
+	    	</div>
+    	</div>
+	    <!-- startRightColumn -->
+	
+	    <div class="rightColumn">
+	        <table border="0" cellpadding="0" class="description rightcolumnSize">
+		        <tr>
+			        <td class="lib"><spring:message code="ouv.reference"/></td>
+			        <td class="description"><c:out value="${ouv.reference}" /></td>
+		        </tr>
+		        <tr>
+			        <td class="lib"><spring:message code="biblio.titre"/></td>
+			        <td class="description"><c:out value="${ouv.titre}" /></td>
+		        </tr>
+		        <tr>
+			        <td class="lib"><spring:message code="service.ouvrage.auteur"/></td>
+			        <td class="description"><c:out value="${ouv.auteur}" /></td>
+		        </tr>
+		        <tr>
+			        <td class="lib"><spring:message code="ouv.parution"/></td>
+			        <td class="description"><c:out value="${ouv.annee}" /></td>
+		        </tr>
+		        <tr>
+			        <td class="lib"><spring:message code="ouv.theme"/></td>
+			        <td class="description"><c:out value="${ouv.theme}" /></td>
+		        </tr>
+		        <tr>
+			        <td class="lib"><spring:message code="ouv.sommaire"/></td>
+			        <td class="description"><c:out value="${ouv.sommaire}" /></td>
+		        </tr>
+		        <tr>
+			        <td class="lib"><spring:message code="ouv.langue"/></td>
+			        <td class="description"><c:out value="${ouv.langue}" /></td>
+		        </tr>
+		        <tr>
+			        <td class="lib"><spring:message code="ouv.format"/></td>
+			        <td class="description"><c:out value="${ouv.format}" /></td>
+		        </tr>
+		        <tr>
+			        <td class="lib"><spring:message code="ouv.information"/></td>
+			        <td class="description"><c:out value="${ouv.information}" /></td>
+		        </tr>
+		        <tr>
+			        <td class="lib"><spring:message code="ouv.prix"/></td>
+			        <td class="description"><span class="prix"><c:out value="${ouv.prixFormate}" /></span></td>	
+		        </tr>
+	        </table>
+	        <div class="descriptionBouton">
+		        <form name="ajoutPanier" id="ajoutPanier<c:out value="${ouv.id}"/>" action="" method="POST">
+		        	<spring:bind path="ouvrageForm.ouvId">
+		   				<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${ouv.id}"/>" />
+		   			</spring:bind>
+		   			<%--<spring:bind path="ouvrageForm.pageIndex">
+		   				<input type="hidden" name="<c:out value="${status.expression}"/>" value="<c:out value="${pageIndex}"/>" />
+		   			</spring:bind>--%>
+		   			<spring:bind path="ouvrageForm.action">
+		   				<input type="hidden" name="<c:out value="${status.expression}"/>" value="1" />
+		   			</spring:bind>
+		   		</form>
+	        	<a class="bouton" href="#" onclick="document.getElementById('ajoutPanier<c:out value="${ouv.id}"/>').submit();" title="Ajouter au panier"><span><span><spring:message code="produit.ajoutPanier"/></span></span></a>
+        	</div>
+	    </div>
+	    <!-- endRightColumn -->
+		<p class="XP mt20 pt20"></p>
+	</c:forEach>
+</div>

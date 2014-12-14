@@ -1,0 +1,63 @@
+package fr.the2d2a.web.controller;
+
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
+import fr.the2d2a.bean.Mail;
+import fr.the2d2a.bean.Membre;
+import fr.the2d2a.service.MailService;
+import fr.the2d2a.service.MembreService;
+
+public class ActivationController implements Controller {
+	
+	private static Logger logger = Logger.getLogger(ActivationController.class);
+
+	private MembreService membreService;
+	private MailService mailService;
+
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		logger.debug("In activationController");
+		
+		String id = request.getParameter("id");
+		String dateInscription = request.getParameter("dateinscription");
+		String lang = request.getParameter("LANGUE");
+		
+		logger.debug("Visu des params : id = " + id + ", date : " + dateInscription);
+		
+		membreService.activateMember(id, new BigInteger(dateInscription));
+		
+		Membre membre = membreService.getMembreById(lang, id);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("membre", membre);
+		
+		return new ModelAndView("activation", model);
+	}
+	
+	private void manageMail(Mail mail, Membre membre, String lang) {
+		String contenu = mail.getContenu();
+		contenu = contenu.replace("$civ", membre.getCivilite().getTitre());
+		contenu = contenu.replace("$prenom", membre.getPrenom());
+		contenu = contenu.replace("$nom", membre.getNom());
+		contenu = contenu.replace("$login", membre.getLogin());
+		contenu = contenu.replace("$password", membre.getPassword());
+		mail.setContenu(contenu);
+	}
+
+	public void setMembreService(MembreService membreService) {
+		this.membreService = membreService;
+	}
+
+	public void setMailService(MailService mailService) {
+		this.mailService = mailService;
+	}
+}

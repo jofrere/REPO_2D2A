@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;evtForm&apos; in &apos;fr.the2d2a.web.controller.BibliothequeController.getModel(...)&apos; to &apos;ouvForm&apos;&#x0D;&#x0A;- Original project: &apos;2D2A&apos;&#x0D;&#x0A;- Original element: &apos;fr.the2d2a.web.controller.BibliothequeController.getModel(HttpServletRequest, OuvrageForm).evtForm&apos;&#x0D;&#x0A;- Renamed element: &apos;evtForm&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;evtForm&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;fr.the2d2a.web.controller{BibliothequeController.java[BibliothequeController~getModel~QHttpServletRequest;~QOuvrageForm;@evtForm!1585!1603!1597!1603!QOuvrageForm;" name="ouvForm" references="true" stamp="1271268844858" version="1.0"/>
+</session>

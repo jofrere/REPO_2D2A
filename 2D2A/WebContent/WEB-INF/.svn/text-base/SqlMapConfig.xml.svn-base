@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings useStatementNamespaces="true" />
+
+	<typeHandler javaType="java.math.BigInteger" callback="fr.the2d2a.utils.BigIntegerTypeHandler"/>
+	
+    <sqlMap resource="fr/the2d2a/dao/ibatis/rubrique.xml"/>
+    <sqlMap resource="fr/the2d2a/dao/ibatis/accueil.xml"/>
+    <sqlMap resource="fr/the2d2a/dao/ibatis/produit.xml"/>
+    <sqlMap resource="fr/the2d2a/dao/ibatis/membre.xml"/>
+    <sqlMap resource="fr/the2d2a/dao/ibatis/pays.xml"/>
+  	<sqlMap resource="fr/the2d2a/dao/ibatis/mail.xml"/>
+  	<sqlMap resource="fr/the2d2a/dao/ibatis/commande.xml"/>
+  	<sqlMap resource="fr/the2d2a/dao/ibatis/evenement.xml"/>
+  	<sqlMap resource="fr/the2d2a/dao/ibatis/ouvrage.xml"/>
+  	<sqlMap resource="fr/the2d2a/dao/ibatis/recherche.xml"/>
+  	<sqlMap resource="fr/the2d2a/dao/ibatis/designer.xml"/>
+	<sqlMap resource="fr/the2d2a/dao/ibatis/editeur.xml"/>
+</sqlMapConfig>

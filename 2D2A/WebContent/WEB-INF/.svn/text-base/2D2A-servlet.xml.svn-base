@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/util 
+       http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+	
+	<bean id="localeChangeInterceptor" class="fr.the2d2a.web.interceptor.LocaleChangeInterceptor">
+    	<property name="paramName" value="LANGUE"/>
+	</bean>
+	
+	<bean id="authenticationInterceptor" class="fr.the2d2a.web.interceptor.AuthenticationInterceptor">
+		<property name="membreService" ref="membreService"/>
+	</bean>
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+	 
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	    <property name="interceptors">
+	        <list>
+	            <ref bean="localeChangeInterceptor"/>
+	            <ref bean="authenticationInterceptor"/>
+	        </list>
+	    </property>
+	    <property name="mappings">
+	    	<value>
+	    		/**/accueil.htm=accueilController
+	    		/**/boutique.htm=boutiqueController
+	    		/**/produit.htm=produitController
+	    		/depot.htm=depotController
+	    		/devenirMembre.htm=inscriptionController
+	    		/delog.htm=delogController
+	    		/activation.htm=activationController
+	    		/conditionsGenerales.htm=conditionsController
+	    		/monCompte.htm=monCompteController
+	    		/mesCoordonnees.htm=mesCoordonneesController
+	    		/mesAdresses.htm=mesAdressesController
+	    		/mesAchats.htm=mesAchatsController
+	    		/detailCommande.htm=commandeController
+	    		/monPanier.htm=monPanierController
+	    		/monPanierLivraison.htm=monPanierLivraisonController
+	    		/monPanierResume.htm=monPanierResumeController
+	    		/monPanierPaiement.htm=monPanierPaiementController
+	    		/**/calendrier.htm=calendrierController
+	    		/**/agenda.htm=agendaController
+	    		/**/coinpresse.htm=presseController
+	    		/**/bibliotheque.htm=bibliothequeController
+	    		/quiSommesNous.htm=pageStatiqueController
+	    		/planSite.htm=planSiteController
+	    		/infosLegales.htm=pageStatiqueController
+	    		/aide.htm=pageStatiqueController
+	    		/recherche.htm=rechercheController
+	    		/inviterAmi.htm=inviterAmiController
+	    		/desinscription.htm=desinscriptionController
+	    		/**/archives.htm=archivesController
+	    		/**/artiste.htm=archivesController
+	    		/service/formulaireGeneral.htm=serviceGeneralController
+	    		/service/formulaireEvenement.htm=serviceEvenementController
+	    		/service/formulaireOuvrage.htm=serviceOuvrageController
+	    		/service/formulaireArchives.htm=serviceArchivesController
+	    		/service/location.htm=locationController
+	    		/service/locationValidation.htm=locationValidationController
+	    		/**/*.htm=defaultController
+	    	</value>
+	    </property>
+	</bean>
+	
+	<!-- Messages -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages"/>
+    </bean>
+	
+	<!-- Controllers -->
+    <bean id="accueilController" class="fr.the2d2a.web.controller.AccueilController">
+    	<property name="successView" value="accueil" />
+    	<property name="commandName" value="accueil"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Accueil"/>
+    	<property name="accueilService" ref="accueilService"/>
+        <property name="produitService" ref="produitService"/>
+        <property name="rubriqueService" ref="rubriqueService"/>
+    </bean>
+    
+    <bean id="depotController" class="fr.the2d2a.web.controller.DepotController">
+    	<property name="commandName" value="depot"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Depot"/>
+        <property name="successView" value="successDepot" />
+        <property name="formView" value="depot" />
+        <property name="validator">
+            <bean class="fr.the2d2a.web.validator.DepotValidator"/>
+        </property>
+        <property name="messageSource" ref="messageSource"/>
+        <property name="mailService" ref="mailService"/>
+    </bean>
+    
+    <bean id="boutiqueController" class="fr.the2d2a.web.controller.BoutiqueController">
+        <property name="successView" value="boutique" />
+        <property name="produitService" ref="produitService"/>
+    </bean>
+    
+    <bean id="produitController" class="fr.the2d2a.web.controller.ProduitController">
+    	<property name="commandName" value="produitForm"/>
+        <property name="commandClass" value="fr.the2d2a.beanform.ProduitForm"/>
+        <property name="successView" value="produit" />
+        <property name="produitService" ref="produitService"/>
+        <property name="rubriqueService" ref="rubriqueService"/>
+    </bean>
+    
+    <bean id="defaultController" class="fr.the2d2a.web.controller.DefaultController"/>
+    
+    <bean id="inscriptionController" class="fr.the2d2a.web.controller.InscriptionController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="membre"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Membre"/>
+        <property name="successView" value="successInscription" />
+        <property name="formView" value="inscription" />
+        <property name="membreService" ref="membreService"/>
+        <property name="validator">
+            <bean class="fr.the2d2a.web.validator.InscriptionValidator"/>
+        </property>
+        <property name="mailService" ref="mailService"/>
+    </bean>
+    
+    <bean id="delogController" class="fr.the2d2a.web.controller.DelogController"/>
+    
+    <bean id="activationController" class="fr.the2d2a.web.controller.ActivationController">
+    	<property name="membreService" ref="membreService"/>
+    	<property name="mailService" ref="mailService"/>
+    </bean>
+    
+    <bean id="conditionsController" class="fr.the2d2a.web.controller.ConditionsController">
+    	<property name="mailService" ref="mailService"/>
+    </bean>
+    
+    <bean id="monCompteController" class="fr.the2d2a.web.controller.MonCompteController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="membre"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Membre"/>
+        <property name="successView" value="monCompte" />
+    	<property name="membreService" ref="membreService"/>
+    	<property name="mailService" ref="mailService"/>
+    </bean>
+    
+    <bean id="mesCoordonneesController" class="fr.the2d2a.web.controller.MesCoordonneesController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="membre"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Membre"/>
+        <property name="successView" value="mesCoordonnees" />
+        <property name="formView" value="mesCoordonnees"/>
+    	<property name="membreService" ref="membreService"/>
+    	<property name="validator">
+            <bean class="fr.the2d2a.web.validator.MesCoordonneesValidator"/>
+        </property>
+    </bean>
+    
+    <bean id="mesAchatsController" class="fr.the2d2a.web.controller.MesAchatsController">
+    	<property name="commandeService" ref="commandeService"/>
+    </bean>
+    
+    <bean id="commandeController" class="fr.the2d2a.web.controller.CommandeController">
+    	<property name="commandeService" ref="commandeService"/>
+    	<property name="produitService" ref="produitService"/>
+    	<property name="presseService" ref="presseService"/>
+    </bean>
+    
+    <bean id="mesAdressesController" class="fr.the2d2a.web.controller.MesAdressesController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="adresse"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Adresse"/>
+        <property name="successView" value="./mesCoordonnees.htm" />
+        <property name="formView" value="mesAdresses"/>
+    	<property name="membreService" ref="membreService"/>
+    	<property name="validator">
+            <bean class="fr.the2d2a.web.validator.MesAdressesValidator"/>
+        </property>
+    </bean>
+    
+    <bean id="monPanierController" class="fr.the2d2a.web.controller.MonPanierController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="monPanier"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Panier"/>
+        <property name="successView" value="./monPanierLivraison.htm" />
+        <property name="formView" value="monPanier"/>
+        <property name="produitService" ref="produitService"/>
+        <property name="membreService" ref="membreService"/>
+    </bean>
+    
+    <bean id="monPanierLivraisonController" class="fr.the2d2a.web.controller.MonPanierLivraisonController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="maCommande"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Commande"/>
+        <property name="successView" value="./monPanierResume.htm" />
+        <property name="formView" value="monPanierLivraison"/>
+        <property name="validator">
+            <bean class="fr.the2d2a.web.validator.MonPanierLivraisonValidator"/>
+        </property>
+    </bean>
+    
+    <bean id="monPanierResumeController" class="fr.the2d2a.web.controller.MonPanierResumeController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="maCommande"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Commande"/>
+        <property name="successView" value="./monPanierPaiement.htm" />
+        <property name="formView" value="monPanierResume"/>
+        <property name="membreService" ref="membreService"/>
+        <property name="validator">
+            <bean class="fr.the2d2a.web.validator.MonPanierResumeValidator"/>
+        </property>
+    </bean>
+    
+    <bean id="monPanierPaiementController" class="fr.the2d2a.web.controller.MonPanierPaiementController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="maBanque"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Banque"/>
+        <property name="successView" value="monPanierConf" />
+        <property name="formView" value="monPanierPaiement"/>
+        <property name="validator">
+            <bean class="fr.the2d2a.web.validator.MonPanierPaiementValidator"/>
+        </property>
+        <!-- TODO : gérer l'appel à la banque -->
+        <property name="commandeService" ref="commandeService"/>
+        <property name="produitService" ref="produitService"/>
+        <property name="presseService" ref="presseService"/>
+        <!-- TODO : envoyer mail de confirmation -->
+    </bean>
+    
+    <bean id="calendrierController" class="fr.the2d2a.web.controller.CalendrierController">
+    	<property name="commandName" value="evenementForm"/>
+        <property name="commandClass" value="fr.the2d2a.beanform.EvenementForm"/>
+        <property name="successView" value="calendrier" />
+        <property name="formView" value="calendrier" />
+    	<property name="evenementService" ref="evenementService"/>
+    </bean>
+    
+    <bean id="agendaController" class="fr.the2d2a.web.controller.AgendaController">
+    	<property name="commandName" value="evenementForm"/>
+        <property name="commandClass" value="fr.the2d2a.beanform.EvenementForm"/>
+        <property name="successView" value="agenda" />
+        <property name="formView" value="agenda" />
+    	<property name="evenementService" ref="evenementService"/>
+    </bean>
+    
+    <bean id="presseController" class="fr.the2d2a.web.controller.PresseController">
+       	<property name="commandName" value="ouvrageForm"/>
+        <property name="commandClass" value="fr.the2d2a.beanform.OuvrageForm"/>
+        <property name="formView" value="presse" />
+        <property name="successView" value="presse" />
+    	<property name="presseService" ref="presseService"/>
+    </bean>
+    
+    <bean id="bibliothequeController" class="fr.the2d2a.web.controller.BibliothequeController">
+       	<property name="commandName" value="ouvrageForm"/>
+        <property name="commandClass" value="fr.the2d2a.beanform.OuvrageForm"/>
+        <property name="formView" value="bibliotheque" />
+        <property name="successView" value="bibliotheque" />
+    	<property name="presseService" ref="presseService"/>
+    </bean>
+    
+    <bean id="pageStatiqueController" class="fr.the2d2a.web.controller.PageStatiqueController">
+    	<property name="mailService" ref="mailService"/>
+    </bean>
+    
+     <bean id="planSiteController" class="fr.the2d2a.web.controller.PlanSiteController">
+    	<property name="rubriqueService" ref="rubriqueService"/>
+    </bean>
+    
+    <bean id="rechercheController" class="fr.the2d2a.web.controller.RechercheController">
+    	<property name="commandName" value="rechercheForm"/>
+        <property name="commandClass" value="fr.the2d2a.beanform.RechercheForm"/>
+        <property name="successView" value="recherche" />
+        <property name="formView" value="recherche" />
+        <property name="rechercheService" ref="rechercheService" />
+        <property name="designerService" ref="designerService" />
+        <property name="editeurService" ref="editeurService"/>
+        <property name="rubriqueService" ref="rubriqueService"/>
+        <property name="tablePrix">
+        	<util:map>
+        		<entry key="0-100" value="-100"/>
+        		<entry key="100-400" value="100-400"/>
+        		<entry key="400-1000" value="400-1000"/>
+        		<entry key="1000-0" value="1000+"/>
+        	</util:map>
+        </property>
+    </bean>
+    
+    <bean id="archivesController" class="fr.the2d2a.web.controller.ArchivesController">
+    	<property name="commandName" value="filter"/>
+        <property name="commandClass" value="fr.the2d2a.beanform.ArchivesForm"/>
+        <property name="successView" value="archives" />
+        <property name="formView" value="archives" />
+        <property name="designerService" ref="designerService" />
+        <property name="editeurService" ref="editeurService"/>
+        <property name="produitService" ref="produitService"/>
+        <property name="rubriqueService" ref="rubriqueService"/>
+    </bean>
+    
+    <bean id="inviterAmiController" class="fr.the2d2a.web.controller.InviterAmiController">
+    	<property name="commandName" value="ami"/>
+        <property name="commandClass" value="fr.the2d2a.beanform.InviterAmiForm"/>
+        <property name="successView" value="inviterAmi" />
+        <property name="formView" value="inviterAmi" />
+        <property name="mailService" ref="mailService" />
+    </bean>
+    
+    <bean id="desinscriptionController" class="fr.the2d2a.web.controller.DesinscriptionController">
+        <property name="membreService" ref="membreService" />
+    </bean>
+    
+    <bean id="serviceGeneralController" class="fr.the2d2a.web.controller.ServiceGeneralController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="service"/>
+        <property name="commandClass" value="fr.the2d2a.bean.ServiceGeneral"/>
+        <property name="successView" value="successServiceGeneral" />
+        <property name="formView" value="serviceGeneral" />
+        <property name="mailService" ref="mailService"/>
+        <property name="membreService" ref="membreService"/>
+        <property name="messageSource" ref="messageSource"/>
+        <property name="validator">
+            <bean class="fr.the2d2a.web.validator.ServiceGeneralValidator"/>
+        </property>
+    </bean>
+    
+    <bean id="serviceEvenementController" class="fr.the2d2a.web.controller.ServiceEvenementController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="service"/>
+        <property name="commandClass" value="fr.the2d2a.bean.ServiceEvenement"/>
+        <property name="successView" value="successServiceEvenement" />
+        <property name="formView" value="serviceEvenement" />
+        <property name="mailService" ref="mailService"/>
+        <property name="messageSource" ref="messageSource"/>
+        <property name="validator">
+            <bean class="fr.the2d2a.web.validator.ServiceEvenementValidator"/>
+        </property>
+    </bean>
+    
+    <bean id="serviceOuvrageController" class="fr.the2d2a.web.controller.ServiceOuvrageController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="service"/>
+        <property name="commandClass" value="fr.the2d2a.bean.ServiceOuvrage"/>
+        <property name="successView" value="successServiceOuvrage" />
+        <property name="formView" value="serviceOuvrage" />
+        <property name="mailService" ref="mailService"/>
+        <property name="messageSource" ref="messageSource"/>
+        <property name="validator">
+            <bean class="fr.the2d2a.web.validator.ServiceOuvrageValidator"/>
+        </property>
+    </bean>
+    
+    <bean id="serviceArchivesController" class="fr.the2d2a.web.controller.ServiceArchivesController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="service"/>
+        <property name="commandClass" value="fr.the2d2a.bean.ServiceArchives"/>
+        <property name="successView" value="successServiceArchives" />
+        <property name="formView" value="serviceArchives" />
+        <property name="mailService" ref="mailService"/>
+        <property name="messageSource" ref="messageSource"/>
+        <property name="validator">
+            <bean class="fr.the2d2a.web.validator.ServiceArchivesValidator"/>
+        </property>
+    </bean>
+    
+    <bean id="locationController" class="fr.the2d2a.web.controller.LocationController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="location"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Panier"/>
+        <property name="successView" value="locationValidation.htm" />
+        <property name="formView" value="location" />
+        <property name="produitService" ref="produitService"/>
+    </bean>
+    
+    <bean id="locationValidationController" class="fr.the2d2a.web.controller.LocationValidationController">
+    	<property name="sessionForm"><value>true</value></property>
+    	<property name="commandName" value="maLocation"/>
+        <property name="commandClass" value="fr.the2d2a.bean.Location"/>
+        <property name="successView" value="successLocation" />
+        <property name="formView" value="locationValidation" />
+        <property name="mailService" ref="mailService"/>
+        <property name="membreService" ref="membreService"/>
+        <property name="validator">
+            <bean class="fr.the2d2a.web.validator.LocationValidator"/>
+        </property>
+    </bean>
+    
+    <!-- For Uploaded Files -->
+    <bean id="multipartResolver" class="fr.the2d2a.web.resolver.MultiCommonsMultipartResolver">
+    	<property name="maxUploadSize"><value>10000000</value></property>
+    </bean>
+    
+	<!-- Views -->
+  	<bean id="viewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename" value="views"/>
+	</bean>
+</beans>

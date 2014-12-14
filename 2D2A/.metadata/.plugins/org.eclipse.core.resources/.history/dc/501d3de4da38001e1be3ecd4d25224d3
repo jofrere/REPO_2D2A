@@ -1,0 +1,58 @@
+<%@ include file="./include.jsp" %>
+
+<head>
+	<title><spring:message code="global.title"/></title>
+
+	<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/global.css" media="all" />
+	<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/menu.css" media="all" />
+	
+	<c:if test="${not empty rubrique}">
+		<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/boutique.css" media="all" />
+	</c:if>
+	
+	<c:if test="${not empty actualite}">
+		<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/actualite.css" media="all" />
+	</c:if>
+	
+	<c:choose>
+		<c:when test="${not empty rubrique.css}">
+			<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/${rubrique.css}" media="all" />
+		</c:when>
+		<c:when test="${not empty HOME}">
+			<link id="global" rel="Stylesheet" type="text/css" href="/${ROOT}/resources/css/home.css" media="all" />
+		</c:when>
+	</c:choose>
+	
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="cache-control" content="no-cache,no-store,must-revalidate">
+	
+	<script language="JavaScript" src="/${ROOT}/resources/js/menu.js"></script>
+	<script language="JavaScript" src="/${ROOT}/resources/js/getBrowser.js"></script>
+	<script language="javascript" src="/${ROOT}/resources/js/infoBulle.js" type="text/javascript"></script>
+	
+	<script src="/${ROOT}/resources/flex/AC_OETags.js" language="javascript"></script>
+	<script src="/${ROOT}/resources/flex/history/history.js" language="javascript"></script>
+	
+	<script language="JavaScript" type="text/javascript">
+		<!--
+		// -----------------------------------------------------------------------------
+		// Globals
+		// Major version of Flash required
+		var requiredMajorVersion = 9;
+		// Minor version of Flash required
+		var requiredMinorVersion = 0;
+		// Minor version of Flash required
+		var requiredRevision = 28;
+		// -----------------------------------------------------------------------------
+		// -->
+	</script>
+	
+	<!--[if IE]>
+    <style type="text/css"> 
+    /* placer les corrections pour toutes les version d'IE dans ce commentaire conditionnel */
+    .page #left_menu, .page #right_menu { padding-top: 0px; }
+    .page #center { zoom: 1; padding-top: 0px; }
+    /* la propriété propriétaire zoom ci-dessus transmet à IE l'attribut hasLayout nécessaire pour éviter plusieurs bogues */
+    </style>
+    <![endif]-->
+</head>

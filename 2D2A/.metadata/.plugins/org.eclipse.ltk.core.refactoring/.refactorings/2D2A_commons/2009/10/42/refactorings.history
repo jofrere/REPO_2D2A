@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename field &apos;signApp&apos; in &apos;fr.the2d2a.bean.Depot&apos; to &apos;signeApp&apos;&#x0D;&#x0A;- Original project: &apos;2D2A_commons&apos;&#x0D;&#x0A;- Original element: &apos;fr.the2d2a.bean.Depot.signApp&apos;&#x0D;&#x0A;- Renamed element: &apos;fr.the2d2a.bean.Depot.signeApp&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" delegate="false" deprecate="false" description="Rename field &apos;signApp&apos;" flags="589826" getter="false" id="org.eclipse.jdt.ui.rename.field" input="/src&lt;fr.the2d2a.bean{Depot.java[Depot^signApp" name="signeApp" references="true" setter="false" stamp="1255441896629" textual="false" version="1.0"/>
+</session>

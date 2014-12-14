@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring clone="true" comment="Infer generic type arguments on &apos;2D2A&apos;&#x0D;&#x0A;- Original project: &apos;2D2A&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     fr.the2d2a.web.controller.AccueilController.java&#x0D;&#x0A;- Assume clone() returns an instance of the receiver type&#x0D;&#x0A;- Leave unconstrained type arguments raw" description="Infer generic type arguments" element1="/src&lt;fr.the2d2a.web.controller{AccueilController.java" flags="6" id="org.eclipse.jdt.ui.infer.typearguments" leave="true" stamp="1259932384274" version="1.0"/>
+</session>

@@ -1,0 +1,549 @@
+#Pour une guillemet simple (apostrophe ex:' ), use &#146;
+
+#Global
+global.title=Welcome on 2D2A.com
+global.filAriane=You are here : 
+global.print=Print
+
+#header
+header.login=Login
+header.password=Password
+header.hello=Hello
+header.validate=Submit
+header.missPassword=Password lost
+
+#tom_menu
+topMenu.advancedSearch=Advanced search
+topMenu.siteMap=Site map
+topMenu.whosWho=Who are we?
+topMenu.contact=Contact
+topMenu.legacyInfo=Legacy infos
+topMenu.customerService=Customer service
+topMenu.thanks=Thanks
+topMenu.help=Help,
+topMenu.searchBtn=Ok
+topMenu.actu=Actuality
+topMenu.shops=Shops
+topMenu.services=Services
+topMenu.home=Home
+topMenu.myAccount=My account
+topMenu.beMember=New member
+topMenu.inviteFriend=Invite friend
+topMenu.myCart=My cart
+topMenu.myRent=My rent
+topMenu.depot=Leave your objects
+
+#Home
+accueil.revuePresse=News Review
+accueil.presseEnParle=The press speaks
+accueil.filAriane=Home
+accueil.partenaires=Partners
+accueil.nouveautes=View all news
+accueil.coupDeCoeur=View the best
+accueil.prix=Price
+accueil.partenaires=Partners
+accueil.parrains=Sponsors
+accueil.liens=Links
+
+
+#Boutique
+boutique.lexique=Glossary
+boutique.ficheArticle=Details
+boutique.achatExpress=Add to cart
+previous=Previous
+next=Next
+page=page
+
+#Produits
+designerLabel=Designer
+editeurLabel=Editor
+archivesLabel=Archives
+bibliographieLabel=Bibliographies
+bibliothequeLabel=Library
+informationLabel=Information(s)
+produit.reference=Reference
+produit.denomination=Name
+produit.description=Description
+produit.materiaux=Material
+produit.dimension=Dimension
+produit.hauteur=Height
+produit.largeur=Width
+produit.profondeur=Depth
+produit.diametre=Diameter
+produit.poids=Weight
+produit.coloris=Colors
+produit.annee=Year of creation
+produit.origine=Origin / Country
+produit.signe=Signs
+produit.prix=Price
+produit.dispoLoc=Available for rent
+produit.formComment=Please, leave a comment or ask a question : 
+produit.envoyerComment=Send
+produit.insererEmail=insert your email
+produit.ajoutPanier=Add to cart
+produit.ajoutPanierLocation=Add to rent
+produit.objetRapporte=Related Object(s) : 
+produit.nbProduit=Number of products
+
+
+#Membres-Inscription
+inscription.title=Welcome in space "Become member"
+inscription.exp=Pour créer un compte vous devez compléter les champs ci-dessous <span style="color: red;">(*Champs obligatoires)</span> puis "Valider"
+inscription.civilite=Civility
+inscription.civilite.titre=Title
+inscription.civilite.nom=LastName
+inscription.civilite.prenom=FirstName
+
+inscription.coordonnees=Coordonnées
+inscription.coordonnees.facture=(qui figureront sur les factures)
+inscription.coordonnees.societe=Society
+inscription.coordonnees.adresse=Address
+inscription.coordonnees.adresseCplt=Address complements
+inscription.coordonnees.codePostal=Postal Code 
+inscription.coordonnees.ville=City
+inscription.coordonnees.pays=Country
+inscription.telnum=Phone numbers
+inscription.telnum.exp=The phone number is optional, but sometime, it's easier to contact you.
+inscription.coordonnees.telPrive=Phone
+inscription.coordonnees.telBureau=Office Phone
+inscription.coordonnees.fax=Fax
+inscription.carnetAdresse=Addresses
+inscription.formatDate=(DD-MM-YYYY)
+
+inscription.infoPerso=Personals informations
+inscription.dateNaiss=Date of birth (ex : 20-12-1980 ou 20/12/1980)
+inscription.jourNaiss=Day
+inscription.moisNaiss=Month
+inscription.anneeNaiss=Year
+inscription.profession=Job
+inscription.centreInteret=Center of interest
+
+inscription.identifiant=Credentials/Login
+inscription.mail=eMail
+inscription.mailConf=Confirm eMail
+inscription.pwd=Password
+inscription.pwdConf=Confirm password
+inscription.newsletter=I want to keep in touch with the 2d2a's newsletter.
+inscription.captcha=Anti-spam Code
+inscription.captchaIndication=Saisissez les chiffres 
+inscription.divulgation=Divulgation
+global.retourAccueil=Back home
+inscription.loiLiberte=Term of use
+inscription.acceptation=I accept the <a href="#" class="magenta" onclick="window.open('/2D2A/conditionsGenerales.htm?cg=1', '_blank', 'menubar=no, status=no, scrollbars=no, menubar=no, resizable=no, width=1280, height=800');">general conditions of 2d2a.com</a>.
+inscription.valider=Validate my account 2D2A
+
+inscription.filleul=Saisissez les emails concernant les personnes que vous désirez parrainer. Sachez que vos filleuls peuvent se désactiver à tout moment lors de l&#146;envoi d&#146;un email 2d2a.
+inscription.filleul.first=1er filleul, Email
+inscription.filleul.second=2e filleul, Email
+inscription.filleul.third=3e filleul, Email
+inscription.filleul.fourth=4e filleul, Email
+
+inscription.newMail=New Email
+inscription.newMailConf=Confirm your Email
+inscription.changePassword=Change your password
+inscription.newPassword=New password
+inscription.newPasswordConf=Confirm your password
+inscription.validerModif=Validate my modifications
+
+inscription.error.nom=Veuillez entrer un nom.
+inscription.error.prenom=Veuillez entrer un prénom.
+inscription.error.civilite=Veuillez entrer une civilité.
+inscription.error.adresse=Veuillez entrer une adresse.
+inscription.error.codePostal=Veuillez entrer un code postal.
+inscription.error.codePostal.invalid=Veuillez entrer un code postal valide.
+inscription.error.ville=Veuillez entrer une ville.
+inscription.error.pays=Veuillez sélectionner un pays.
+inscription.error.login=Veuillez entrer une adresse mail.
+inscription.error.login.invalid=Veuillez entrer une adresse mail valide.
+inscription.error.loginConf=Veuillez entrer une adresse mail de confirmation.
+inscription.error.loginConf.invalid=Veuillez entrer une adresse mail de confirmation identique à votre adresse mail.
+inscription.error.password=Veuillez entrer un mot de passe.
+inscription.error.passwordConf=Veuillez entrer un mot de passe de confirmation.
+inscription.error.passwordConf.invalid=Veuillez entrer un mot de passe de confirmation identique à votre mot de passe.
+inscription.error.captcha=Veuillez saisir le code anti-spam.
+inscription.error.captcha.invalid=Veuillez saisir le code anti-spam valide.
+inscription.error.acceptation=Veuillez accepter les termes de 2D2A.
+inscription.error.duplicateEntry=Cet identifiant est déjà utilisé. Veuillez en saisir un autre.
+inscription.error.filleul.invalid=Veuillez entrer une adresse mail valide pour vos filleuls.
+inscription.error.nomAdresse=Veuillez entrer un nom d&146;adresse.
+inscription.error.dNaiss.invalid=Veuillez entrer une date de naissance valide (jj-mm-aaaa).
+
+successInscription.title=Futur membre, merci de vous êtes inscrit.
+successInscription.phrase1=Cependant votre compte n&#146;est pas encore activé.
+successInscription.phrase2=Vous allez recevoir un e-mail dans la boite {0} dans lequel se trouve un lien qui permettra d&#146;activer votre compte.
+
+activation.phrase1=Merci de vous être enregistré(e) {0}. {1} {2}. Vous êtes désormais membre de 2d2a.
+activation.phrase2=Vous recevrez bientôt un Email de confirmation reprenant les informations nécessaires vous donnant accès à l&#146;espace privatif de votre compte client.
+
+authentification.error=Login ou mot de passe invalide.
+authentification.motDePasseSend=Un e-mail contenant vos identifiants vient d&#146;être envoyé dans votre boite mail.
+
+conditionsGenerales.nomBouton=Lire les conditions générales
+conditionsGenerales.nomPopup=2D2A Conditions générales
+conditionsGenerales.title=Les conditions générales de ventes 2d2a
+
+espacePrivatif.mesCoordonnees=Espace privatif "Mon Profil"
+espacePrivatif.bienvenue=Welcome
+espacePrivatif.exp=La rubrique Mon Compte regroupe toutes les informations qui vous sont propres : n&#146;hésitez pas à consulter et à modifier les données qui vous concernent.
+
+adresse.ajoutAdresse=Ajouter une adresse
+adresse.nomAdresse.exp=Donner un nom à cette adresse : Ex : Domicile, Bureau, Conjoint, Gardien...
+adresse.nomAdresse=Nom de l&#146;adresse
+adresse.carnetAdresse=Votre Carnet d&#146;adresses
+
+monCompte.title=Bienvenue dans l&#146;espace "Mon Compte"
+monCompte.exp=Pour continuer, vous devez vous identifier.
+monCompte.acces="Accéder à mon compte"
+monCompte.motDePasse=Vous ne vous rappelez plus de votre mot de passe ? Saissisez votre e-mail (qui correspond à votre identifiant 2d2a) puis cliquer sur « Mot de passe oublié ? » et vous recevrez dans votre boite mail dans un court instant.
+monCompte.inscription=Si vous n&#146;êtes pas encore membre de 2d2a, cliquez sur le lien
+monCompte.devenirMembre=Devenir membre
+
+monCompte.successMotDePasse.titre=Cher membre, 
+monCompte.successMotDePasse.texte=Un e-mail contenant vos identifiants vient d&#146;être envoyer dans la boite mail 
+monCompte.successMotDePasse.lien=Retour à l&#146;accueil
+
+monPanier.title=Bienvenue dans l&#146;espace "Mon panier"
+monPanier.exp1=Bienvenue sur le récapitulatif de votre commande :
+monPanier.exp2=Vous pouvez à tout moment y ajouter ou retirer des produits selon le stock disponible.
+monPanier.visuelArticle=Visuel article
+monPanier.refArticle=Référence article
+monPanier.descArticle=Description/Designer/Editeur
+monPanier.stockArticle=Available in stock
+monPanier.coloris=Colors
+monPanier.ref=Reference
+monPanier.quantiteArticle=Quantity
+monPanier.prixHtArticle=Prix unitaire HT
+monPanier.prixTtcArticle=Price per unit TTC
+monPanier.prixTotalArticle=Price total TTC
+monPanier.prixTotal=Total
+monPanier.bouton.vider=Vider mon panier
+monPanier.bouton.continuer=Continue my shopping
+monPanier.bouton.acheter=Acheter
+monPanier.panierVide=Your cart is empty
+
+monPanier.step1=MY CART
+monPanier.step2=DELIVERY
+monPanier.step3=RESUME
+monPanier.step4=PAIMENT
+monPanier.step5=CONFIRMATION
+monPanier.identification.intro=Vous désirez passer au paiement du contenu de votre panier décrit ci-dessous.
+monPanier.identification.identification=1.Identification
+monPanier.identification.recap=2.Récapitulatif
+monPanier.identification.paiement=3.Paiement sécurisé
+monPanier.identification.confirmation=4.Confirmation
+monPanier.identification.pasMembre=Si vous n&#146;êtes pas encore membre de 2d2a, cliquez sur 
+monPanier.identification.pasMembre.button=Devenir membre
+monPanier.identification.membreIdentification=Cher Membre, pour continuer, vous devez vous identifier.
+monPanier.identification.mail=Saisissez votre E-mail
+monPanier.identification.password=Votre mot de passe
+monPanier.identification.nextStep=2ème étape : Récapitulatif de la commande, de l&#146;adresse de facturation et du choix de la réception
+monPanier.identification.nextStepButton=Allez à l&#146;étape suivante
+
+monPanierRecapitulatif.bouton.modifierPanier=Modifier mon panier
+monPanierRecapitulatif.bouton.continuer=Continuer mes achats
+monPanierRecapitulatif.bouton.annuler=Annuler ma commande
+monPanierRecapitulatif.livraison.exp=The delivery :</b> You can get your command in the <b class="magenta">Show-Room 2d2a</b> for free.
+monPanierRecapitulatif.livraison.expCochage=Please check : 
+monPanierRecapitulatif.livraison.reception=I will get my delivery in the Show-room
+monPanierRecapitulatif.livraison.email=Un e-mail vous sera transmis dès l&#146;arrivée de votre commande au Show-room
+monPanierRecapitulatif.livraison.desirWeek=<strong>Je d&eacute;sire &ecirc;tre livr&eacute;</strong></label> (co&ugrave;t suppl&eacute;mentaire en fonction de la commande et de la distance)
+monPanierRecapitulatif.livraison.semaine=En semaine
+monPanierRecapitulatif.livraison.weekend=Le weekend
+monPanierRecapitulatif.livraison.desirHeure=De préférence si-possible entre :
+monPanierRecapitulatif.livraison.heure1=8h et 19h  La journée
+monPanierRecapitulatif.livraison.heure2=8h et 13h Le matin
+monPanierRecapitulatif.livraison.heure3=13h et 19h L&#146;après midi
+monPanierRecapitulatif.factu.label=Libellé de facturation
+monPanierRecapitulatif.livraison.adresse=Adresse de livraison
+monPanierRecapitulatif.factu.modif=Modifier le libellé de facturation
+monPanierRecapitulatif.livraison.adresse.modif=Modifier l&#146;adresse de livraison
+monPanierRecapitulatif.livraison.adresse.ajout=Ajouter une adresse
+monPanierRecapitulatif.livraison.acceptation=J&#146;accepte sans réserve les conditions générales 2d2a.com
+monPanierRecapitulatif.livraison.condition=Lire les conditions générales
+monPanierRecapitulatif.livraison.nextStep=3ème étape le Résumé de votre commande
+monPanierRecapitulatif.livraison.paiementStep=4ème étape le Paiement sécurisé
+monPanierRecapitulatif.livraison.nextStepButton=Allez à l&#146;étape suivante
+monPanierRecapitulatif.livraison.modifFacturation=Modify your bill address
+monPanierRecapitulatif.livraison.modifLivraison=Modify your delivery address
+
+
+monPanierRecapitulatif.error.livraisonAll=Vous ne pouvez choisir de vous faire livrer et de venir au Showroom.
+monPanierRecapitulatif.error.livraisonNone=Vous devez choisir soit de vous faire livrer soit de venir au Showroom.
+
+
+
+#####################################Actualites#############################
+#Calendrier
+calendrier.nom=The 2D2A calendar.
+calendrier.addEvenement=Add event
+evt.dateDebut=Start date
+evt.dateFin=End
+evt.horaire=Diary
+evt.departement=Department
+evt.prixEntree=Entry price
+evt.ville=City
+evt.codePostal=Postal code
+evt.lieu=Place
+evt.adresse=Address
+evt.designation=Designation
+evt.theme=Thème
+evt.nbExposant=Number of participants
+evt.nbVisiteur=Number of visitors
+evt.tel=Tel
+evt.fax=Fax
+evt.siteWeb=Web site
+evt.email=Email
+evt.affinerSearch=Filter your search
+evt.typeEvt=Type of events
+evt.valider=Validate
+evt.nbPages=Total of pages
+evt.nbEvt=Total of events
+
+#Agenda
+agenda.nom=L&#146;agenda
+evt.information=Information(s)
+evt.titre=Titre de l&#146;exposition
+evt.codePostal=Code postal
+
+#Presse
+presse.nom=Le coin Presse
+ouv.reference=Référence
+ouv.titre=Titre du magazine
+ouv.date=Date d&#146;édition
+ouv.information=Informations
+ouv.langue=Langue
+ouv.format=Format
+ouv.nbPages=Nombre de pages
+ouv.theme=Thème
+ouv.sommaire=Sommaire
+ouv.prix=Prix
+ouv.nbLivre=Nombre de livres 
+
+#Biblio
+bibliotheque.nom=Bibliothèque
+bibliotheque.addOuvrage=Add a book
+ouv.parution=Année de parution
+biblio.titre=Title
+
+###################################Fin Actualites#############################
+
+#Plan du site
+planSite.actualite=The actuality
+planSite.devenirMembre=New member
+planSite.monCompte=My account
+planSite.monPanier=My cart
+planSite.boutique=Le catalogue 2D2A
+planSite.depot=Leave your objects
+planSite.recherche=Search
+planSite.formulaire=Forms
+planSite.serviceClient=Customer Service
+planSite.aide=Help?
+planSite.qui=Who's who?
+planSite.infoLegale=# Legacy infos
+planSite.contact=Contact
+planSite.service=2D2A Service
+
+#Recherche
+recherche.resultat={0} results have been found for : "<b>{1}</b>"
+recherche.noResultat=Il n&#146;y a aucun résultat correspondant à votre recherche.
+recherche.titre=The search
+recherche.exp=To filter your result, use the filters on left side.
+recherche.indifferent=Indifferent
+
+#Depot
+depot.titre=Leave your objects
+depot.monCompte=Here, you can request to leave your objects 
+depot.insertInfo=Insérez  ci-dessous (si possible) les informations concernant l&#146;article.
+depot.denomination=Nom de l&#146;article
+depot.description=Description
+depot.materiaux=Matériaux
+depot.poids=Poids
+depot.dimension=Dimensions
+depot.hauteur=Hauteur
+depot.profondeur=Prodondeur
+depot.largeur=Largeur
+depot.diametre=Diamètre
+depot.photo=Pictures
+depot.coloris=Coloris
+depot.annee=Année
+depot.origine=Origine
+depot.designer=Designer
+depot.editeur=Editeur
+depot.signeApp=Signes apparents
+depot.info=Informations
+depot.biblio=Bibliographie
+depot.prix=Prix
+depot.commentaire=Apportez un commentaire ou posez une question
+depot.acceptation=J&#146;accepte les conditions de dépôt 2d2a
+depot.conditions=Lire les conditions de dépôt
+depot.mail=E-mail
+depot.nom=Nom
+depot.prenom=Prénom
+depot.telephone=Téléphone
+depot.adresse=Adresse
+depot.rappel=Une fois le formulaire envoyé, vous allez recevoir automatiquement un Email récapitulatif de votre demande.
+depot.submit=Valider
+depot.error.nom=Veuillez entrer un nom.
+depot.error.prenom=Veuillez entrer un prénom.
+depot.error.mail=Veuillez entrer une adresse mail.
+depot.error.mail.invalid=Veuillez entrer une adresse mail valide.
+depot.error.acceptation=Veuillez accepter les termes de 2D2A.
+
+inviter.membre.null=Vous devez être authentifier pour pouvoir inviter un ami.
+inviter.ami.invalid=L'adresse mail de votre ami est incorrecte.
+
+lexique.titre=Glossary : 
+lexique.designer=Designer
+lexique.editeur=Editor
+lexique.prix=Price
+lexique.nouveaux=New
+lexique.coupDeCoeur=Favorite
+
+archives.objetRapporte=R&eacute;alisations en vente dans le site
+archives.addArchive=Ajouter une archives
+
+# Mon Compte Private
+
+monComptePrivate.title=Welcome in your private  <span class="magenta">2D2A</span> area
+monComptePrivate.exp=Welcome
+monComptePrivate.desinscription1=To unregister, click 
+monComptePrivate.desinscription2=here
+
+leftMenuMonCompte.titre=My account
+leftMenuMonCompte.depot=Leave your objects
+leftMenuMonCompte.achat=Mes achats
+leftMenuMonCompte.profil=My profil
+
+leftMenuRecherche.titre=Advanced Search
+leftMenuRecherche.boutique=Store
+leftMenuRecherche.prix=Price
+leftMenuRecherche.editeur=Editor
+leftMenuRecherche.designer=Designer
+leftMenuRecherche.votreRecherche=Your search
+leftMenuRecherche.searchBtn=Search
+
+
+successDepot.title=D&eacute;poser un objet
+successDepot.exp=Vous venez de d&eacute;poser un objet à <span class="magenta"> 2D2A</span>.
+successDepot.exp2=Notre service commercial va vous contacter dans les plus brefs d&eacute;lais afin de valider votre d&eacute;pot.
+
+leftMenuService.titre=Services
+leftMenuService.location=Location
+leftMenuService.recherche=Recherche avancée
+leftMenuService.general=Général
+leftMenuService.evenement=Evènements
+leftMenuService.ouvrage=Ouvrages
+leftMenuService.archives=Archives
+
+# Services
+service.general.title=General form
+service.general.exp=Votre demande
+service.general.demande1=Faire parvenir un communiqué de presse
+service.general.demande2=Faire une demande de débarras, liquidation... sur RDV
+service.general.demande3=Faire une demande de partenariat
+service.general.demande4=Faire une demande de prestation de service
+service.general.demande5=Avoir un conseil en décoration, location...
+service.general.demande6=Faire une demande de restauration (remise en état sur devis)
+service.general.demande7=Faire une demande de recherche d&#146;objet par 2D2A
+service.general.demande8=Other request
+service.general.question=Votre question ou commentaire
+service.general.vousetes=You are
+service.general.typePersonne1=Particulier
+service.general.typePersonne2=Collectionneur
+service.general.typePersonne3=Journaliste
+service.general.typePersonne4=Professionnel
+service.general.typePersonne5=Designer
+service.general.typePersonne6=Architecte
+service.general.typePersonne7=Artiste plasticien 
+service.general.siteInternet=Site Internet
+service.general.sadresser=s&#146;adresser
+service.general.organisation=Organisation
+service.general.directionPro=Direction
+service.general.info=Informations non publiables
+service.general.expInfo=Pour les professionnels, veuillez remplir les champs ci-dessous.
+
+produit.path.contribution.depot.image=G:/travail/win32App/2D2A/resources/img/contribution/produits/depot/
+produit.path.image=./resources/img/contribution/produits/depot/
+
+service.general.path.contribution.fichier=G:/travail/win32App/2D2A/resources/img/contribution/service/general/
+
+service.general.fichier=Vos fichiers
+
+service.valider=Valider le formulaire
+
+successServiceGeneral.title=General Form
+successServiceGeneral.exp=Your request "{0}" has been received by <span class="magenta"> 2D2A</span>.
+successServiceGeneral.exp2=We are managing your request.
+
+successServiceEvenement.title=Formulaire Evènement
+successServiceEvenement.exp=Vous demande "{0}" à bien été prise en compte par <span class="magenta"> 2D2A</span>.
+successServiceEvenement.exp2=Celle-ci sera traitée dans les plus brefs d&eacute;lais afin de satisfaire votre demande.
+
+successServiceOuvrage.title=Formulaire Ouvrage
+successServiceOuvrage.exp=Vous demande à bien été prise en compte par <span class="magenta"> 2D2A</span>.
+successServiceOuvrage.exp2=Celle-ci sera traitée dans les plus brefs d&eacute;lais afin de satisfaire votre demande.
+
+successServiceArchives.title=Formulaire Archives
+successServiceArchives.exp=Vous demande à bien été prise en compte par <span class="magenta"> 2D2A</span>.
+successServiceArchives.exp2=Celle-ci sera traitée dans les plus brefs d&eacute;lais afin de satisfaire votre demande.
+
+
+service.evenement.title=Formulaire des évènements
+service.evenement.exp=Votre évènement
+
+service.evenement.titre=Intitulé de l'évènement
+service.evenement.description=Description ou résumé
+service.evenement.designationInfo=Désignation
+service.evenement.theme=Thème
+
+service.evenement.horaireTitle=Lieu et horraire
+service.evenement.dateDebut=Date de début
+service.evenement.dateFin=Date de fin
+service.evenement.horaire=Horaire
+service.evenement.prix=Prix d&#146;entrée
+service.evenement.lieu=Lieu / Transport
+service.evenement.departement=Département
+
+service.ouvrage.title=Formulaire des ouvrages
+service.ouvrage.titre=Intitulé de l&#146;ouvrage
+service.ouvrage.auteur=Auteur
+service.ouvrage.sommaire=Sommaire
+service.ouvrage.information=Information
+service.ouvrage.annee=Année de parution
+service.ouvrage.langue=Langue
+service.ouvrage.format=Format
+
+
+#Service ouvrage
+service.ouvrage.title=Formulaire des ouvrages
+service.ouvrage.titre=Intitulé de l&#146;ouvrage
+service.ouvrage.auteur=Auteur
+service.ouvrage.sommaire=Sommaire
+service.ouvrage.information=Information
+service.ouvrage.annee=Année de parution
+service.ouvrage.langue=Langue
+service.ouvrage.format=Format
+
+#Service archives
+service.archives.title=Formulaire des archives
+service.archives.createur=Créateur
+service.archives.prenom=Prénom
+service.archives.nom=Nom
+service.archives.lieuNaissance=Lieu de naissance
+service.archives.dateNaissance=Date de Naissance
+service.archives.dateDeces=Date de Décès
+
+service.archives.creation=Vos créations concernent
+service.archives.biographie=Biographie
+service.archives.information=Information
+service.archives.collaboration=Collaboration
+service.archives.bibliographie=Bibliographie
+
+service.archives.demande1=la décoration
+service.archives.demande2=le mobilier
+service.archives.demande3=l&#146;architecture
+service.archives.demande4=l&#146;art
+
+
+
+

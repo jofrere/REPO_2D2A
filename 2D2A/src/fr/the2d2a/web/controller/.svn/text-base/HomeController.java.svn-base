@@ -1,0 +1,59 @@
+package fr.the2d2a.web.controller;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.log4j.Logger;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
+import fr.the2d2a.bean.Accueil;
+import fr.the2d2a.exception.FonctionalException;
+import fr.the2d2a.exception.TechnicalException;
+import fr.the2d2a.service.AccueilService;
+import fr.the2d2a.web.constants.WebConstants;
+
+
+public class HomeController implements Controller {
+
+    protected static Logger logger = Logger.getLogger(HomeController.class);
+
+    private AccueilService accueilService;
+        
+    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        logger.debug("Start HomeController");
+        String lang = (String) ((HttpServletRequest)request).getSession().getAttribute(WebConstants.LANGUE);
+        request.setAttribute(WebConstants.LANGUE, lang);
+        
+        Accueil accueil = null;
+		try {
+			accueil = accueilService.getAccueil(lang);
+			logger.debug("Accueil : " + ToStringBuilder.reflectionToString(accueil));
+		} catch (TechnicalException e) {
+			// TODO 
+			e.printStackTrace();
+		} catch (FonctionalException e) {
+			// TODO 
+			e.printStackTrace();
+		}
+        
+        Map<String, Object> myModel = new HashMap<String, Object>();
+        myModel.put(WebConstants.ACCUEIL, accueil);
+        
+        myModel.put(WebConstants.HOME, WebConstants.HOME);
+        
+        return new ModelAndView("home", myModel);
+    }
+
+	public void setAccueilService(AccueilService accueilService) {
+		this.accueilService = accueilService;
+	}	
+}

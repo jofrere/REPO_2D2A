@@ -1,0 +1,123 @@
+package fr.the2d2a.web.taglibs;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.BodyTagSupport;
+
+import org.apache.log4j.Logger;
+
+import fr.the2d2a.bean.Rubrique;
+import fr.the2d2a.utils.LinkHelper;
+import fr.the2d2a.web.constants.WebConstants;
+
+public class UpMenuTag extends BodyTagSupport {
+	
+	private static final long serialVersionUID = 1846744974270621587L;
+
+	private static Logger logger = Logger.getLogger(UpMenuTag.class);
+
+	private String varRetour = "menu";
+	private String typeRubrique = "1";
+	
+	private int idParent = -1;
+	
+	private List<Rubrique> menu;
+	private Map<Integer, Rubrique> menuMap;
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public int doStartTag() throws JspException {
+		
+		logger.debug("Start UpTagMenu");
+		HttpServletRequest req = (HttpServletRequest) pageContext.getRequest();
+		String lang = (String)req.getSession().getAttribute(WebConstants.LANGUE);
+		menu = (List<Rubrique>)req.getSession().getAttribute(WebConstants.MENU_ + lang);
+		menuMap = (Map<Integer, Rubrique>)req.getSession().getAttribute(WebConstants.MENU_ + WebConstants.MAP_ + lang);
+		
+		String root = (String)pageContext.getServletContext().getAttribute(WebConstants.ROOT);
+		
+		//Construction menu
+		StringBuffer sb = new StringBuffer();		
+		
+		int profondeur = 0;
+		//sb.append("<ul class='ul_menu' id='").append(varRetour).append("'>");
+		this.sortMenu(idParent, sb, profondeur, root);
+		sb.append("</ul>");
+		
+		pageContext.setAttribute(varRetour, sb.toString());
+		logger.debug("End UpTagMenu");
+		return SKIP_BODY;
+	}
+	
+	private void sortMenu(int id, StringBuffer sb, int profondeur, String root) {
+		boolean first = true;
+		boolean isLast = false;
+		profondeur++;
+		int total = 0;
+		int index = 0;
+		for(Rubrique rub : menu) {
+			if (rub.getRub_rubId() == id) {
+				if(profondeur == 1)
+					total++;
+				}
+		}
+		
+		
+		for(Rubrique rub : menu) {
+			if (index == total - 1)
+				isLast = true;
+			if (rub.getRub_rubId() == id) {
+				if (first) {
+					if (profondeur == 1) {
+						if (idParent == -1) {
+							sb.append("<li><a><span>Boutiques</span></a><ul> ");
+						} else if (idParent == -3) {
+							sb.append("<li><a><span>Actualité</span></a><ul> ");
+						}
+					}
+					first = false;
+				}
+				//creation du lien
+				String link = LinkHelper.createLinkFromRubrique(menuMap, rub.getRubId(), root, typeRubrique);
+				if (profondeur == 1) {
+					index++;
+					if (!isLast) {
+						//sb.append("<li><form name='rubrique").append(rub.getRubId()).append("' action='").append(link).append("' method='POST'><input type='hidden' name='").append(ParamConstants.RUBRIQUE).append("' value='").append(rub.getRubId()).append("' /><a id='a_menu' href='#' onclick='document.rubrique").append(rub.getRubId()).append(".submit();'>").append(rub.getNom()).append("</a></form></li>");
+						sb.append("<li><a href='").append(link).append("'>").append(rub.getNom()).append("</a></li>");
+					} else {
+						//sb.append("<li class='last'><form name='rubrique").append(rub.getRubId()).append("' action='").append(link).append("' method='POST'><input type='hidden' name='").append(ParamConstants.RUBRIQUE).append("' value='").append(rub.getRubId()).append("' /><a id='a_menu' href='#' onclick='document.rubrique").append(rub.getRubId()).append(".submit();'>").append(rub.getNom()).append("</a></form></li>");
+						sb.append("<li class='last'><a href='").append(link).append("'>").append(rub.getNom()).append("</a></li>");
+					}
+				}
+			}
+		}
+	}
+	
+	public String getVarRetour() {
+		return varRetour;
+	}
+
+	public void setVarRetour(String varRetour) {
+		this.varRetour = varRetour;
+	}
+
+	public int getIdParent() {
+		return idParent;
+	}
+
+	public void setIdParent(int idParent) {
+		this.idParent = idParent;
+	}
+
+	public String getTypeRubrique() {
+		return typeRubrique;
+	}
+
+	public void setTypeRubrique(String typeRubrique) {
+		this.typeRubrique = typeRubrique;
+	}
+	
+}

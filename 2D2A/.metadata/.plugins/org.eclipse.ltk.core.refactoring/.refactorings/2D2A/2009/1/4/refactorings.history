@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;2D2A/WebContent/WEB-INF/jsp/center/membre/private/MonPanierPaiement.jsp&apos; to &apos;monPanierPaiement.jsp&apos;" description="Rename resource &apos;MonPanierPaiement.jsp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="WebContent/WEB-INF/jsp/center/membre/private/MonPanierPaiement.jsp" name="monPanierPaiement.jsp" stamp="1232462273828" updateReferences="true"/>
+</session>

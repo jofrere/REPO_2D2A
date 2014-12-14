@@ -1,0 +1,116 @@
+<%@ include file="../../head/include.jsp" %>
+
+<!-- startEnteteFiche -->
+<div id="enteteFiche">
+
+   	<!-- startTitleFiche -->
+   	<p class="b brown fs13 mt5"><c:out value="${rubrique.description}"/></p>
+	<!-- endTitleFiche -->
+
+   	<!-- startObjects -->
+   <div id="objects">
+   		<c:if test="${not empty rubrique.rubId}">
+   			<the2D2A:picto varRetour="pictos" idRub="${rubrique.rubId}"/>
+			<c:forEach items="${pictos}" var="picto">
+				<form name="picto_rubrique_<c:out value='${picto.rubId}'/>" method="post" action="<c:out value='${picto.link}'/>" style="display: inline;">
+					<c:if test="${not empty picto.friendlyName}">
+						<a href="#" class="<c:out value='${picto.friendlyName}'/>" title="<c:out value='${picto.friendlyName}'/>" onclick="document.picto_rubrique_<c:out value='${picto.rubId}'/>.submit();"></a>
+						<input type="hidden" name="rubrique" value="<c:out value='${picto.rubId}'/>" />
+					</c:if>
+				</form>
+			</c:forEach>
+		</c:if>
+   </div>
+   <!-- endObjects -->
+   
+               
+	<!-- startLexique -->
+	<div id="lexique" class="brown">
+	   		<jsp:include page="../lexique.jsp" />
+	</div>
+</div>
+<!-- endLexique -->
+
+<div id="separationEnteteFiche"></div>
+   <!-- endEnteteFiche -->
+   
+   <!-- startCorpsFiche -->
+   <div id="ficheCorps">	
+		<h1><c:out value="${rubrique.nom}" /></h1>
+		<p class="XP"></p>
+		<div class="pagination">
+			<spring:message code="produit.nbProduit"/>
+       		<span class="magenta b">[<c:out value="${nbProduits}"/>]</span>
+	    	<c:if test="${not empty pager}">
+				<br/>
+				<spring:message code="evt.nbPages"/>
+	           	<c:if test="${currentPage != 1}"><a href="#" onclick="document.page<c:out value="${currentPage-1}"/>.submit();">&lt;</a></c:if>
+		    	<c:forEach begin="1" end="${nbPages}" varStatus="v">
+		    		<c:choose>
+			    		<c:when test="${v.count == currentPage}">
+			    			<span class="first sel">[<c:out value="${v.count}"/>]</span>
+			    		</c:when>
+			    		<c:otherwise>
+			    			<form style="display: inline;" name="page<c:out value="${v.count}"/>" action="" method="post">
+		    					<input type="hidden" name="rubrique" value="<c:out value="${rubId}"/>" />
+		    					<input type="hidden" name="pageIndex" value="<c:out value="${v.count-1}"/>" />
+		    					<input type="hidden" name="selectedDate" value="<c:out value="${filter.selectedDate}"/>" />
+		    					<a href="#" onclick="document.page<c:out value="${v.count}"/>.submit();"><c:out value="${v.count}"/></a>
+		    				</form>
+			    		</c:otherwise>
+		    		</c:choose>
+		    		<c:if test="${not v.last}"><img src="/${ROOT}/resources/pic/crawlBar/tiret2.jpg"/></c:if>
+		    	</c:forEach>
+		    	<c:if test="${currentPage != nbPages}"><a href="#" onclick="document.page<c:out value="${currentPage+1}"/>.submit();">&gt;</a></c:if>
+	 		</c:if>
+		</div>
+		
+		<!-- start Object -->
+		<div id="object">
+            <div id="slideObjet">
+			<!-- start ItemObject -->
+				<c:forEach var="produit" items="${produits}" varStatus="v">
+				
+					<div id="slideObjetRapporte">
+						<!-- startItemObjetRapporte -->
+						<div class="blocObjetRapporte">
+							<span><c:out value="${produit.reference}"/></span>
+		    				<a href="/${ROOT}<the2D2A:link produit="${produit}" />">
+		    					<img id="imgProdFull<c:out value="${produit.proId}"/>" src="/${ROOT}/<c:out value="${produit.images[0].vignette}"/>" minWidth="223" minHeight="223" width="223" height="223" alt="<c:out value="${produit.nom}" />" border="0" />
+		    				</a>
+		    				
+							 <div class="info">
+								<img src="/${ROOT}/resources/pic/lexique/designer.png" width="14" height="14" alt="designer" />
+								<span><a href="/${ROOT}<the2D2A:link artiste="${produit.designer}" />" class="lien"><c:out value="${produit.designer.prenom}" />&nbsp;<c:out value="${produit.designer.nom}" /></a></span>
+							 </div>
+							 
+							  <div class="info">
+								<img src="/${ROOT}/resources/pic/lexique/editeur.png" width="14" height="14" alt="editeur" />
+								<span><a href="/${ROOT}<the2D2A:link artiste="${produit.editeur}" />" class="lien"><c:out value="${produit.editeur.prenom}" />&nbsp;<c:out value="${produit.editeur.nom}" /></a></span>
+							 </div>
+			
+							  <div class="info">
+								<img src="/${ROOT}/resources/pic/lexique/prix.png" width="14" height="14" alt="prix" />
+								<span><spring:message code="produit.prix"/> : <c:out value="${produit.prixFormate}" /></span>
+							 </div>
+							 <div class="descriptionBouton">
+						        <form name="ajoutPanier<c:out value="${produit.proId}"/>" id="ajoutPanier<c:out value="${produit.proId}"/>" action="/${ROOT}/monPanier.htm" method="post">
+						   			<input type="hidden" name="idProduit" value="<c:out value="${produit.proId}"/>" />
+						   			<input type="hidden" name="action" value="1" />
+						   		</form>
+					        </div>
+							 <div class="ficheArticle"><a href="/${ROOT}<the2D2A:link produit="${produit}" />" class="L"><spring:message code="boutique.ficheArticle"/></a></div>
+							 <div class="achatExpress"><a href="#" class="L" onclick="document.getElementById('ajoutPanier<c:out value="${produit.proId}"/>').submit();"><spring:message code="boutique.achatExpress"/></a></div>
+						</div>
+						<!-- endItemObjetRapporte -->                 	
+					</div>
+      			</c:forEach>
+             <!-- end ItemObject-->
+             </div>
+       	</div>
+        <!-- end Objet -->
+		
+		<p class="XP"></p>
+		
+   </div>
+   <!-- endCorpsFiche -->   

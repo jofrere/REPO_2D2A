@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+no handler,command,org.eclipse.datatools.sqltools.result,,org.eclipse.datatools.sqltools.result.removeAllInstances,1227623366781
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1227623369484
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1227623373687
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.copy,1227623383109
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.paste,1227623384328
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.file.save,1227623387187
+executed,command,org.eclipse.ui.ide,3.4.1.M20080903-2000,org.eclipse.ui.project.buildAll,1227623387734
+executed,command,org.eclipse.ui.ide,3.4.1.M20080903-2000,org.eclipse.ui.project.buildAll,1227623390593
+activated,view,org.eclipse.ui.console,3.3.0.v20080529-1300,org.eclipse.ui.console.ConsoleView,1227623392265
+activated,view,org.eclipse.wst.server.ui,1.1.2.v20080916,org.eclipse.wst.server.ui.ServersView,1227623393546
+executed,command,org.eclipse.wst.server.ui,1.1.2.v20080916,org.eclipse.wst.server.publish,1227623394375
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623395515
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623415640
+activated,view,org.eclipse.ui.console,3.3.0.v20080529-1300,org.eclipse.ui.console.ConsoleView,1227623417640
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623418890
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623518531
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623534750
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623544156
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623545875
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623547734
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623551703
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623553437
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623562359
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623566218
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227623567875

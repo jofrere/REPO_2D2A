@@ -1,0 +1,116 @@
+.membre {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.membre #membre_left {
+	font-weight: bold;
+	float:left;
+	height:30px;
+	padding-top: 10px;
+	padding-bottom: 0px;
+}
+
+.membre #membre_right {
+	float:right;
+	height:30px;
+	padding-top: 10px;
+	padding-bottom: 0px;
+}
+
+.membre #membre_center {
+	text-align: center;
+	font-size: 10px;
+	font-weight: bold;
+	color: #800000;
+	height:30px;
+	bottom: 0px;
+	padding-top: 15px;
+	padding-bottom: 0px;
+}
+
+.membre #form_left {
+	font-weight: bold;
+	float:left;
+	height:15px;
+	padding-top: 10px;
+	padding-bottom: 0px;
+	width: 180px;
+}
+
+.membre #form_center {
+	text-align: left;
+	height:15px;	
+	padding-top: 10px;
+	padding-bottom: 0px;
+	float: left;
+	width: 150px;
+}
+
+.membre #form_right {
+	text-align: left;
+	float: left;
+	height:15px;
+	padding-top: 10px;
+	padding-bottom: 0px;
+	width: 370px;
+}
+
+.membre #form_center_long {
+	text-align: left;
+	height:15px;	
+	padding-top: 10px;
+	padding-bottom: 0px;
+	float: left;
+	width: 520px;
+}
+
+.membre #form_left_long {
+	font-size: 10px;
+	float: left;
+	height: 10px;
+	padding-top: 5px;
+	padding-bottom: 0px;
+	width: 700px;
+}
+
+.membre #obligatoire {
+	color: red;	
+}
+
+.membre #form_center_very_long {
+	text-align: left;
+	height:15px;	
+	padding-top: 10px;
+	padding-bottom: 0px;
+	float: left;
+	width: 700px;
+}
+
+.membre #form_center_very_very_long {
+	text-align: left;
+	height:15px;	
+	padding-top: 10px;
+	padding-bottom: 0px;
+	float: left;
+	width: 1024px;
+}
+
+.membre #form_long_left {
+	text-align: center;
+	height:15px;	
+	padding-top: 10px;
+	padding-bottom: 0px;
+	float: left;
+	width: 512px;
+}
+
+.membre #form_long_right {
+	text-align: center;
+	height:15px;	
+	padding-top: 10px;
+	padding-bottom: 0px;
+	float: left;
+	width: 512px;
+}

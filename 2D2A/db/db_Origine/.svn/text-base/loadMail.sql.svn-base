@@ -1,0 +1,50 @@
+insert into MAIL() values ();
+
+insert into `MAIL_FR`(`MAIID`,`NOM`,`SUJET`,`CONTENU`,`EXPEDITEUR`,`REPONSE`,`ACTIVATION`) 
+values (1,'Activation du compte','"2d2a" Activation de votre compte','Bonjour, $civ $prenom $nom\n\n\nNous sommes heureux d’accuser réception de votre demande d’ouverture de compte 2d2a.com et nous vous remercions de la confiance que vous nous témoignez.\n\nPour finaliser votre inscription, vous devez l’activer en cliquant sur le lien suivant : http://localhost:8080/2D2A/activation.htm?lg=$lang&id=$id&dateinscription=$dateinscription\n\n\nCordialement,\nL’équipe 2D2A.','rdubar2000@yahoo.fr','rdubar2000@yahoo.fr',1);
+
+insert into MAIL() values ();
+insert into `MAIL_FR`(`MAIID`,`NOM`,`SUJET`,`CONTENU`,`EXPEDITEUR`,`REPONSE`,`ACTIVATION`) 
+values (2,'Bienvenue','Bienvenue dans votre espace compte 2d2a','Cher membre, \n\n Bienvenue $civ $prenom $nom dans l’espace client 2d2a.\n\n\nNous sommes enchantés de vous compter parmi nos nouveaux membres, vous êtes désormais autorisé à acheter dans les boutiques 2d2a.\n\nA savoir, vous avez la possibilité de consulter votre compte client 2d2a :\nVia le site Internet 2d2a.com dans la page « Mon compte » en insérant correctement votre identifiant et votre mot de passe puis valider.\n\n\nCi-joint votre identifiant et votre mot de passe personnel, il vous sera utile lors de vos visites sur votre compte.\nIdentifiant, adresse Email : $login\nMot de passe : $password\n\n\nCordialement,\nL’équipe 2D2A.','rdubar2000@yahoo.fr','rdubar2000@yahoo.fr',1);
+
+insert into MAIL() values ();
+insert into `MAIL_FR`(`MAIID`,`NOM`,`SUJET`,`CONTENU`,`EXPEDITEUR`,`REPONSE`,`ACTIVATION`) 
+values (3,'Mot de passe oublié','Rappel de vos identifiants "2d2a"','Cher membre, \n\n En réponse à votre demande $civ $prenom $nom, vous trouverez ci-joint l’ensemble de vos coordonnées personnelles nécessaires pour accéder à votre compte.\n\nVotre E-mail servant d’ Identifiant : $login\nVotre mot de passe : $password\n\A savoir, vous avez la possibilité de consulter votre compte client 2d2a.\n\n\nCordialement,\nL’équipe 2D2A.','rdubar2000@yahoo.fr','rdubar2000@yahoo.fr',1);
+
+insert into MAIL() values ();
+insert into `MAIL_FR`(`MAIID`,`NOM`,`SUJET`,`CONTENU`,`EXPEDITEUR`,`REPONSE`,`ACTIVATION`) 
+values (4,'Dépot Objet','Un objet a été déposé sur le site 2D2A','Voici les informations relatives au dépot :\n\nCoordonnées utilisateur : \nEmail : $email \nNom : $nom \nPrénom : $prenom \nTéléphone : $tel \nAdresse : $adresse\n\n\nPropriétés du produit : \nDénomination : $denomination \nDescription : $desc \nMatériaux : $materiaux\nPoids : $poids \nHauteur : $hauteur \nLargeur : $largeur \n Profondeur : $profondeur \nDiamètre : $diametre \nColoris : $coloris \nAnnée : $annee \nOrigine : $origine \nDesigner : $designer \nEditeur : $editeur \nSignes apparents : $signApp \nBibliographie : $biblio \nInformations : $info\nPrix : $prix \nCommentaire : $comment','$user','$user', 1);
+
+insert into MAIL() values ();
+insert into `MAIL_FR`(`MAIID`,`NOM`,`SUJET`,`CONTENU`,`EXPEDITEUR`,`REPONSE`,`ACTIVATION`) 
+values (5,'Inviter un ami','Un ami vous propose le site 2D2A','Bonjour,\n$prenom $nom, membre privilégié de 2d2a.com, aimerait vous convier à rejoindre son club de ventes sur Internet.\n\nVoici son message :\n\n\n $message \n\n\n\nVous découvrirez sur 2d2a.com des produits de marques prestigieuses, à des prix attrayant :\nPour recevoir nos invitations et découvrir les nouveautés, il vous suffit de vous inscrire gratuitement en cliquant ici.\nSi ce lien est inactif, allez directement sur le site 2d2a.com. Cliquez sur " Devenir membre " ;\n\nOn espère vous retrouver bientôt sur 2d2a.com.\nCordialement, 		Accéder au site\n\nL’équipe 2d2a.','rdubar2000@yahoo.fr','rdubar2000@yahoo.fr',1);
+
+insert into MAIL() values ();
+insert into `MAIL_FR`(`MAIID`,`NOM`,`SUJET`,`CONTENU`,`EXPEDITEUR`,`REPONSE`,`ACTIVATION`) 
+values (6,'Service General','Contact du formulaire general','Voici les informations relatives au formualaire general :\n\nCoordonnées utilisateur : \nEmail : $email \nNom : $nom \nPrénom : $prenom \nAdresse : $adresse\nComplement Adresse : $complAdresse\nVille : $ville\nCode postal : $codePostal\nPays : $pays\nType de personne : $typePersonne\n\n\nType de demande : $demande\nQuestion : $question\n\n\nInfos professionnelles :\nOrganisation : $organisationPro"\nAdresse : $adressePro\nComplement adresse : $complAdressePro\nVille : $villePro\nCode postal : $codePostalPro\nTel : $telPro\nFax : $faxPro\nSite internet : $sitePro\nS adresser à : $sadresser\nDirection : $direction','rdubar2000@yahoo.fr','rdubar2000@yahoo.fr',1);
+
+insert into MAIL() values ();
+insert into `MAIL_FR`(`MAIID`,`NOM`,`SUJET`,`CONTENU`,`EXPEDITEUR`,`REPONSE`,`ACTIVATION`) 
+values (7,'Service des évènements','Contact du formulaire des évènements','Voici les informations relatives au formualire des évènements :\n\nCoordonnées utilisateur : \nEmail : $email \nDépartement : $departement \nVille : $ville \nLieu : $lieu\nAdresse : $adresse\n\n\nType de demande : $demande\nTitre : $titre\nDate de début : $dateDebut"\nDate de fin : $dateFin\nHoraire : $horaire\nDésignation : $designationInfo\nDescription : $description\nThème : $theme\nTèl : $tel\nFax : $fax\nSite web : $website\nPrix : $prix\n\n\nInfos professionnelles :\nOrganisation : $organisationPro"\nAdresse : $adressePro\nComplement adresse : $complAdressePro\nVille : $villePro\nCode postal : $codePostalPro\nTel : $telPro\nFax : $faxPro\nSite internet : $sitePro\nS adresser à : $sadresser\nDirection : $direction','rdubar2000@yahoo.fr','rdubar2000@yahoo.fr',1);
+
+insert into MAIL() values ();
+insert into `MAIL_FR`(`MAIID`,`NOM`,`SUJET`,`CONTENU`,`EXPEDITEUR`,`REPONSE`,`ACTIVATION`) 
+values (8,'Service des ouvrages','Contact du formulaire des ouvrages','Voici les informations relatives au formualire des ouvrages :\n\nCoordonnées utilisateur : \nEmail : $email \n\n\nType d’ouvrage : \nTitre : $titre\nAuteur : $auteur\nThème : $theme\nSommaire : $sommaire\nInformations : $info\nAnnée de parution : $annee\nFormat : $format\nLangue : $langue\nPrix : $prix\n\n\nInfos professionnelles :\nOrganisation : $organisationPro"\nAdresse : $adressePro\nComplement adresse : $complAdressePro\nVille : $villePro\nCode postal : $codePostalPro\nTel : $telPro\nFax : $faxPro\nSite internet : $sitePro\nS adresser à : $sadresser\nDirection : $direction','rdubar2000@yahoo.fr','rdubar2000@yahoo.fr',1);
+
+insert into MAIL() values ();
+insert into `MAIL_FR`(`MAIID`,`NOM`,`SUJET`,`CONTENU`,`EXPEDITEUR`,`REPONSE`,`ACTIVATION`) 
+values (9,'Service des archives','Contact du formulaire des archives','Voici les informations relatives au formualire des archives :\n\nCoordonnées utilisateur : \nEmail : $email \n\n\nCréateur : \nPrénom : $prenom\nNom : $nom\nLieu de naissance : $lieuNaissance\nDate de naissance : $dateNaissance\nDate de décès : $dateDeces\nCreation concernant : $demande\nBiographie : $biographie\nInformation : $information\nCollaboration : $collaboration\nBibliographie : $bibliographie\nSite Web : $webSite\n\n\nInfos professionnelles :\nOrganisation : $organisationPro"\nAdresse : $adressePro\nComplement adresse : $complAdressePro\nVille : $villePro\nCode postal : $codePostalPro\nTel : $telPro\nFax : $faxPro\nSite internet : $sitePro\nS adresser à : $sadresser\nDirection : $direction','rdubar2000@yahoo.fr','rdubar2000@yahoo.fr',1);
+
+insert into MAIL() values ();
+insert into `MAIL_FR`(`MAIID`,`NOM`,`SUJET`,`CONTENU`,`EXPEDITEUR`,`REPONSE`,`ACTIVATION`) 
+values (10,'Service location','Demande de location','Voici les informations relatives à la demande de location :\n\nCoordonnées utilisateur : \nEmail : $email \nNom : $nom \nPrénom : $prenom \nAdresse : $adresse\nComplement Adresse : $complAdresse\nVille : $ville\nCode postal : $codePostal\nPays : $pays\nType de personne : $typePersonne\n\n\nQuestion : $question\n\nLocation demandée : $panierLocation','rdubar2000@yahoo.fr','rdubar2000@yahoo.fr',1);
+
+
+insert into CONTIDIONS_GENERALES values ();
+insert into CONDITIONS_GENERALES_FR values (1, "Vous pouvez passer commande chez shayanashop si vous répondez aux conditions suivantes et si vous avez pris connaissance des informations ci-dessous:\n\n- Vous avez pris connaissance du faite que ce site contient des éléments qui sont uniquement réservés aux adultes.\n- Vous avez atteint l'âge légal adulte dans votre pays.\n- Selon les lois en vigueur dans votre pays, il est légal de regarder, acheter et réceptionner les produits mis à disposition sur ce site.\n- Si vous commandez en dehors des Pays Bas, shayanashop vous recommande de vous renseigner si votre législation locale impose des réstrictions sur l'usage de nos produits.\n- Des droits de douane, autres taxes locales ou droits d'importation ou taxes d'Etat sont susceptibles d'être exigibles. Ces droits et sommes ne relèvent pas de shayanashop. Ils sont à charge de l'acheteur et relèvent de son entière responsabilité tant en termes de déclarations que de paiements aux autorités et/organismes compétents de votre pays.\n- Shayanashop décline toute responsabilité en cas de saisie de livraisons par les douanes.\n- Shayanashop ne peut pas être tenu responsable des actions de ses clients et ses visiteurs.\n- Shayanashop ne peut pas être tenu responsable des dommages causés par l'usage incorrect, correct, ou illégal de ses produits.\n\nVIE PRIVEE\n\nNotre Politique de protection de la vie privée est claire : nous ne recueillons aucune donnée à caractère personnel via ce site Web autre que les informations que vous nous communiquez volontairement. Nous ne vendons, ne commercialisons et ne mettons pas vos données à caractère personnel à la disposition d'autres parties.");
+
+insert into CONTIDIONS_GENERALES values ();
+insert into CONDITIONS_GENERALES_FR values (2, "Conditions de dépôt");
+
+insert into CONTIDIONS_GENERALES values ();
+insert into CONDITIONS_GENERALES_FR values (3, "Conditions de vente");

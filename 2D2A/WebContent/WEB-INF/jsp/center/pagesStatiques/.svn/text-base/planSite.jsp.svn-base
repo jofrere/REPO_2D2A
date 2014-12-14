@@ -1,0 +1,60 @@
+<%@ include file="../../head/include.jsp" %>
+<!-- FORM hidden for pageStatiqueController Parameters submitted by links -->
+<div style="display:none">
+	<form method="post" action="quiSommesNous.htm" name="quiSommesNousPlanSite">
+		<input type="hidden" value="3" name="idPage">
+	</form>
+ 	<form method="post" action="contact.htm" name="contactPlanSite">
+		<input type="hidden" value="4" name="idPage">
+	</form>
+	<form method="post" action="infosLegales.htm" name="infosLegalesPlanSite">
+		<input type="hidden" value="5" name="idPage">
+	</form>
+	<form method="post" action="serviceClient.htm" name="serviceClientPlanSite">
+		<input type="hidden" value="6" name="idPage">
+ 	</form>
+ 	<form method="post" action="aide.htm" name="aidePlanSite">
+		<input type="hidden" value="7" name="idPage">
+	</form>
+</div>
+<div id="enteteFiche">
+   	<p class="b brown fs13 mt5"><spring:message code="topMenu.siteMap"/></p>
+</div>
+<div id="separationEnteteFiche"></div>
+<div id="ficheCorps">
+	<h1><spring:message code="planSite.actualite"/></h1><br />
+	<div class="info">
+		<c:forEach var="rubrique" items="${actualite}" varStatus="i">
+			<c:if test="${not i.first}">
+				&nbsp;
+			</c:if>
+			<c:forEach begin="1" end="${rubrique.depth}">
+			&nbsp;&nbsp;-&nbsp;&nbsp;
+			</c:forEach>
+			<span><a class="magenta" href="<c:out value="${rubrique.link}"/>"><c:out value="${rubrique.nom}"/></a></span><br />
+		</c:forEach>
+	</div>
+	<br />
+	<p><a class="b magenta" href="/${ROOT}/devenirMembre.htm"><spring:message code="planSite.devenirMembre"/></a></p><br />
+	<p><a class="b magenta" href="/${ROOT}/monCompte.htm"><spring:message code="planSite.monCompte"/></a></p><br />
+	<p><a class="b magenta" href="/${ROOT}/monPanier.htm"><spring:message code="planSite.monPanier"/></a></p><br />
+	<p><a class="b magenta" href="/${ROOT}/depot.htm"><spring:message code="planSite.depot"/></a></p><br />
+	<p><a class="b magenta" href="/${ROOT}/recherche.htm"><spring:message code="planSite.recherche"/></a></p><br />
+	<h1><spring:message code="planSite.formulaire"/></h1><br />
+	<p><a class="magenta" href="/${ROOT}/serviceClient.htm"><spring:message code="planSite.serviceClient"/></a></p><br />
+	<p><a class="magenta" href="/${ROOT}/aide.htm"><spring:message code="planSite.aide"/></a></p><br />
+	<p><a class="magenta" href="/${ROOT}/quiSommesNous.htm"><spring:message code="planSite.qui"/></a></p><br />
+	<p><a class="magenta" href="/${ROOT}/infosLegales.htm"><spring:message code="planSite.infoLegale"/></a></p><br />
+	<h1><spring:message code="planSite.boutique"/></h1><br />
+	
+	<c:forEach var="rubrique" items="${boutique}" varStatus="i">
+		<c:if test="${not i.first}">
+			&nbsp;
+		</c:if>
+		<c:forEach begin="1" end="${rubrique.depth}">
+		&nbsp;&nbsp;-&nbsp;&nbsp;
+		</c:forEach>
+		<a class="magenta" href="<c:out value="${rubrique.link}"/>"><c:out value="${rubrique.nom}"/></a><br />
+	</c:forEach>
+
+</div>

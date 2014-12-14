@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;fr.the2d2a_bo.web.PDFServlet.MyPdf&apos; to &apos;PDFThread&apos;&#x0D;&#x0A;- Original project: &apos;2D2A_BO&apos;&#x0D;&#x0A;- Original element: &apos;fr.the2d2a_bo.web.PDFServlet.MyPdf&apos;&#x0D;&#x0A;- Renamed element: &apos;fr.the2d2a_bo.web.PDFServlet.PDFThread&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;MyPdf&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;fr.the2d2a_bo.web{PDFServlet.java[PDFServlet[MyPdf" matchStrategy="1" name="PDFThread" qualified="false" references="true" similarDeclarations="false" stamp="1239816352953" textual="false" version="1.0"/>
+</session>

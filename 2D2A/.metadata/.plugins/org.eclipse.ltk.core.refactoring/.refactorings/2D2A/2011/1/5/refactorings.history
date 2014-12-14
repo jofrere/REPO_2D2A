@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;monPanier&apos; in &apos;fr.the2d2a.web.controller.LocationController.onSubmit(...)&apos; to &apos;monPanierLocation&apos;&#x0D;&#x0A;- Original project: &apos;2D2A&apos;&#x0D;&#x0A;- Original element: &apos;fr.the2d2a.web.controller.LocationController.onSubmit(HttpServletRequest, HttpServletResponse, Object, BindException).monPanier&apos;&#x0D;&#x0A;- Renamed element: &apos;monPanier&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;monPanier&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;fr.the2d2a.web.controller{LocationController.java[LocationController~onSubmit~QHttpServletRequest;~QHttpServletResponse;~QObject;~QBindException;@monPanier!1267!1383!1274!1282!QPanier;" name="monPanierLocation" references="true" stamp="1296499874838" version="1.0"/>
+</session>

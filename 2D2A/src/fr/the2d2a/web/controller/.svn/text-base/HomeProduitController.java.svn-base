@@ -1,0 +1,118 @@
+package fr.the2d2a.web.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.log4j.Logger;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.validation.BindException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import fr.the2d2a.bean.Produit;
+import fr.the2d2a.bean.Rubrique;
+import fr.the2d2a.beanform.ProduitForm;
+import fr.the2d2a.service.ProduitService;
+import fr.the2d2a.web.constants.ParamConstants;
+import fr.the2d2a.web.constants.WebConstants;
+
+public class HomeProduitController extends SimpleFormController {
+
+	private static Logger logger = Logger.getLogger(HomeProduitController.class);
+
+	private ProduitService produitService;
+	
+	private ResourceBundleMessageSource messageSource;
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected ModelAndView onSubmit(HttpServletRequest request,
+			HttpServletResponse response, Object command, BindException errors)
+			throws Exception {
+		
+		logger.info("HomeProduitController starts...");
+		String idBoutique = ((ProduitForm) command).getRubrique();
+		String lang = (String)request.getSession().getAttribute(WebConstants.LANGUE); 
+		
+		//Recupérer la boutique
+		Map<Integer, Rubrique> menuMap = (Map<Integer, Rubrique>)request.getSession().getAttribute(WebConstants.MENU_ + WebConstants.MAP_ + lang);
+		Rubrique rubrique = menuMap.get(Integer.parseInt(idBoutique));
+		logger.debug("Visu rubrique dans HomeProduitController : " + ToStringBuilder.reflectionToString(rubrique));
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("rubrique", rubrique);
+		
+		request.setAttribute(WebConstants.LANGUE, ((HttpServletRequest)request).getSession().getAttribute(WebConstants.LANGUE));
+		
+		//debut traitement
+		String idProduit = ((ProduitForm) command).getIdProduit();
+		
+		Produit currentProduit = null;
+		List<Produit> produits = (List<Produit>) request.getSession().getAttribute("ListeProduit_" + lang + "_" + idBoutique);
+		for (Produit prod : produits) {
+			if (Integer.parseInt(idProduit) == prod.getId()) {
+				model.put("produit", prod);
+				currentProduit = prod;
+			}
+		}
+		
+		//TODO : se renseigner pour Bibliographie
+		String designerLabel = messageSource.getMessage("designerLabel", null, null);
+		String editeurLabel = messageSource.getMessage("editeurLabel", null, null);
+		String archivesLabel = messageSource.getMessage("archivesLabel", null, null);
+		String bibliographieLabel = messageSource.getMessage("bibliographieLabel", null, null);
+		String bibliothequeLabel = messageSource.getMessage("bibliothequeLabel", null, null);
+		String informationLabel = messageSource.getMessage("informationLabel", null, null);
+
+		//fabrication de la requete Flash
+		StringBuffer flashVar = new StringBuffer();
+		flashVar.append("designerLabel=").append(designerLabel).append("&");
+		flashVar.append("designer=").append(currentProduit.getDesigner().getPrenom()).append(" ").append(currentProduit.getDesigner().getNom()).append("&");
+		flashVar.append("archivesLabel=").append(archivesLabel).append("&");
+		flashVar.append("editeurLabel=").append(editeurLabel).append("&");
+		flashVar.append("editeur=").append(currentProduit.getEditeur().getPrenom()).append(" ").append(currentProduit.getEditeur().getNom()).append("&");
+		flashVar.append("bibliographieLabel=").append(bibliographieLabel).append("&");
+		flashVar.append("bibliographie=").append("TODO : gérer Biblio!").append("&");
+		flashVar.append("bibliothequeLabel=").append(bibliothequeLabel).append("&");
+		flashVar.append("informationLabel=").append(informationLabel).append("&");
+		flashVar.append("information=").append(currentProduit.getInformation());
+		
+		model.put("flashVar", flashVar.toString());
+		
+		//recuperation produits associés
+		List<Produit> produitAssociated = produitService.getProduitAssociatedById(lang, idProduit);
+		model.put("produitAssociated", produitAssociated);
+		model.put("nbProduit", produitAssociated.size());
+		
+		//traitement Pager
+		int pageIndex = ((ProduitForm) command).getPageIndex();
+		if (produitAssociated.size() > ParamConstants.MAX_PRODUCT_ASSOC_BY_PAGE) {
+			model.put("pager", "pager");
+			int nbPages = produitAssociated.size()/ParamConstants.MAX_PRODUCT_ASSOC_BY_PAGE;
+			if (produitAssociated.size()%ParamConstants.MAX_PRODUCT_ASSOC_BY_PAGE > 0)
+				nbPages++;
+			model.put("nbPages", nbPages);
+			logger.debug("Visu nbPages : " + nbPages);
+			model.put("pageIndex", pageIndex);
+			model.put("currentPage", pageIndex+1);
+			model.put("produitAssociated", produitAssociated.subList(pageIndex*ParamConstants.MAX_PRODUCT_ASSOC_BY_PAGE, Math.min(pageIndex*ParamConstants.MAX_PRODUCT_ASSOC_BY_PAGE+ParamConstants.MAX_PRODUCT_ASSOC_BY_PAGE, produitAssociated.size())));
+		} else {
+			model.put("produitAssociated", produitAssociated);
+		}
+		
+		return new ModelAndView(this.getSuccessView(), model);
+	}
+
+	public void setProduitService(ProduitService produitService) {
+		this.produitService = produitService;
+	}
+
+	public void setMessageSource(ResourceBundleMessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+}

@@ -1,0 +1,132 @@
+package fr.the2d2a.web.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.log4j.Logger;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.validation.BindException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import fr.the2d2a.bean.Depot;
+import fr.the2d2a.bean.ImageProduit;
+import fr.the2d2a.bean.Mail;
+import fr.the2d2a.exception.TechnicalException;
+import fr.the2d2a.service.MailService;
+import fr.the2d2a.utils.FileHelper;
+import fr.the2d2a.web.constants.ParamConstants;
+import fr.the2d2a.web.constants.WebConstants;
+
+public class DepotController extends SimpleFormController {
+	
+	private static Logger logger = Logger.getLogger(DepotController.class);
+	
+	private MailService mailService;
+	
+	private ResourceBundleMessageSource messageSource;
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
+		logger.info("In onSubmit DepotController...");
+		
+		Depot depot = (Depot) command;
+		
+		String lang = (String)request.getSession().getAttribute(WebConstants.LANGUE);
+		
+		logger.debug("Visu de l'objet DEPOT : " + ToStringBuilder.reflectionToString(depot, ToStringStyle.MULTI_LINE_STYLE));
+		
+		MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+		final Map<Object, MultipartFile> files = multiRequest.getFileMap();
+        
+        
+        //Gestion du path des images sur le disque
+		Locale locale = null;
+		if (lang.equals(WebConstants.LANGUE_FR)) {
+			locale = Locale.FRENCH;
+		} else {
+			locale = Locale.ENGLISH;
+		}
+		String path = messageSource.getMessage("produit.path.contribution.depot.image", null, locale);
+		logger.debug("Visu du path : " + path);
+		
+		List<ImageProduit> images = new ArrayList<ImageProduit>();
+		for (MultipartFile file : files.values()) {
+			if (file != null && !file.isEmpty()) {
+				logger.info("Visu image : " + file.getOriginalFilename());
+				//Gestion des images
+				String newPhotoFileName = FileHelper.manageUploadedImageFile(file, null, path, "");
+				ImageProduit img = new ImageProduit();
+				img.setPhoto(path + newPhotoFileName);
+				img.setPhotoFile(file);
+				images.add(img);
+			}
+		}
+		depot.setImages(images);
+		
+		try {
+			Mail mail = mailService.getMail(ParamConstants.MAIL_DEPOT_ID, lang);
+			this.manageMail(mail, depot);
+			mailService.sendMailToAdmin(mail, images);
+			for (ImageProduit img : images) {
+				FileHelper.deleteFile(img.getPhoto());
+			}
+		} catch (TechnicalException e) {
+			e.printStackTrace();
+			//TODO : enlever ce catch et gérer les technicals dans les pages (error 500 custo)
+		}
+		return new ModelAndView(this.getSuccessView());
+	}
+
+	@Override
+	protected Object formBackingObject(HttpServletRequest request) throws Exception {
+		logger.debug("In formBackingObject");
+		return new Depot();
+	}
+	
+	public void setMailService(MailService mailService) {
+		this.mailService = mailService;
+	}
+	
+	private void manageMail(Mail mail, Depot depot) {
+		String contenu = mail.getContenu();
+		contenu = contenu.replace("$email", depot.getEmail());
+		contenu = contenu.replace("$prenom", depot.getPrenom());
+		contenu = contenu.replace("$nom", depot.getNom());
+		contenu = contenu.replace("$tel", depot.getTelephone());
+		contenu = contenu.replace("$adresse", depot.getAdresse());
+		contenu = contenu.replace("$denomination", depot.getDenomination());
+		contenu = contenu.replace("$desc", depot.getDescription());
+		contenu = contenu.replace("$materiaux", depot.getMateriaux());
+		contenu = contenu.replace("$hauteur", depot.getHauteur());
+		contenu = contenu.replace("$largeur", depot.getLargeur());
+		contenu = contenu.replace("$diametre", depot.getDiametre());
+		contenu = contenu.replace("$poids", depot.getPoids());
+		contenu = contenu.replace("$profondeur", depot.getProfondeur());
+		contenu = contenu.replace("$annee", depot.getDescAnnee());
+		contenu = contenu.replace("$coloris", depot.getColoris());
+		contenu = contenu.replace("$origine", depot.getOrigine());
+		contenu = contenu.replace("$comment", depot.getCommentaire());
+		contenu = contenu.replace("$designer", depot.getDesigner());
+		contenu = contenu.replace("$editeur", depot.getEditeur());
+		contenu = contenu.replace("$signApp", depot.getSigneApp());
+		contenu = contenu.replace("$biblio", depot.getBibliographie());
+		contenu = contenu.replace("$info", depot.getInformation());
+		contenu = contenu.replace("$prix", depot.getPrix());
+		mail.setContenu(contenu);
+	}
+
+	public void setMessageSource(ResourceBundleMessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+}

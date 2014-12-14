@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.paste,1227190533156
+no handler,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1227190535609
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.file.save,1227190536812
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1227190538265
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.file.save,1227190539062
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.file.save,1227190540546
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1227190544093
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1227190554328
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1227190564265
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1227190580343
+executed,command,org.eclipse.ui,3.4.1.M20080910-0800,org.eclipse.ui.file.save,1227190581421
+executed,command,org.eclipse.ui.ide,3.4.1.M20080903-2000,org.eclipse.ui.project.buildAll,1227190582671
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227190582937
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227190583171
+activated,view,org.eclipse.wst.server.ui,1.1.2.v20080916,org.eclipse.wst.server.ui.ServersView,1227190584562
+executed,command,org.eclipse.wst.server.ui,1.1.2.v20080916,org.eclipse.wst.server.publish,1227190585296
+activated,view,org.eclipse.ui.console,3.3.0.v20080529-1300,org.eclipse.ui.console.ConsoleView,1227190586921
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227190593031
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227190640640
+activated,editor,org.eclipse.jdt.ui,3.4.1.r341_v20080827-1100,org.eclipse.jdt.ui.CompilationUnitEditor,1227190641656
+activated,view,org.eclipse.ui.console,3.3.0.v20080529-1300,org.eclipse.ui.console.ConsoleView,1227190644859
+deactivated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227190713531
+activated,workbench,org.eclipse.ui.workbench,3.4.1.M20080827-0800a,,1227190714828
+activated,editor,org.eclipse.jdt.ui,3.4.1.r341_v20080827-1100,org.eclipse.jdt.ui.CompilationUnitEditor,1227190719953
+activated,view,org.eclipse.ui.console,3.3.0.v20080529-1300,org.eclipse.ui.console.ConsoleView,1227190726468
